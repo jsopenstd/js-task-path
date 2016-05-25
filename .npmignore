@@ -1,0 +1,21 @@
+# editorconfig.org
+.editorconfig
+
+# Git attributes
+.gitattributes
+
+# Code coverage reports
+coverage
+
+# Vagrant files and folders
+    # Vagrant provision folder
+    vagrant
+
+    # Vagrant VM file
+    vagrantfile
+
+# Gulp tasks folder
+gulp
+
+# Tests folder
+tests

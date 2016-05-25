@@ -1,0 +1,14 @@
+# IntelliJ IDEA project folder
+.idea
+
+# Vagrant VM folder
+.vagrant
+
+# Code coverage reports
+coverage
+
+# Node dependencies
+node_modules
+
+# Logs
+/npm-debug.log
