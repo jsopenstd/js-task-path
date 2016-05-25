@@ -20,14 +20,24 @@ npm install js-task-paths
 
 **Download**
 
-[![Download Development][development-badge]][development-url]
-Commented source code.
+| [![Download Production][production-badge]][production-url] |
+| ---------------------------------------------------------- |
 
-[![Download Production][production-badge]][production-url]
-Minified code.
+**Production-ready .zip archive.**
 
-[![Download Repository][repository-badge]][repository-url]
-In .zip.
+
+
+| [![Download Development][development-badge]][development-url] |
+| ------------------------------------------------------------- |
+
+**Development oriented .zip archive.**
+
+
+
+| [![Download Repository][repository-badge]][repository-url] |
+| ---------------------------------------------------------- |
+
+**The complete repository in a .zip archive.**
 
 ## Usage
 
@@ -63,23 +73,23 @@ Paths.addPath("dist", "<root>/");
 [npm-badge]:          https://img.shields.io/npm/v/js-task-paths.svg
 [npm-url]:            https://www.npmjs.com/package/js-task-paths
 
-[travis-badge]:       https://travis-ci.org/richrdkng/js-task-paths.svg?branch=master
-[travis-url]:         https://travis-ci.org/richrdkng/js-task-paths
+[travis-badge]:       https://travis-ci.org/jsstd/js-task-paths.svg?branch=master
+[travis-url]:         https://travis-ci.org/jsstd/js-task-paths
 
-[coverage-badge]:     https://coveralls.io/repos/github/richrdkng/js-task-paths/badge.svg?branch=master
-[coverage-url]:       https://coveralls.io/github/richrdkng/js-task-paths
+[coverage-badge]:     https://coveralls.io/repos/github/jsstd/js-task-paths/badge.svg?branch=master
+[coverage-url]:       https://coveralls.io/github/jsstd/js-task-paths
 
-[dependencies-badge]: https://david-dm.org/richrdkng/js-task-paths.svg
-[dependencies-url]:   https://david-dm.org/richrdkng/js-task-paths
+[dependencies-badge]: https://david-dm.org/jsstd/js-task-paths.svg
+[dependencies-url]:   https://david-dm.org/jsstd/js-task-paths
 
-[chat-badge]:         https://badges.gitter.im/richrdkng/js-task-paths.svg
-[chat-url]:           https://gitter.im/richrdkng/js-task-paths?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+[chat-badge]:         https://badges.gitter.im/jsstd/js-task-paths.svg
+[chat-url]:           https://gitter.im/jsstd/js-task-paths?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 
 [development-badge]:  http://img.shields.io/badge/download-DEVELOPMENT-brightgreen.svg
-[development-url]:    https://cdn.rawgit.com/richrdkng/js-task-paths/master/src/typeof.js
+[development-url]:    https://cdn.rawgit.com/jsstd/js-task-paths/master/src/typeof.js
 
 [production-badge]:   http://img.shields.io/badge/download-PRODUCTION-red.svg
-[production-url]:     https://cdn.rawgit.com/richrdkng/js-task-paths/master/dist/typeof.min.js
+[production-url]:     https://cdn.rawgit.com/jsstd/js-task-paths/master/dist/typeof.min.js
 
 [repository-badge]:   http://img.shields.io/badge/download-REPOSITORY+DOCUMENTATION-orange.svg
-[repository-url]:     https://cdn.rawgit.com/richrdkng/js-task-paths/master/dist/repository.zip
+[repository-url]:     https://cdn.rawgit.com/jsstd/js-task-paths/master/dist/repository.zip
