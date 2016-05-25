@@ -9,6 +9,7 @@
     "g": "gulp --gulpfile tasks/gulp/index.js",
     "gulp": "npm run g",
     "build": "npm run g -- build",
+    "pack": "npm run g -- pack",
     "test": "npm run g -- test",
     "watch": "npm run g -- watch",
     "ci": "npm run g -- ci",
@@ -40,7 +41,9 @@
     "gulp-mocha": "^2.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sequence": "^0.4.5",
+    "gulp-zip": "^3.2.0",
     "jsonfile": "^2.3.0",
+    "mkdirp": "^0.5.1",
     "rekuire": "^0.1.9",
     "semver": "^5.1.0"
   },

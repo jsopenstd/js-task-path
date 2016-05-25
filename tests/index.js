@@ -1,71 +1,76 @@
 "use strict";
 
-const use    = require('rekuire'),
+const use    = require("rekuire"),
 
-      assert = require('assert'),
+      assert = require("assert"),
 
-      p     = use("tasks/gulp/helpers/paths"),
-      Paths = use(p.getPath("test-path"));
+      path  = use("tasks/gulp/helpers/paths"),
+      Paths = use(path.getPath("test-path"));
 
 var PATH = require("../src/paths");
 
+var root;
+
 module.exports = {
     "js-task-paths" : {
+        "before" : function() {
+            root = Paths.getRoot();
+        },
         "beforeEach" : function() {
             Paths.removeAll();
         },
         "default cases" : {
             "root check" : function() {
-                assert(Paths.getRoot() === "/vagrant");
+                assert(Paths.getRoot() === root);
             },
             "set paths" : function() {
-                assert(Paths.setPath("dist", "<root>/dist") === "/vagrant/dist");
-                assert(Paths.setPath("bin",  "<root>/bin")  === "/vagrant/bin");
-                assert(Paths.setPath("lib",  "<root>/lib")  === "/vagrant/lib");
+                assert(Paths.setPath("dist", "<root>/dist") === root + "/dist");
+                assert(Paths.setPath("bin",  "<root>/bin")  === root + "/bin");
+                assert(Paths.setPath("lib",  "<root>/lib")  === root + "/lib");
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : '/vagrant',
-                        dist : '/vagrant/dist',
-                        bin  : '/vagrant/bin',
-                        lib  : '/vagrant/lib'
+                        root : root,
+                        dist : root + "/dist",
+                        bin  : root + "/bin",
+                        lib  : root + "/lib"
                     }
                 );
             },
             "remove paths" : function() {
-                assert(Paths.setPath("src",   "<root>/src")   === "/vagrant/src");
-                assert(Paths.setPath("tests", "<root>/tests") === "/vagrant/tests");
-                assert(Paths.setPath("doc",   "<root>/doc")   === "/vagrant/doc");
+                assert(Paths.setPath("src",   "<root>/src")   === root + "/src");
+                assert(Paths.setPath("tests", "<root>/tests") === root + "/tests");
+                assert(Paths.setPath("doc",   "<root>/doc")   === root + "/doc");
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root  : '/vagrant',
-                        src   : '/vagrant/src',
-                        tests : '/vagrant/tests',
-                        doc   : '/vagrant/doc'
+                        root  : root,
+                        src   : root + "/src",
+                        tests : root + "/tests",
+                        doc   : root + "/doc"
                     }
                 );
 
-                assert(Paths.removePath("src") === "/vagrant/src");
+                assert(Paths.removePath("src") === root + "/src");
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root  : '/vagrant',
-                        tests : '/vagrant/tests',
-                        doc   : '/vagrant/doc'
+                        root  : root,
+                        tests : root + "/tests",
+                        doc   : root + "/doc"
                     }
                 );
 
-                assert(Paths.removePath("tests") === "/vagrant/tests");
-                assert(Paths.removePath("doc")   === "/vagrant/doc");
+                assert(Paths.removePath("tests") === root + "/tests");
+                assert(Paths.removePath("doc")   === root + "/doc");
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root  : '/vagrant'
+                        root  : root
                     }
                 );
             }
@@ -77,8 +82,8 @@ module.exports = {
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : '/vagrant',
-                        src  : '/vagrant/src'
+                        root : root,
+                        src  : root + "/src"
                     }
                 );
 
@@ -87,8 +92,8 @@ module.exports = {
                 assert.deepStrictEqual(
                     newGlob,
                     [
-                        "/vagrant/src",
-                        "/vagrant/src/another-path/"
+                        root + "/src",
+                        root + "/src/another-path/"
                     ]
                 );
 
@@ -98,8 +103,8 @@ module.exports = {
                 assert.deepStrictEqual(
                     newGlob,
                     [
-                        "/vagrant/src",
-                        "/vagrant/src/another-path/"
+                        root + "/src",
+                        root + "/src/another-path/"
                     ]
                 );
             },
@@ -109,8 +114,8 @@ module.exports = {
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : '/vagrant',
-                        src  : '/vagrant/src'
+                        root : root,
+                        src  : root + "/src"
                     }
                 );
 
@@ -119,8 +124,8 @@ module.exports = {
                 assert.deepStrictEqual(
                     newGlob,
                     [
-                        "/vagrant/src",
-                        "/vagrant/src/another-path/"
+                        root + "/src",
+                        root + "/src/another-path/"
                     ]
                 );
 
@@ -129,16 +134,16 @@ module.exports = {
                 assert.deepStrictEqual(
                     removedGlob,
                     [
-                        "/vagrant/src"
+                        root + "/src"
                     ]
                 );
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : '/vagrant',
+                        root : root,
                         src  : [
-                            "/vagrant/src/another-path/"
+                            root + "/src/another-path/"
                         ]
                     }
                 );
@@ -146,7 +151,7 @@ module.exports = {
         },
         "edge cases" : {
             "overwrite root" : function() {
-                assert(Paths.getRoot() === "/vagrant");
+                assert(Paths.getRoot() === root);
 
                 assert(Paths.setRoot("/differentRoot") === "/differentRoot");
                 assert(Paths.getRoot() === "/differentRoot");
@@ -161,13 +166,13 @@ module.exports = {
                     }
                 );
 
-                assert(Paths.setRoot("/vagrant") === "/vagrant");
-                assert(Paths.getRoot() === "/vagrant");
+                assert(Paths.setRoot(root) === root);
+                assert(Paths.getRoot() === root);
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : "/vagrant",
+                        root : root,
                         src  : "/differentRoot/src"
                     }
                 );
@@ -180,10 +185,10 @@ module.exports = {
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : '/vagrant',
-                        A    : 'A',
-                        B    : 'B',
-                        C    : 'C'
+                        root : root,
+                        A    : "A",
+                        B    : "B",
+                        C    : "C"
                     }
                 );
 
@@ -192,16 +197,16 @@ module.exports = {
                 assert.deepStrictEqual(
                     removedGlobs,
                     {
-                        A    : 'A',
-                        B    : 'B',
-                        C    : 'C'
+                        A    : "A",
+                        B    : "B",
+                        C    : "C"
                     }
                 );
 
                 assert.deepStrictEqual(
                     Paths.getAll(),
                     {
-                        root : '/vagrant'
+                        root : root
                     }
                 );
             }

@@ -24,6 +24,7 @@ use("/tasks/watch");
 use("/tasks/bump");
 use("/tasks/doc");
 use("/tasks/ci");
+use("/tasks/pack");
 
 // the default task is left here for quick testing purposes
 gulp.task("default", function() {

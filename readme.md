@@ -18,7 +18,7 @@ A utility singleton to help manage task-related paths more easily throughout the
 npm install js-task-paths
 ```
 
-**Download**
+## Download
 
 | [![Download Production][production-badge]][production-url] |
 | ---------------------------------------------------------- |
@@ -30,14 +30,7 @@ npm install js-task-paths
 | [![Download Development][development-badge]][development-url] |
 | ------------------------------------------------------------- |
 
-**Development oriented .zip archive.**
-
-
-
-| [![Download Repository][repository-badge]][repository-url] |
-| ---------------------------------------------------------- |
-
-**The complete repository in a .zip archive.**
+**Development-oriented .zip archive.**
 
 ## Usage
 
