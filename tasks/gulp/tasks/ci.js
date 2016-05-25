@@ -1,3 +1,5 @@
+"use strict";
+
 const gulp     = require("gulp"),
       sequence = require("gulp-sequence"),
       debug    = require("gulp-debug");

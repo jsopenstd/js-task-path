@@ -1,3 +1,5 @@
+"use strict";
+
 const path    = require("path"),
       appRoot = require("app-root-path"),
       extend  = require("extend");

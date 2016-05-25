@@ -1,3 +1,5 @@
+"use strict";
+
 const use     = require("rekuire"),
 
       gulp     = require("gulp"),
