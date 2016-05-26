@@ -4,17 +4,18 @@
 sudo su
 
 # update before provisioning
-apt-get update -y
+apt-get -y update
 
 # install essentials
 apt-get install -y python-software-properties
 apt-get install -y build-essential git nano curl mc
 
 # update after essentials (especially python-software-properties)
-apt-get update -y
+apt-get -y update
 
 # update git
 add-apt-repository -y ppa:git-core/ppa
+apt-get -y update
 apt-get -y install git
 
 # install node & update npm
@@ -39,4 +40,4 @@ npm install
 cat /vagrant/vagrant/home/vagrant/.bashrc >> /home/vagrant/.bashrc
 
 # update after provisioning
-apt-get update -y
+apt-get -y update
