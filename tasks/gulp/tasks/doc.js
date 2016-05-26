@@ -42,18 +42,8 @@ gulp.task("doc::generate", function() {
 
     return gulp
         .src(Paths.getPath("src") + "/**/*.js")
-        /*
         .pipe(doc({
-            template : "{{>main-index~}}{{>all-docs~}}"
-        }))
-        */
-        .pipe(doc({
-            /*
-                template : {
-                main : "/vagrant/tasks/gulp/tasks/doc/partials/main.hbs"
-            },
-            */
-            plugin : ["/vagrant/tasks/gulp/tasks/doc/lib/dmd-plugin-example.js"]
+            plugin : ["/vagrant/tasks/gulp/tasks/doc-template/index.js"]
         }))
         .pipe(rename({
             extname : ".md"

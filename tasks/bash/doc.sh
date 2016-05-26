@@ -101,7 +101,7 @@ case $1 in
         ;;
 
     # run it via "npm run doc -- push-submodule"
-    push-submodule|push)
+    push-submodule|push|update)
         commit+push-wiki-submodule
         ;;
 
