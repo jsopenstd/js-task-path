@@ -15,7 +15,8 @@
     "ci": "npm run g -- ci",
     "coveralls": "coveralls < coverage/lcov.info",
     "bump": "tasks/bash/bump.sh",
-    "distribute": "tasks/bash/distribute.sh"
+    "distribute": "tasks/bash/distribute.sh",
+    "dist": "npm run distribute"
   },
   "homepage": "https://github.com/jsstd/js-task-paths#readme",
   "repository": {

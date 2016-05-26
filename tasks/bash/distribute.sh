@@ -1,26 +1,93 @@
 #!/usr/bin/env bash
 
-# =====================================================================================================================
-#
-# in case you are start using this script from vagrant for the first time
-# use "npm login" to prevent npm authentication error
-#
-# =====================================================================================================================
+# |---------------------------------------------------------------------------------------------------------------------
+# |
+# | Distribution Script
+# |
+# |     - In case of npm authentication error, use "npm login" before running this bash script.
+# |
+# |---------------------------------------------------------------------------------------------------------------------
 
-version=$(node -p -e "require('./package.json').version")
+function distribute-project-initial {
+    distribute-project
+}
 
-# for initial distribution, run it via "npm run distribute -- initial"
-if [ "$1" == "initial" ]; then
+function distribute-doc-initial {
+    cd /vagrant/doc
+
+    # git config --global user.name "<Your Name>"
+    # git config --global user.email "<your@email.com>"
+
+    git pull
+
+    git add .
+    git status
+    git commit -m "Initial /doc distribution commit"
+
+    git push
+
+    distribute-doc
+}
+
+function distribute-project {
+    version=$(node -p -e "require('./package.json').version")
+
+    git tag -a "v$version" -m "v$version"
+    git push --tags
+
+    npm publish
+}
+
+function distribute-doc {
     name=$(node -p -e "require('./package.json').name")
-    repo=$(node -p -e "require('./package.json').repository.url")
 
-    git tag -a "v$version" -m "v$version"
-    git push --tags
-    npm publish
-    bower register "$name" "$repo"
+    cd /vagrant/doc
 
-else
-    git tag -a "v$version" -m "v$version"
-    git push --tags
-    npm publish
-fi
+    git pull
+
+    git add .
+    git status
+    git commit -m "Update $name API documentation"
+
+    git push
+}
+
+case $1 in
+    # |-----------------------------------------------------------------------------------------------------------------
+    # |
+    # | Initial distribution cases
+    # |
+    # |-----------------------------------------------------------------------------------------------------------------
+
+    # run it via "npm run distribute -- project-initial"
+    project-initial)
+        distribute-project-initial
+        ;;
+
+    # run it via "npm run distribute -- doc-initial"
+    doc-initial)
+        distribute-doc-initial
+        ;;
+
+
+
+    # |-----------------------------------------------------------------------------------------------------------------
+    # |
+    # | General distribution cases
+    # |
+    # |-----------------------------------------------------------------------------------------------------------------
+
+    # run it via "npm run distribute -- project"
+    project)
+        distribute-project
+        ;;
+
+    # run it via "npm run distribute -- doc"
+    doc)
+        distribute-doc
+        ;;
+
+    *)
+        echo "Unknown distribution case"
+        ;;
+esac
