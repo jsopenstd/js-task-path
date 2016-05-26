@@ -12,6 +12,3 @@ node_modules
 
 # Logs
 /npm-debug.log
-
-# doc git submodul -- from github repository's wiki
-/doc

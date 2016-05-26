@@ -12,6 +12,7 @@
     "pack": "npm run g -- pack",
     "test": "npm run g -- test",
     "watch": "npm run g -- watch",
+    "doc": "npm run g -- doc",
     "ci": "npm run g -- ci",
     "coveralls": "coveralls < coverage/lcov.info",
     "bump": "tasks/bash/bump.sh",

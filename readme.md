@@ -64,7 +64,7 @@ gulp.task("build::copy-source", function() {
 
 ## Documentation
 
-The API documentation can be found on the [repository's wiki page](https://github.com/jsstd/js-task-paths/wiki).
+The API documentation can be found on the [repository's wiki page](https://github.com/jsstd/js-task-paths/wiki/paths).
 
 Check for **function aliases** too in order to use this tool efficiently (shorter function names => less typing).
 
