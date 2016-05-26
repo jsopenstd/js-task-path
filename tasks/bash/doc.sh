@@ -21,7 +21,7 @@ function add-wiki-repo-as-submodule {
     wiki=$(node -p -e '
         "use strict";
 
-        let url = require("./package.json").repository.url
+        let url = require("/vagrant/package.json").repository.url
 
         url
             .replace(/^git:/g, "https:")
@@ -61,7 +61,7 @@ function pull-wiki-submodule-changes {
 }
 
 function commit+push-wiki-submodule {
-    name=$(node -p -e "require('./package.json').name")
+    name=$(node -p -e "require('/vagrant/package.json').name")
 
     # check **Make changes to the docs submodule** section on
     # https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
@@ -74,7 +74,7 @@ function commit+push-wiki-submodule {
 }
 
 function commit+push-project {
-    name=$(node -p -e "require('./package.json').name")
+    name=$(node -p -e "require('/vagrant/package.json').name")
 
     # check **Make changes to the docs submodule** section on
     # https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
