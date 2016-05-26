@@ -10,58 +10,90 @@
 
 A utility singleton to help manage task-related paths more easily throughout the whole project.
 
-## Getting Started
-
-**NPM**
+## Install
 
 ```
 npm install js-task-paths
 ```
 
-## Download
-
-| [![Download Production][production-badge]][production-url] |
-| ---------------------------------------------------------- |
-
-**Production-ready .zip archive.**
-
-
-
-| [![Download Development][development-badge]][development-url] |
-| ------------------------------------------------------------- |
-
-**Development-oriented .zip archive.**
-
 ## Usage
 
+For additional examples,
+check the **[tests folder](https://github.com/jsstd/js-task-paths/tree/master/tests)**
+
 ```javascript
-const Paths = require("js-task-paths");
+const paths = require("js-task-paths");
 
-Paths.setRoot("<root>../");
+// add general paths
+paths.addPath("dist",        "<root>/dist");
+paths.addPath("src",         "<root>/src");
+paths.addPath("doc",         "<root>/doc");
+paths.addPath("tasks",       "<root>/tasks");
+paths.addPath("tests",       "<root>/tests");
 
-Paths.addPath("dist", "<root>/");
+// use previously given, custom paths via token
+paths.addPath("build-tasks", "<tasks>/build/*.js");
 
+// add individual files
+paths.addPath("source-file", "<src>/src.js");
+paths.addPath("dist-file",   "<dist>/dist.js");
+
+// get paths by name
+paths.getPath("source-file");
+paths.getPath("dist-file");
+
+// example, when using gulp
+gulp.task("build::copy-source", function() {
+    return gulp
+        .src(paths.getPath("source-file"))
+        .pipe(gulp.dest(paths.getPath("dist")));
+});
+
+// example, when using gulp, using shorter paths aliases
+// for shorter paths aliases, check the documentation
+gulp.task("build::copy-source", function() {
+    return gulp
+        .src(paths.get("source-file"))
+        .pipe(gulp.dest(paths.get("dist")));
+});
 ```
 
-[Link to Documentation](https://github.com/richrdkng/js-task-paths/wiki)
+## Documentation
 
-## Issues, Suggestions & Bugs
+The API documentation can be found on the [repository's wiki page](https://github.com/jsstd/js-task-paths/wiki).
 
-[Link to Issues](https://github.com/richrdkng/js-task-paths/issues)
+Check for **function aliases** too in order to use this tool efficiently (shorter function names => less typing).
+
+## Issues
+
+If you find any bugs and other issues, check the
+[GSDCG Guide - Issues](https://github.com/openstd/general-software-development-contribution-guide#issues)
+section on how to submit issues in a standardized way on
+[the project's issues page](https://github.com/jsstd/js-task-paths/issues).
+
+In case you have any suggestions regarding the project (features, additional capabilities, etc.), check the
+[GSDCG Guide - Suggestions](https://github.com/openstd/general-software-development-contribution-guide#suggestions)
+section on how to submit suggestions in an easy, standardized way on
+[the project's issues page](https://github.com/jsstd/js-task-paths/issues).
 
 ## Contribution
 
-[Link to contribution.md](contribution.md)
+In order to contribute to this project, check the
+[GSDCG Guide](https://github.com/openstd/general-software-development-contribution-guide)
+for an easy, standardized way on how to contribute to projects.
 
 ## Support
 
-[Link to Support](http://richrdkng.github.io/support)
+If you **by any means** find this project useful,
+[consider supporting the project](http://richrdkng.github.io/support).
+
+There are multiple options to support the project and the developer and any means of support is beneficial and helpful.
 
 ## License
 
-[MIT](https://opensource.org/licenses/MIT) @ Richard King
+[MIT](license.md) @ Richard King
 
-[logo]:               logo/logo.png
+[logo]:               https://cdn.rawgit.com/jsstd/js-task-paths/master/logo/logo.png
 
 [npm-badge]:          https://img.shields.io/npm/v/js-task-paths.svg
 [npm-url]:            https://www.npmjs.com/package/js-task-paths
