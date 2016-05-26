@@ -5,7 +5,7 @@
 # | Documentation Manager Script
 # |
 # |     - Before you make **any** changes, in order to understand the means, when using GitHub's repository wiki
-# |       as a git submodule serving as the projects documentation in the projects /doc folder,
+# |       as a git submodule serving as the project's documentation in the project's /doc folder,
 # |       **read thoroughly and understand the following article**:
 # |       https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
 # |
