@@ -19,25 +19,33 @@ apt-get -y update
 apt-get -y install git
 
 # install node & update npm
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 apt-get install -y nodejs
 npm install npm -g
 
-# install bower
-npm rm --global bower
-npm install --global bower
+# install dependency version updater globally
+npm install --global npm-check-updates
 
-# install gulp
+# install gulp globally
 npm rm --global gulp
 npm install --global gulp gulp-cli
 
 # install project dependencies
 # when running Vagrant under Windows, in case of "EPROTO: protocol error, symlink", use npm with "--no-bin-links"
-npm install
 # npm install --no-bin-links
+npm install
 
-# add custom .bashrc content to .bashrc
-cat /vagrant/vagrant/home/vagrant/.bashrc >> /home/vagrant/.bashrc
+# add custom content to .bashrc
+cat > /home/vagrant/.bashrc <<- EOM
+
+    # aliases for npm-check-updates
+    alias check-deps="ncu"
+    alias update-deps="ncu -u"
+
+    # navigate to vagrant folder upon login
+    cd /vagrant
+
+EOM
 
 # update after provisioning
 apt-get -y update
