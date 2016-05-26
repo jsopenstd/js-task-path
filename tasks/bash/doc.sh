@@ -2,9 +2,6 @@
 
 # info: https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
 
-# https://github.com/jsstd/js-task-paths.wiki.git
-# git://github.com/jsstd/js-task-paths.git
-
 function add-wiki-repo-as-submodule {
     wiki=$(node -p -e '
         "use strict";
@@ -34,11 +31,31 @@ function add-wiki-repo-as-submodule {
 }
 
 function pull-wiki-submodul-changes {
-    echo
+    cd /vagrant
+
+    git pull
+
+    git merge origin/master
+
+    git submodule update
 }
 
 function update-wiki-submodule {
-    echo
+    name=$(node -p -e "require('./package.json').name")
+
+    cd /vagrant/doc
+
+    git checkout master
+
+    git commit -am "Update $name API documentation"
+
+    git push
+
+    cd /vagrant
+
+    git commit -am "Update doc submodule"
+
+    git push
 }
 
 function remove-wiki-submodule {
@@ -47,6 +64,12 @@ function remove-wiki-submodule {
     git rm doc
 
     rm -rf .git/modules/doc
+}
+
+function wiki-submodule-status {
+    cd /vagrant/doc
+
+    git status
 }
 
 case $1 in
@@ -66,7 +89,11 @@ case $1 in
         remove-wiki-submodule
         ;;
 
+    status)
+        wiki-submodule-status
+        ;;
+
     *)
-        #npm run gulp -- doc
+        npm run gulp -- doc
         ;;
 esac

@@ -17,7 +17,9 @@ gulp.task("doc::clear", function(cb) {
     remove(
         [
             folder + "/**/.*", // include . (dot) files and folders
-            folder + "/**/*"
+            folder + "/**/*",
+
+            "!" + folder + "/**/.git*" // do not remove .git or any git-related files
         ],
         {
             force : true
