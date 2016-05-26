@@ -46,7 +46,9 @@ paths.getPath("dist-file");
 gulp.task("build::copy-source", function() {
     return gulp
         .src(paths.getPath("source-file"))
-        .pipe(gulp.dest(paths.getPath("dist")));
+        .pipe(
+            gulp.dest(paths.getPath("dist")
+        ));
 });
 
 // example, when using gulp, using shorter paths aliases
@@ -54,7 +56,9 @@ gulp.task("build::copy-source", function() {
 gulp.task("build::copy-source", function() {
     return gulp
         .src(paths.get("source-file"))
-        .pipe(gulp.dest(paths.get("dist")));
+        .pipe(
+            gulp.dest(paths.get("dist")
+        ));
 });
 ```
 
