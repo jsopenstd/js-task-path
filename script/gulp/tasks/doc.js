@@ -9,7 +9,7 @@ const use = require("rekuire"),
       sequence = require("gulp-sequence"),
       debug    = require("gulp-debug"),
 
-      Paths = use("tasks/gulp/helpers/paths");
+      Paths = use("script/gulp/helpers/paths");
 
 gulp.task("doc::clear", function(cb) {
     var folder = Paths.getPath("doc");
@@ -41,9 +41,9 @@ gulp.task("doc::clear", function(cb) {
 gulp.task("doc::generate", function() {
 
     return gulp
-        .src(Paths.getPath("src") + "/**/*.js")
+        .src(Paths.getPath("src/*"))
         .pipe(doc({
-            plugin : ["/vagrant/tasks/gulp/tasks/doc-template/index.js"]
+            plugin : [Paths.getPath("doc-template")]
         }))
         .pipe(rename({
             extname : ".md"
@@ -62,5 +62,5 @@ gulp.task(
 );
 
 gulp.task("watch::doc", function() {
-    gulp.watch(Paths.getPath("src") + "/**/*.js", ["doc"]);
+    gulp.watch(Paths.getPath("doc/watch"), ["doc"]);
 });

@@ -1,6 +1,6 @@
 /**
  * @overview A utility singleton to help manage task-related paths more easily throughout the whole project.
- * @version 1.0.0
+ * @version 1.0.1
  *
  * @author Richard King <richrdkng@gmail.com> [GitHub]{@link https://github.com/richrdkng}
  * @licence MIT

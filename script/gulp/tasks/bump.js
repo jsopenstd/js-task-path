@@ -10,7 +10,7 @@ const use      = require("rekuire"),
       json     = require("jsonfile"),
       fs       = require("graceful-fs"),
 
-      Paths    = use("tasks/gulp/helpers/paths");
+      Paths    = use("script/gulp/helpers/paths");
 
 const TYPE_MAJOR = 1,
       TYPE_MINOR = 2,
@@ -24,7 +24,7 @@ var type;
  * @returns {string} Current project version in semver format.
  */
 function getCurrentVersion() {
-    var pkg     = use(Paths.getPath("root") + "/package.json"),
+    var pkg     = use(Paths.getPath("package.json")),
         version = pkg.version;
 
     if (semver.valid(version) === null) {
@@ -70,7 +70,7 @@ function bumpVersion(version, type) {
  * @param {string} version Semver version.
  */
 function bumpPackageJSON(version) {
-    var path    = Paths.getPath("root") + "/package.json",
+    var path    = Paths.getPath("package.json"),
         content = json.readFileSync(path);
 
     content.version = version;
@@ -166,8 +166,3 @@ gulp.task(
         )(cb);
     }
 );
-
-// aliases
-gulp.task("bump::main",    ["bump::major"]);
-gulp.task("bump::feature", ["bump::minor"]);
-gulp.task("bump::fix",     ["bump::patch"]);

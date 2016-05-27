@@ -8,7 +8,7 @@ const use   = require("rekuire"),
       sequence = require("gulp-sequence"),
       debug    = require("gulp-debug"),
 
-      Paths = use("tasks/gulp/helpers/paths");
+      Paths = use("script/gulp/helpers/paths");
 
 const GLOBAL_COVERAGE_THRESHOLD = 60;
 
@@ -28,14 +28,14 @@ gulp.task("test::init-coverage", function() {
 gulp.task("test::test-base", function() {
     if (type === TYPE_DEV) {
         return gulp
-            .src(Paths.getPath("tests") + "/index.js", {
+            .src(Paths.getPath("test-file"), {
                 read : false
             })
             .pipe(mocha({
                 ui : "exports"
             }))
             .pipe(coverage.writeReports({
-                dir : Paths.getPath("root") + "/coverage"
+                dir : Paths.getPath("coverage")
             }))
             .pipe(coverage.enforceThresholds({
                 thresholds : {
@@ -45,7 +45,7 @@ gulp.task("test::test-base", function() {
 
     } else {
         return gulp
-            .src(Paths.getPath("tests") + "/index.js", {
+            .src(Paths.getPath("test-file"), {
                 read : false
             })
             .pipe(mocha({

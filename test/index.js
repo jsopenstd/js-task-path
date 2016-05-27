@@ -4,7 +4,7 @@ const use    = require("rekuire"),
 
       assert = require("assert"),
 
-      path  = use("tasks/gulp/helpers/paths"),
+      path  = use("script/gulp/helpers/paths"),
       Paths = use(path.getPath("test-path"));
 
 var PATH = require("../src/paths");

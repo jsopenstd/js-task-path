@@ -1,23 +1,22 @@
 {
   "name": "js-task-paths",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility singleton to help manage task-related paths more easily throughout the whole project.",
   "author": "Richard King <richrdkng@gmail.com> (https://github.com/richrdkng)",
   "license": "MIT",
   "main": "dist/paths.js",
   "scripts": {
-    "g": "gulp --gulpfile tasks/gulp/index.js",
+    "g": "gulp --gulpfile script/gulp/index.js",
     "gulp": "npm run g",
-    "build": "npm run g -- build",
-    "pack": "npm run g -- pack",
     "test": "npm run g -- test",
+    "build": "npm run g -- build",
     "watch": "npm run g -- watch",
-    "doc": "tasks/bash/doc.sh",
     "ci": "npm run g -- ci",
     "coveralls": "coveralls < coverage/lcov.info",
-    "bump": "tasks/bash/bump.sh",
-    "distribute": "tasks/bash/distribute.sh",
-    "dist": "npm run distribute"
+    "doc": "script/bash/doc.sh",
+    "bump": "script/bash/bump.sh",
+    "prereq": "script/bash/prerequisites.sh",
+    "release": "script/bash/release.sh"
   },
   "homepage": "https://github.com/jsstd/js-task-paths#readme",
   "repository": {

@@ -9,7 +9,7 @@ const use     = require("rekuire"),
       sequence = require("gulp-sequence"),
       debug    = require("gulp-debug"),
 
-      Paths   = use("tasks/gulp/helpers/paths");
+      Paths   = use("script/gulp/helpers/paths");
 
 gulp.task("build::clear", function(cb) {
     var dist = Paths.getPath("dist");
@@ -62,4 +62,4 @@ gulp.task(
     }
 );
 
-Paths.appendToPath("watch", Paths.getPath("src") + "/**/*.js");
+Paths.appendToPath("watch", Paths.getPath("build/watch"));
