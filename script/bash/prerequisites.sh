@@ -6,7 +6,9 @@
 # |
 # |---------------------------------------------------------------------------------------------------------------------
 
-function check-git-prerequisites {
+source /vagrant/script/bash/common.sh
+
+check-git-prerequisites() {
     userName=$(git config --global user.name)
     userEmail=$(git config --global user.email)
 
@@ -14,18 +16,26 @@ function check-git-prerequisites {
         cat << EOF
 
 Prerequisite error:
+    no default account identity.
     no user.name/user.email was specified
 
-    specify necessary git user data by:
+    specify necessary global git user data by:
 
         git config --global user.name "User Name"
         git config --global user.email my@email.com
 
+    or omit --global to set the identity only in this repository:
+
+        git config user.name "User Name"
+        git config user.email my@email.com
+
 EOF
+
+    exit 1
     fi
 }
 
-function check-npm-prerequisites {
+check-npm-prerequisites() {
     exec 3>&2
     exec 2> /dev/null
 
@@ -40,6 +50,7 @@ Prerequisite error:
         npm adduser
 
 EOF
+    exit 1
     fi
 
     exec 2>&3
@@ -63,3 +74,4 @@ case $1 in
         ;;
 esac
 
+exit 0

@@ -8,7 +8,9 @@
 # |
 # |---------------------------------------------------------------------------------------------------------------------
 
-function echo-help {
+source /vagrant/script/bash/common.sh
+
+echo-help() {
     cat << EOF
 
 General flow of a release:
@@ -33,17 +35,19 @@ General flow of a release:
 EOF
 }
 
-function release-project-init {
+release-project-init() {
     release-project
 }
 
-function release-project {
-    version=$(node -p -e "require('/vagrant/package.json').version")
+release-project() {
+    if npm run prereq; then
 
-    git tag -a "v$version" -m "v$version"
-    git push --tags
+        npm run tag
 
-    npm publish
+        git push --tags
+
+        npm publish
+    fi
 }
 
 case $1 in

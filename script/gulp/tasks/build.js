@@ -5,7 +5,6 @@ const use     = require("rekuire"),
       gulp     = require("gulp"),
       remove   = require("del"),
       rename   = require("gulp-rename"),
-      header   = require("gulp-header"),
       sequence = require("gulp-sequence"),
       debug    = require("gulp-debug"),
 

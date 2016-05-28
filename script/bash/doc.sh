@@ -11,8 +11,9 @@
 # |
 # |---------------------------------------------------------------------------------------------------------------------
 
+source /vagrant/script/bash/common.sh
 
-function add-wiki-repo-as-submodule {
+add-wiki-repo-as-submodule() {
 
     # check **Setup – Clone submodule into existing repo** section on
     # https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
@@ -47,7 +48,7 @@ function add-wiki-repo-as-submodule {
     git submodule update
 }
 
-function pull-wiki-submodule-changes {
+pull-wiki-submodule-changes() {
 
     # check **Update the docs Submodule** section on
     # https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
@@ -60,8 +61,8 @@ function pull-wiki-submodule-changes {
     git submodule update
 }
 
-function commit+push-wiki-submodule {
-    name=$(node -p -e "require('/vagrant/package.json').name")
+commit+push-wiki-submodule() {
+    name=$(get-value $(npm run query -- get package name))
 
     # check **Make changes to the docs submodule** section on
     # https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
@@ -73,8 +74,8 @@ function commit+push-wiki-submodule {
     git push
 }
 
-function commit+push-project {
-    name=$(node -p -e "require('/vagrant/package.json').name")
+commit+push-project() {
+    name=$(get-value $(npm run query -- get package name))
 
     # check **Make changes to the docs submodule** section on
     # https://brendancleary.com/2013/03/08/including-a-github-wiki-in-a-repository-as-a-submodule/
@@ -84,7 +85,7 @@ function commit+push-project {
     git push
 }
 
-function wiki-submodule-status {
+wiki-submodule-status() {
     cd /vagrant/doc
     git status
 }

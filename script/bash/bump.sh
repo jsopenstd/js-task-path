@@ -2,22 +2,34 @@
 
 # |---------------------------------------------------------------------------------------------------------------------
 # |
-# | Bump Script
+# | Bump Script (also handles tag, when needed)
 # |
-# |     - **NOTE**: the default case, when calling this bump script via "npm run bump" is bump-patch
+# |     - In order to tag the previous commit during development (e.g.: multiple, consequent patches and fixes)
+# |       without the actual release of the project, use the "tag" feature of this script
 # |
 # |---------------------------------------------------------------------------------------------------------------------
 
-function bump-major {
+source /vagrant/script/bash/common.sh
+
+bump-major() {
     npm run gulp -- bump::major
 }
 
-function bump-minor {
+bump-minor() {
     npm run gulp -- bump::minor
 }
 
-function bump-patch {
+bump-patch() {
     npm run gulp -- bump::patch
+}
+
+tag-project() {
+    version=$(get-value $(npm run query -- get package version))
+
+    if npm run prereq -- git; then
+
+        git tag -a "v$version" -m "v$version"
+    fi
 }
 
 case $1 in
@@ -36,8 +48,8 @@ case $1 in
         bump-patch
         ;;
 
-    # run it via "npm run bump"
-    *)
-        bump-patch
+    # run it via "npm run bump -- tag"
+    tag)
+        tag-project
         ;;
 esac

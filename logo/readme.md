@@ -4,7 +4,7 @@
 
 ## Details
 
-- Software used: [Inkscape](https://inkscape.org)
+- Created with: [Inkscape](https://inkscape.org)
 - Font used: [Open Sans](https://www.google.com/fonts/specimen/Open+Sans)
 
 ## License

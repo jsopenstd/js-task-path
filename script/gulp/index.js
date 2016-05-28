@@ -29,12 +29,12 @@ Paths.addPath("build/watch", Paths.getPath("src") + "/**/*.js");
 Paths.addPath("doc/watch",   Paths.getPath("src") + "/**/*.js");
 
 // load tasks
-use("/tasks/build");
-use("/tasks/test");
-use("/tasks/watch");
-use("/tasks/bump");
-use("/tasks/doc");
-use("/tasks/ci");
+require("./tasks/build");
+require("./tasks/test");
+require("./tasks/watch");
+require("./tasks/bump");
+require("./tasks/doc");
+require("./tasks/ci");
 
 // the default task is left here for quick testing purposes
 gulp.task("default", function() {

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# enter permanent su
+# enter permanent sudo by change user to root
 sudo su
 
 # update before provisioning
@@ -31,21 +31,6 @@ npm install npm-check-updates --global
 npm rm gulp --global
 npm install gulp gulp-cli --global
 
-# prevent "ENOENT: no such file or directory, open..." error during npm install
-cd /vagrant
-rm -rf node_modules
-npm cache clean
-
-# install project dependencies
-if ! npm install; then
-
-	# when running Vagrant under Windows, in case of "EPROTO: protocol error, symlink...",
-	# try install dependencies with "--no-bin-links"
-    if ! npm install --no-bin-links; then
-        echo '"npm install" AND "npm install --no-bin-links" failed, try to resolve it manually'
-    fi
-fi
-
 # add custom content to .bashrc
 cat > /home/vagrant/.bashrc <<- EOM
 
@@ -58,5 +43,28 @@ cat > /home/vagrant/.bashrc <<- EOM
 
 EOM
 
-# update after provisioning
-apt-get update -y
+# exit sudo mode before installing project dependencies
+# to prevent missing and/or damaged source code of dependencies
+# e.g.: "SyntaxError: Unexpected token ILLEGAL" when running gulp with "istanbul"
+su vagrant
+
+# clean-up before first try to prevent
+# "ENOENT: no such file or directory, open..." error during npm install
+cd /vagrant
+rm -rf node_modules
+npm cache clean
+
+# install project dependencies
+if ! npm install; then
+
+    # clean-up before another try
+    cd /vagrant
+    rm -rf node_modules
+    npm cache clean
+
+	# when running Vagrant under Windows, in case of "EPROTO: protocol error, symlink...",
+	# try install dependencies with "--no-bin-links"
+    if ! npm install --no-bin-links; then
+        echo '"npm install" AND "npm install --no-bin-links" failed, try to resolve it manually'
+    fi
+fi
