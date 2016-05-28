@@ -12,3 +12,6 @@ node_modules
 
 # Logs
 /npm-debug.log
+
+# Custom dnvironment data
+.env.yml
