@@ -1,10 +1,12 @@
-# ![js-task-paths][logo]
+# js-task-paths (Paths)
 
 [![Recent Version][npm-badge]][npm-url]
 [![Travis CI - Build Status][travis-badge]][travis-url]
 [![Coveralls - Code Coverage Status][coverage-badge]][coverage-url]
 [![David - Dependencies][dependencies-badge]][dependencies-url]
 [![Gitter - Repository Chat][chat-badge]][chat-url]
+
+# ![js-task-paths][logo]
 
 ## Synopsis
 
