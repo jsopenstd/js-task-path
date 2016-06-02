@@ -25,11 +25,11 @@ check the **[test folder](https://github.com/jsstd/js-task-paths/tree/master/tes
 const paths = require("js-task-paths");
 
 // add general paths
-paths.addPath("dist",        "<root>/dist");
-paths.addPath("src",         "<root>/src");
-paths.addPath("doc",         "<root>/doc");
-paths.addPath("tasks",       "<root>/tasks");
-paths.addPath("tests",       "<root>/tests");
+paths.addPath("dist",  "<root>/dist");
+paths.addPath("src",   "<root>/src");
+paths.addPath("doc",   "<root>/doc");
+paths.addPath("tasks", "<root>/tasks");
+paths.addPath("tests", "<root>/tests");
 
 // use previously given, custom paths via token
 paths.addPath("build-tasks", "<tasks>/build/*.js");
@@ -71,19 +71,19 @@ Check out **function aliases** in order to use this tool efficiently (shorter fu
 ## Issues
 
 If you find any bugs and other issues, check the
-[GSDCG Guide - Issues](https://github.com/openstd/general-software-development-contribution-guide#issues)
+[GSDC Guide - Issues](https://github.com/openstd/general-software-development-contribution-guide#issues)
 section on how to submit issues in a standardized way on
 [the project's issues page](https://github.com/jsstd/js-task-paths/issues).
 
 In case you have any suggestions regarding the project (features, additional capabilities, etc.), check the
-[GSDCG Guide - Suggestions](https://github.com/openstd/general-software-development-contribution-guide#suggestions)
+[GSDC Guide - Suggestions](https://github.com/openstd/general-software-development-contribution-guide#suggestions)
 section on how to submit suggestions in an easy, standardized way on
 [the project's issues page](https://github.com/jsstd/js-task-paths/issues).
 
 ## Contribution
 
 In order to contribute to this project, check the
-[GSDCG Guide](https://github.com/openstd/general-software-development-contribution-guide)
+[GSDC Guide](https://github.com/openstd/general-software-development-contribution-guide)
 for an easy, standardized way on how to contribute to projects.
 
 ## Support
