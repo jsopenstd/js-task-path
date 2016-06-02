@@ -11,14 +11,10 @@
     "test": "npm run g -- test",
     "build": "npm run g -- build",
     "watch": "npm run g -- watch",
+    "doc": "npm run g -- doc",
     "ci": "npm run g -- ci",
     "coveralls": "coveralls < coverage/lcov.info",
-    "query": "script/node/query.js",
-    "doc": "script/bash/doc.sh",
-    "bump": "script/bash/bump.sh",
-    "tag": "npm run bump -- tag",
-    "prereq": "script/bash/prerequisites.sh",
-    "release": "script/bash/release.sh"
+    "release": "script/release/main.py"
   },
   "homepage": "https://github.com/jsstd/js-task-paths#readme",
   "repository": {

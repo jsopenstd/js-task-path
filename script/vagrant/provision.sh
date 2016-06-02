@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# enter permanent sudo by change user to root
+# enter permanent sudo by changing user to root
 sudo su
 
 # update before provisioning
@@ -18,8 +18,16 @@ add-apt-repository -y ppa:git-core/ppa
 apt-get update -y
 apt-get install git -y
 
+# update python 2.7.x
+add-apt-repository -y ppa:fkrull/deadsnakes-python2.7
+apt-get update -y
+apt-get install python2.7 -y
+
+# install pip (python's package manager)
+apt-get install python-pip -y
+
 # install node & update npm
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_6.x | bash -
 apt-get install nodejs -y
 npm install npm --global
 
@@ -35,10 +43,10 @@ npm install gulp gulp-cli --global
 cat > /home/vagrant/.bashrc <<- EOM
 
     # aliases for npm-check-updates
-    alias check-deps="ncu"
-    alias update-deps="ncu -u"
+    alias check-dep="ncu"
+    alias update-dep="ncu -u"
 
-    # navigate to vagrant folder upon login
+    # navigate to vagrant folder (the project's root) upon login
     cd /vagrant
 
 EOM
@@ -48,8 +56,12 @@ EOM
 # e.g.: "SyntaxError: Unexpected token ILLEGAL" when running gulp with "istanbul"
 su vagrant
 
-# clean-up before first try to prevent
-# "ENOENT: no such file or directory, open..." error during npm install
+# install python dependencies
+pip install PyYAML --user
+pip install JMESPath --user
+
+# clean-up before the first try
+# to prevent "ENOENT: no such file or directory, open..." error during npm install
 cd /vagrant
 rm -rf node_modules
 npm cache clean
