@@ -116,12 +116,3 @@ There are multiple options to support the project and the developer and any mean
 
 [chat-badge]:         https://badges.gitter.im/jsstd/js-task-paths.svg
 [chat-url]:           https://gitter.im/jsstd/js-task-paths?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
-
-[development-badge]:  http://img.shields.io/badge/download-DEVELOPMENT-brightgreen.svg
-[development-url]:    https://cdn.rawgit.com/jsstd/js-task-paths/master/src/typeof.js
-
-[production-badge]:   http://img.shields.io/badge/download-PRODUCTION-red.svg
-[production-url]:     https://cdn.rawgit.com/jsstd/js-task-paths/master/dist/typeof.min.js
-
-[repository-badge]:   http://img.shields.io/badge/download-REPOSITORY+DOCUMENTATION-orange.svg
-[repository-url]:     https://cdn.rawgit.com/jsstd/js-task-paths/master/dist/repository.zip
