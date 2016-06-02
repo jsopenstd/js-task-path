@@ -6,7 +6,7 @@
 [![David - Dependencies][dependencies-badge]][dependencies-url]
 [![Gitter - Repository Chat][chat-badge]][chat-url]
 
-# ![js-task-paths][logo]
+![js-task-paths][logo]
 
 ## Synopsis
 
