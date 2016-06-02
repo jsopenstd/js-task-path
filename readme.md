@@ -6,7 +6,7 @@
 [![David - Dependencies][dependencies-badge]][dependencies-url]
 [![Gitter - Repository Chat][chat-badge]][chat-url]
 
-![js-task-paths][logo]
+[![js-task-paths][logo-image]][logo-url]
 
 ## Synopsis
 
@@ -99,7 +99,8 @@ There are multiple options to support the project and the developer and any mean
 
 [MIT](license.md) @ Richard King
 
-[logo]:               https://cdn.rawgit.com/jsstd/js-task-paths/master/logo/logo.png
+[logo-image]:         https://cdn.rawgit.com/jsstd/js-task-paths/master/logo/logo.png
+[logo-url]:           https://github.com/jsstd/js-task-paths/tree/master/logo
 
 [npm-badge]:          https://img.shields.io/npm/v/js-task-paths.svg
 [npm-url]:            https://www.npmjs.com/package/js-task-paths
