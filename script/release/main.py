@@ -6,7 +6,7 @@ from helpers.common import *
 
 # set main configuration values
 _wd = "/vagrant"
-_res = "/vagrant/script/deploy"
+_res = "/vagrant/script/release"
 
 Config.set("working_directory", _wd)
 Config.set("doc_directory", _wd + "/doc")
@@ -22,17 +22,12 @@ os.chdir(Config.get("working_directory"))
 
 # import tasks
 from tasks import bump
+from tasks import check
 from tasks import doc
 from tasks import release
 
-from helpers.tunnels import npm
-from helpers.tunnels import git
-
 #git("status", cwd=Config.get("doc_directory"))
 
-git("--help")
-
-exit()
 
 if Arguments.has_main_argument():
     arg = Arguments.get_main_argument()

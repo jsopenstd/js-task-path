@@ -4,6 +4,7 @@ import shlex
 import subprocess
 import collections
 
+
 class Run:
 
     @classmethod
@@ -18,7 +19,10 @@ class Run:
         kwargs.update(stdout=stdout)
         kwargs.update(stderr=stderr)
 
-        return subprocess.Popen(shlex.split(command), **kwargs)
+        if not isinstance(command, list):
+            command = shlex.split(command)
+
+        return subprocess.Popen(command, **kwargs)
 
     @classmethod
     def call(cls, command, **kwargs):
@@ -32,7 +36,10 @@ class Run:
         kwargs.update(stdout=stdout)
         kwargs.update(stderr=stderr)
 
-        return subprocess.call(shlex.split(command), **kwargs)
+        if not isinstance(command, list):
+            command = shlex.split(command)
+
+        return subprocess.call(command, **kwargs)
 
     @classmethod
     def observe(cls, command, **kwargs):
@@ -46,7 +53,10 @@ class Run:
         kwargs.update(stdout=stdout)
         kwargs.update(stderr=stderr)
 
-        proc = subprocess.Popen(shlex.split(command), **kwargs)
+        if not isinstance(command, list):
+            command = shlex.split(command)
+
+        proc = subprocess.Popen(command, **kwargs)
 
         try:
             _stdin = proc.stdin.read()

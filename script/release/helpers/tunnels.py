@@ -5,6 +5,7 @@ import getpass
 from config import Config
 from run import Run
 from env import Env
+from check import Check
 
 
 def npm(command=None, **kwargs):
@@ -97,8 +98,9 @@ def git(command=None, **kwargs):
         return name is not None and email is not None
 
     elif command == "push":
-        print("tunnel -- git push")
-        pass
+        kwargs.update(shell=True)
+
+        return Run.call(["git push", "--tags"], **kwargs)
 
     else:
         if command is None:
@@ -107,5 +109,5 @@ def git(command=None, **kwargs):
             return Run.call("git {}".format(command), **kwargs)
 
 
-def get_checkables():
-    return [npm, git]
+Check.add_checkable("npm", npm)
+Check.add_checkable("git", git)

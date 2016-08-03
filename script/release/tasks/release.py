@@ -1,10 +1,19 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from helpers.common import *
+
+from tasks import check
+
+__task_name__ = "release"
 
 
 def _release():
     # check prerequisites
+
+    print("check prerequisites")
+    print(Check.get_checkables())
+    print(Check.check_prerequisites())
 
     # bump version
 
@@ -28,16 +37,15 @@ def publish():
     pass
 
 
-def release():
-    print("release")
+def release_case():
+    print(" ■ task-{}\n |".format(__task_name__))
 
-    subs = Arguments.get_sub_arguments()
+    if Arguments.has_sub_arguments():
+        subs = Arguments.get_sub_arguments()
 
-    if "check" in subs:
-        print("check prerequisites")
+        if amongst_of(["major", "minor", "patch"], subs):
+            print("bump")
 
-    elif "major" in subs:
-        print("major")
+    Arguments.handle_case("check")
 
-
-Arguments.add_case("release", release)
+Arguments.add_case(__task_name__, release_case)

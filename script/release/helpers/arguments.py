@@ -36,7 +36,7 @@ class Arguments:
 
     @classmethod
     def has_sub_arguments(cls):
-        if len(cls.get_args()[2:]) > 0:
+        if len(cls.get_sub_arguments()) > 0:
             return True
 
         return False
