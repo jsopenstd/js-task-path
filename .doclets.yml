@@ -1,6 +1,6 @@
-dir: src
-
 packageJson: package.json
+
+dir: src
 
 articles:
   - Overview: readme.md

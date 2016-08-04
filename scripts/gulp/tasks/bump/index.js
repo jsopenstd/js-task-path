@@ -114,6 +114,48 @@ gulp.task(
     }
 );
 
+/*
+ |----------------------------------------------------------------------------------------------------------------------
+ | Bump project tasks
+ |----------------------------------------------------------------------------------------------------------------------
+ */
+
+gulp.task(
+    'tasks/bump-project-major',
+    function(cb) {
+        sequence(
+            'tasks/bump.set-bump-major',
+            'tasks/bump.package_json'
+        )(cb);
+    }
+);
+
+gulp.task(
+    'tasks/bump-project-minor',
+    function(cb) {
+        sequence(
+            'tasks/bump.set-bump-minor',
+            'tasks/bump.package_json'
+        )(cb);
+    }
+);
+
+gulp.task(
+    'tasks/bump-project-patch',
+    function(cb) {
+        sequence(
+            'tasks/bump.set-bump-patch',
+            'tasks/bump.package_json'
+        )(cb);
+    }
+);
+
+/*
+ |----------------------------------------------------------------------------------------------------------------------
+ | Bump whole package tasks
+ |----------------------------------------------------------------------------------------------------------------------
+ */
+
 gulp.task(
     'tasks/bump-major',
     function(cb) {

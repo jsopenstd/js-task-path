@@ -164,7 +164,23 @@ def npm_set_prerequisites(npm_adduser_path, json_data):
     exec_command("{} {} {} {}".format(npm_adduser_path, username, password, email))
 
 
-def bump_files(bump_type):
+def bump_project(bump_type):
+    bump = "tasks/bump-project-{}"
+
+    if (bump_type == "major" or
+        bump_type == "minor" or
+        bump_type == "patch"):
+
+        bump = bump.format(bump_type)
+
+    else:
+        # "patch" is the default bump_type
+        bump = bump.format("patch")
+
+    run_gulp(bump)
+
+
+def bump_project_files(bump_type):
     bump = "tasks/bump-{}"
 
     if (bump_type == "major" or
@@ -230,7 +246,7 @@ if len(args) > 0:
         run_gulp("tasks/test")
 
     elif main_task == "bump":
-        bump_files(sub_task)
+        bump_project(sub_task)
 
     elif main_task == "build":
         run_gulp("tasks/build")
@@ -256,7 +272,7 @@ if len(args) > 0:
             npm_set_prerequisites(npm_adduser_sh, data)
 
         # bump file versions according to sub_task
-        bump_files(sub_task)
+        bump_project_files(sub_task)
 
         # build files
         run_gulp("tasks/build")
