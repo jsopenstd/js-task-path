@@ -1,12 +1,12 @@
-# js-task-paths (Paths)
+# js-task-path
 
 [![Recent Version][npm-badge]][npm-url]
 [![Travis CI - Build Status][travis-badge]][travis-url]
-[![Coveralls - Code Coverage Status][coverage-badge]][coverage-url]
-[![David - Dependencies][dependencies-badge]][dependencies-url]
+[![Coveralls - Code Coverage Status][cov-badge]][cov-url]
+[![David - Dependencies][dep-badge]][dep-url]
+[![David - DevDependencies][dev-dep-badge]][dev-dep-url]
+[![Doclets][doclets-badge]][doclets-url]
 [![Gitter - Repository Chat][chat-badge]][chat-url]
-
-[![js-task-paths][logo-image]][logo-url]
 
 ## Synopsis
 
@@ -15,16 +15,16 @@ A utility singleton to help manage task-related paths more easily throughout the
 ## Install
 
 ```
-npm install js-task-paths
+npm install js-task-path
 ```
 
 ## Usage
 
 For additional examples,
-check the **[test folder](https://github.com/jsstd/js-task-paths/tree/master/test)**
+check the **[test folder](https://github.com/jsstd/js-task-path/tree/master/test)**
 
 ```javascript
-const paths = require("js-task-paths");
+const paths = require("js-task-path");
 
 // add general paths
 paths.addPath("dist",  "<root>/dist");
@@ -66,21 +66,27 @@ gulp.task("build::copy-source", function() {
 
 ## Documentation
 
-The API documentation can be found on the [repository's wiki page](https://github.com/jsstd/js-task-paths/wiki/paths).
+Check the source 
+[here](https://github.com/jsopenstd/js-task-path/blob/master/src/js-task-path.js)
+since it's well structured and documented. Also you can find the rendered jsDoc documentation on 
+[Doclets.io](https://doclets.io/jsopenstd/js-task-path/master). 
 
-Check out **function aliases** in order to use this tool efficiently (shorter function names => less typing).
+Also, check the [unit tests](https://github.com/jsopenstd/js-task-path/blob/master/tests/tests.js) 
+in order to grasp the full-fledged capabilities.
+
+Have fun! ;)
 
 ## Issues
 
 If you find any bugs and other issues, check the
 [GSDC Guide - Issues](https://github.com/openstd/general-software-development-contribution-guide#issues)
 section on how to submit issues in a standardized way on
-[the project's issues page](https://github.com/jsstd/js-task-paths/issues).
+[the project's issues page](https://github.com/jsopenstd/js-task-path/issues).
 
 In case you have any suggestions regarding the project (features, additional capabilities, etc.), check the
 [GSDC Guide - Suggestions](https://github.com/openstd/general-software-development-contribution-guide#suggestions)
 section on how to submit suggestions in an easy, standardized way on
-[the project's issues page](https://github.com/jsstd/js-task-paths/issues).
+[the project's issues page](https://github.com/jsopenstd/js-task-path/issues).
 
 ## Contribution
 
@@ -91,28 +97,35 @@ for an easy, standardized way on how to contribute to projects.
 ## Support
 
 If you **by any means** find this project useful,
-[consider supporting the project](http://richrdkng.github.io/support).
+[consider supporting the organization](https://github.com/jsopenstd/jsopenstd/blob/master/support.md).
 
-There are multiple options to support the project and the developer and any means of support is beneficial and helpful.
+There are multiple options to support the project and the developers.
+Any means of support is beneficial and helpful.
 
 ## License
 
 [MIT](license.md) @ Richard King
 
-[logo-image]:         https://cdn.rawgit.com/jsstd/js-task-paths/master/logo/logo.png
-[logo-url]:           https://github.com/jsstd/js-task-paths/tree/master/logo
+[npm-badge]:     https://img.shields.io/npm/v/js-task-path.svg
+[npm-url]:       https://www.npmjs.com/package/js-task-path
 
-[npm-badge]:          https://img.shields.io/npm/v/js-task-paths.svg
-[npm-url]:            https://www.npmjs.com/package/js-task-paths
+[travis-badge]:  https://travis-ci.org/jsopenstd/js-task-path.svg?branch=master
+[travis-url]:    https://travis-ci.org/jsopenstd/js-task-path
 
-[travis-badge]:       https://travis-ci.org/jsstd/js-task-paths.svg?branch=master
-[travis-url]:         https://travis-ci.org/jsstd/js-task-paths
+[cov-badge]:     https://coveralls.io/repos/github/jsopenstd/js-task-path/badge.svg?branch=master
+[cov-url]:       https://coveralls.io/github/jsopenstd/js-task-path
 
-[coverage-badge]:     https://coveralls.io/repos/github/jsstd/js-task-paths/badge.svg?branch=master
-[coverage-url]:       https://coveralls.io/github/jsstd/js-task-paths
+[dep-badge]:     https://david-dm.org/jsopenstd/js-task-path.svg
+[dep-url]:       https://david-dm.org/jsopenstd/js-task-path
 
-[dependencies-badge]: https://david-dm.org/jsstd/js-task-paths.svg
-[dependencies-url]:   https://david-dm.org/jsstd/js-task-paths
+[dev-dep-badge]: https://david-dm.org/jsopenstd/js-task-path/dev-status.svg
+[dev-dep-url]:   https://david-dm.org/jsopenstd/js-task-path#info=devDependencies
 
-[chat-badge]:         https://badges.gitter.im/jsstd/js-task-paths.svg
-[chat-url]:           https://gitter.im/jsstd/js-task-paths?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+[doclets-badge]: https://img.shields.io/badge/style-on_doclets-brightgreen.svg?style=flat-square&label=docs
+[doclets-url]:   https://doclets.io/jsopenstd/js-task-path/master   
+
+[chat-badge]:    https://badges.gitter.im/jsopenstd/js-task-path.svg
+[chat-url]:      https://gitter.im/jsopenstd/js-task-path?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+
+[partial-link]:  https://github.com/jsopenstd/jsopenstd/blob/master/readme.md#partial 
+[umd-link]:      https://github.com/jsopenstd/jsopenstd/blob/master/readme.md#umd
