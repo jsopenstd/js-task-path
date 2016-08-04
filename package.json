@@ -1,59 +1,60 @@
 {
-  "name": "js-task-paths",
+  "name": "js-task-path",
   "version": "1.0.3",
   "description": "A utility singleton to help manage task-related paths more easily throughout the whole project.",
-  "author": "Richard King <richrdkng@gmail.com> (https://github.com/richrdkng)",
+  "main": "dist/js-task-path.js",
   "license": "MIT",
-  "main": "dist/paths.js",
-  "scripts": {
-    "g": "gulp --gulpfile script/gulp/index.js",
-    "gulp": "npm run g",
-    "test": "npm run g -- test",
-    "build": "npm run g -- build",
-    "watch": "npm run g -- watch",
-    "doc": "npm run g -- doc",
-    "ci": "npm run g -- ci",
-    "coveralls": "coveralls < coverage/lcov.info",
-    "release": "script/release/main.py"
-  },
-  "homepage": "https://github.com/jsstd/js-task-paths#readme",
+  "homepage": "https://github.com/jsopenstd/js-task-path.js#readme",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jsstd/js-task-paths.git"
+    "url": "git://github.com/jsopenstd/js-task-path.js.git"
   },
   "bugs": {
-    "url": "https://github.com/jsstd/js-task-paths/issues"
+    "url": "https://github.com/jsopenstd/js-task-path.js/issues"
+  },
+  "author": {
+    "name": "Richard King",
+    "email": "richrdkng@gmail.com",
+    "url": "https://github.com/richrdkng"
+  },
+  "scripts": {
+    "g": "gulp --gulpfile scripts/gulp/main.js",
+    "gulp": "npm run g",
+    "build": "npm run g -- tasks/build",
+    "test": "npm run g -- tasks/test",
+    "ci": "npm run g -- tasks/ci",
+    "coveralls": "coveralls < cov/lcov.info"
   },
   "dependencies": {
-    "app-root-path": "^1.2.1"
+    "app-root-path": "^1.2.1",
+    "js-lang-exception": "^1.0.2",
+    "js-partial-foreach": "^1.0.5"
   },
   "devDependencies": {
     "assert": "^1.3.0",
     "coveralls": "^2.11.9",
     "del": "^2.2.0",
-    "dmd-plugin-example": "^0.1.0",
-    "extend": "^3.0.0",
-    "graceful-fs": "^4.1.3",
     "gulp": "^3.9.1",
     "gulp-debug": "^2.1.2",
-    "gulp-istanbul": "^0.10.4",
-    "gulp-jsdoc-to-markdown": "^1.2.2",
-    "gulp-mocha": "^2.2.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-header": "^1.8.7",
+    "gulp-istanbul": "^1.0.0",
+    "gulp-mocha": "^3.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sequence": "^0.4.5",
-    "json-query": "^2.0.2",
-    "jsonfile": "^2.3.0",
-    "mkdirp": "^0.5.1",
-    "rekuire": "^0.1.9",
-    "semver": "^5.1.0",
-    "yamljs": "^0.2.7"
+    "gulp-uglify": "^2.0.0",
+    "merge2": "^1.0.2",
+    "semver": "^5.3.0"
   },
   "keywords": [
-    "paths",
+    "js",
     "task",
-    "util",
-    "utility",
-    "jsstd",
-    "std"
+    "path",
+    "paths",
+    "jsopenstd",
+    "amd",
+    "commonjs",
+    "browser",
+    "umd"
   ]
 }

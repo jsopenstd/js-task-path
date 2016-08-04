@@ -1,22 +1,17 @@
-# IntelliJ IDEA project folder
-.idea
+# IntelliJ project directory
+.idea/
 
-# Vagrant VM folder
-.vagrant
+# Vagrant VM directory
+.vagrant/
 
-# Code coverage reports
-coverage
+# Node project dependencies
+/node_modules/
 
-# Node dependencies
-node_modules
+# Code coverage report
+/cov/
 
 # Logs
 /npm-debug.log
 
-# Custom environment data
-.env.yml
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+# Required data for publishing project
+/.publish.json
