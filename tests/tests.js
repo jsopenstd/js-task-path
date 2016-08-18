@@ -1,8 +1,8 @@
 'use strict';
 
-var assert = require('assert'),
-    vars   = require('./variables'),
-    path   = require(vars.path);
+const assert = require('assert'),
+      vars   = require('./variables'),
+      path   = require(vars.path);
 
 var root;
 

@@ -16,19 +16,19 @@
  * @license [MIT]{@link https://github.com/jsopenstd/js-partial-foreach/blob/master/license.md}
  */
 
-const path    = require(`path`),
-      appRoot = require(`app-root-path`),
-      extend  = require(`extend`),
-      foreach = require(`js-partial-foreach`);
+const path    = require('path'),
+      appRoot = require('app-root-path'),
+      extend  = require('extend'),
+      foreach = require('js-partial-foreach');
 /*
  |----------------------------------------------------------------------------------------------------------------------
  | Exceptions
  |----------------------------------------------------------------------------------------------------------------------
  */
-const InvalidGlobException     = require(`./exception/InvalidGlobException`),
-      InvalidPathNameException = require(`./exception/InvalidPathNameException`),
-      PathNotFoundException    = require(`./exception/PathNotFoundException`),
-      TypeException            = require(`./exception/TypeException`);
+const InvalidGlobException     = require('./exception/InvalidGlobException'),
+      InvalidPathNameException = require('./exception/InvalidPathNameException'),
+      PathNotFoundException    = require('./exception/PathNotFoundException'),
+      TypeException            = require('./exception/TypeException');
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
@@ -97,9 +97,9 @@ const self = class Path {
          * The root of the project determined when the Paths class was instantiated.
          *
          * @private {string}
-         * @default ``
+         * @default ''
          */
-        this._root  = ``;
+        this._root = '';
 
         /**
          * The storage object for the named glob paths.
@@ -470,7 +470,7 @@ const self = class Path {
      * @returns {Object} Returns the removed named glob paths.
      *                   For example: { `src` : `/root/src` }
      */
-    removeAll(removeRoot = false) {
+    removeAll(removeRoot) {
         const removedGlobs = this.getAll();
 
         this._paths = {};

@@ -1,6 +1,6 @@
 'use strict';
 
-const Exception = require(`js-lang-exception`);
+const Exception = require('js-lang-exception');
 
 const ID = 1001;
 
