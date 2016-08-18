@@ -4,13 +4,13 @@
   "description": "A utility singleton to help manage task-related paths more easily throughout the whole project.",
   "main": "dist/js-task-path.js",
   "license": "MIT",
-  "homepage": "https://github.com/jsopenstd/js-task-path.js#readme",
+  "homepage": "https://github.com/jsopenstd/js-task-path#readme",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jsopenstd/js-task-path.js.git"
+    "url": "git://github.com/jsopenstd/js-task-path.git"
   },
   "bugs": {
-    "url": "https://github.com/jsopenstd/js-task-path.js/issues"
+    "url": "https://github.com/jsopenstd/js-task-path/issues"
   },
   "author": {
     "name": "Richard King",
