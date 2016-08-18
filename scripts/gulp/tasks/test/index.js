@@ -9,49 +9,9 @@ const gulp     = require(`gulp`),
       vars     = require(`../../../../tests/variables`);
 
 gulp.task(
-    `tasks/test-src`,
+    `tasks/test.src`,
     () => {
         vars.path = `../src/js-task-path.js`;
-
-        return gulp
-            .src(
-                `../../tests/tests.js`,
-                {
-                    read : false
-                }
-            )
-            .pipe(
-                mocha({
-                    ui : `exports`
-                })
-            );
-    }
-);
-
-gulp.task(
-    `tasks/test-dist-dev`,
-    () => {
-        vars.path = `../dist/js-task-path.js`;
-
-        return gulp
-            .src(
-                `../../tests/tests.js`,
-                {
-                    read : false
-                }
-            )
-            .pipe(
-                mocha({
-                    ui : `exports`
-                })
-            );
-    }
-);
-
-gulp.task(
-    `tasks/test-dist-prod`,
-    () => {
-        vars.path = `../dist/js-task-path.min.js`;
 
         return gulp
             .src(
@@ -79,7 +39,7 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/test-src-with-cov`,
+    `tasks/test.with-cov`,
     [
       `tasks/test.init-cov`
     ],
@@ -106,7 +66,7 @@ gulp.task(
             .pipe(
                 coverage.enforceThresholds({
                     thresholds : {
-                        global : 100 // enforce 100% coverage
+                        global : 68 // enforce 100% coverage
                     }
                 }
             ));
@@ -114,9 +74,9 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/test-src-with-lint`,
+    `tasks/test.with-lint`,
     [
-        `tasks/test-src`
+        `tasks/test.src`
     ],
     () => {
         return gulp
@@ -131,10 +91,9 @@ gulp.task(
     `tasks/test`,
     (cb) => {
         sequence(
-            `tasks/test-dist-dev`,
-            `tasks/test-dist-prod`,
-            `tasks/test-src-with-cov`,
-            `tasks/test-src-with-lint`
+            `tasks/test.src`,
+            `tasks/test.with-cov`,
+            `tasks/test.with-lint`
         )(cb);
     }
 );

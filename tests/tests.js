@@ -145,10 +145,10 @@ module.exports = {
             },
 
             'exceptions' : () => {
-                const InvalidGlobException     = require('../src/exception/InvalidGlobException'),
-                      InvalidPathNameException = require('../src/exception/InvalidPathNameException'),
-                      PathNotFoundException    = require('../src/exception/PathNotFoundException'),
-                      TypeException            = require('../src/exception/TypeException');
+                const InvalidGlobException     = path.exception.InvalidGlobException,
+                      InvalidPathNameException = path.exception.InvalidPathNameException,
+                      PathNotFoundException    = path.exception.PathNotFoundException,
+                      TypeException            = path.exception.TypeException;
 
                 // without parameter
                 try {

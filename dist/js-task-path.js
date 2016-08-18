@@ -16,10 +16,12 @@
 
 `use strict`;
 
-const path    = require(`path`),
-      appRoot = require(`app-root-path`),
-      extend  = require(`extend`),
-      foreach = require(`js-partial-foreach`);
+const path      = require(`path`),
+      appRoot   = require(`app-root-path`),
+      extend    = require(`extend`),
+      foreach   = require(`js-partial-foreach`),
+      Exception = require(`js-lang-exception`);
+
 /*
  |----------------------------------------------------------------------------------------------------------------------
  | Exceptions
@@ -35,34 +37,37 @@ const InvalidGlobException     = require(`./exception/InvalidGlobException`),
  | Helper Functions
  |----------------------------------------------------------------------------------------------------------------------
  */
-const isPresent = (object) => {
-    return typeof object !== `undefined` &&
-           object !== null;
-};
+function isPresent(object) {
+    return typeof object !== `undefined`
+        && object !== null;
+}
 
-const isString = (object) => {
+function isString(object) {
     return typeof object === `string`;
-};
+}
 
-const isEmptyString = (object) => {
-    return typeof object === `string` &&
-           (
-               object.length === 0 ||
-               /^\s+$/.test(object) === true
-           );
-};
+function isEmptyString(object) {
+    return typeof object === `string`
+        && (
+            object.length === 0
+            || /^\s+$/.test(object) === true
+        );
+}
 
-const isArray = (object) => {
+function isArray(object) {
     return Object.prototype.toString.call(object) === `[object Array]`;
-};
+}
 
-const isObject = (object) => {
+function isObject(object) {
     return Object.prototype.toString.call(object) === `[object Object]`;
-};
+}
 
-const arrayMerge = (array, ...rest) => {
-    return array.concat(...rest);
-};
+function arrayMerge(array) {
+    return array.concat.apply(
+        array,
+        Array.prototype.slice.call(arguments, 1)
+    );
+}
 
 const self = class Path {
 
@@ -88,9 +93,9 @@ const self = class Path {
              * @type {RegExp}
              * @default \s*(<[\s\-\\\/\.\*\w]+>)\s* /i
              */
-            nameTokenPattern : /\s*(<[\s\-\\\/\.\*\w]+>)\s*/i,
+            nameTokenPattern : /\s*(<[\s\-\\\/\.\*\w]+>)\s*/i
         };
-    }
+    };
 
     constructor() {
         /**
@@ -163,7 +168,7 @@ const self = class Path {
             throw new TypeException(options);
         }
 
-        const processedGlob = this._processGlob(glob, options);
+        let processedGlob = this._processGlob(glob, options);
 
         this._paths[name] = processedGlob;
 
@@ -180,7 +185,7 @@ const self = class Path {
      *
      * @param {string} name - The name of the glob path.
      *
-     * @returns {boolean} Whether has a path under this name.
+     * @returns {boolean}
      */
     hasPath(name) {
 
@@ -204,7 +209,7 @@ const self = class Path {
      * @param {string} name - The name of the glob path.
      * @param {string} glob - The glob path.
 
-     * @returns {boolean} Whether the path with a name contains the glob.
+     * @returns {boolean}
      */
     containsPath(name, glob) {
 
@@ -234,9 +239,9 @@ const self = class Path {
 
                 return contains;
 
+            } else {
+                return filteredGlob === storedGlob;
             }
-
-            return filteredGlob === storedGlob;
         }
 
         return false;
@@ -390,7 +395,7 @@ const self = class Path {
                 }
 
                 processedGlob.forEach((processedGlobEntry) => {
-                    const index = storedGlob.indexOf(processedGlobEntry);
+                    let index = storedGlob.indexOf(processedGlobEntry);
 
                     if (index > -1) {
                         storedGlob.splice(index, 1);
@@ -470,8 +475,11 @@ const self = class Path {
      * @returns {Object} Returns the removed named glob paths.
      *                   For example: { `src` : `/root/src` }
      */
-    removeAll(removeRoot = false) {
-        const removedGlobs = this.getAll();
+    removeAll(removeRoot) {
+
+        removeRoot = removeRoot === true ? removeRoot : false;
+
+        let removedGlobs = this.getAll();
 
         this._paths = {};
 
@@ -501,20 +509,21 @@ const self = class Path {
     _resolveNameTokens(glob) {
         return glob.replace(self.DEFAULTS.nameTokenPattern, (match) => {
 
-            const name = match.substr(1, match.length - 2);
+            let name = match.substr(1, match.length - 2),
+                path;
 
             if ( ! this.hasPath(name)) {
                 throw new PathNotFoundException(name, glob);
             }
 
-            let p = this.getPath(name);
+            path = this.getPath(name);
 
-            // if the p consists of multiple globs in an array, only the 1st glob in the array will be used
-            if (isArray(p)) {
-                p = p[0];
+            // if the path consists of multiple globs in an array, only the 1st glob in the array will be used
+            if (isArray(path)) {
+                path = path[0];
             }
 
-            return p;
+            return path;
         });
     }
 
@@ -531,11 +540,11 @@ const self = class Path {
      */
     _filterGlob(glob, options) {
 
-        const opt = extend(true, {}, self.DEFAULTS, options);
+        options = extend(true, {}, self.DEFAULTS, options);
 
         let filteredGlob = this._resolveNameTokens(glob);
 
-        if (opt.autoNormalizePath) {
+        if (options.autoNormalizePath) {
             filteredGlob = path.normalize(filteredGlob);
         }
 
@@ -562,6 +571,7 @@ const self = class Path {
             foreach(
                 glob,
                 (entry) => {
+                    console.log(`entry`, entry);
                     filteredGlob.push(this._filterGlob(entry, options));
                 }
             );
@@ -586,7 +596,7 @@ extend(
             InvalidPathNameException,
             PathNotFoundException,
             TypeException,
-        },
+        }
     }
 );
 
