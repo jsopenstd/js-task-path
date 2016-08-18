@@ -4,25 +4,26 @@
   "description": "A utility singleton to help manage task-related paths more easily throughout the whole project.",
   "author": "Richard King <richrdkng@gmail.com> (https://github.com/richrdkng)",
   "license": "MIT",
-  "main": "dist/paths.js",
-  "scripts": {
-    "g": "gulp --gulpfile script/gulp/index.js",
-    "gulp": "npm run g",
-    "test": "npm run g -- test",
-    "build": "npm run g -- build",
-    "watch": "npm run g -- watch",
-    "doc": "npm run g -- doc",
-    "ci": "npm run g -- ci",
-    "coveralls": "coveralls < coverage/lcov.info",
-    "release": "script/release/main.py"
-  },
-  "homepage": "https://github.com/jsstd/js-task-paths#readme",
+  "homepage": "https://github.com/jsopenstd/js-task-path#readme",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jsstd/js-task-paths.git"
+    "url": "git://github.com/jsopenstd/js-task-path.git"
   },
   "bugs": {
-    "url": "https://github.com/jsstd/js-task-paths/issues"
+    "url": "https://github.com/jsopenstd/js-task-path/issues"
+  },
+  "author": {
+    "name": "Richard King",
+    "email": "richrdkng@gmail.com",
+    "url": "https://github.com/richrdkng"
+  },
+  "scripts": {
+    "g": "gulp --gulpfile scripts/gulp/main.js",
+    "gulp": "npm run g",
+    "build": "npm run g -- tasks/build",
+    "test": "npm run g -- tasks/test",
+    "ci": "npm run g -- tasks/ci",
+    "coveralls": "coveralls < cov/lcov.info"
   },
   "dependencies": {
     "app-root-path": "^1.2.1"
