@@ -1,12 +1,21 @@
 'use strict';
 
-const Exception = require('js-lang-exception');
+const Exception = require(`js-lang-exception`);
+
+const ID = 1004;
 
 module.exports = class TypeException extends Exception {
 
-    constructor(options) {
-        let type = typeof options;
+    /**
+     * @return {number} Exception ID
+     */
+    static get ID() {
+        return ID;
+    }
 
-        super(`The optional argument 'options' must be an object, got:'${type}'`, 1000);
+    constructor(options) {
+        const type = typeof options;
+
+        super(`The optional argument "options" must be an object, got:"${type}"`, ID);
     }
 };

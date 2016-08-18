@@ -212,6 +212,12 @@ module.exports = {
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
+
+                try {
+                    path.getPath('q3xg5487kdd7');
+                } catch (exception) {
+                    assert(exception instanceof PathNotFoundException);
+                }
             }
         },
         'edge cases' : {

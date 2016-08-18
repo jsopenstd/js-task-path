@@ -14,7 +14,7 @@
  * @license [MIT]{@link https://github.com/jsopenstd/js-partial-foreach/blob/master/license.md}
  */
 
-`use strict`;
+'use strict';
 
 const path    = require(`path`),
       appRoot = require(`app-root-path`),

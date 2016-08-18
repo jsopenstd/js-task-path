@@ -1,4 +1,4 @@
-`use strict`;
+'use strict';
 
 const gulp     = require(`gulp`),
       mocha    = require(`gulp-mocha`),
@@ -32,7 +32,7 @@ gulp.task(
     `tasks/test.init-cov`,
     () => {
         return gulp
-            .src(`../../src/js-task-path.js`)
+            .src(`../../src/**/*.js`)
             .pipe(coverage())
             .pipe(coverage.hookRequire());
     }
@@ -80,7 +80,7 @@ gulp.task(
     ],
     () => {
         return gulp
-            .src(`../../src/js-task-path.js`)
+            .src(`../../src/**/*.js`)
             .pipe(lint())
             .pipe(lint.format())
             .pipe(lint.failAfterError());
