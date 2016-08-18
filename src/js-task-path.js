@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  |----------------------------------------------------------------------------------------------------------------------
  | A utility singleton to help manage task-related paths more easily throughout the whole project.
@@ -13,8 +15,6 @@
  * @author Richard King <richrdkng@gmail.com> [GitHub]{@link https://github.com/richrdkng}
  * @license [MIT]{@link https://github.com/jsopenstd/js-partial-foreach/blob/master/license.md}
  */
-
-'use strict';
 
 const path    = require(`path`),
       appRoot = require(`app-root-path`),
