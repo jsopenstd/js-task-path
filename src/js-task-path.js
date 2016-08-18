@@ -24,6 +24,16 @@ const path      = require('path'),
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
+ | Exceptions
+ |----------------------------------------------------------------------------------------------------------------------
+ */
+const InvalidGlobException     = require('./exception/InvalidGlobException'),
+      InvalidPathNameException = require('./exception/InvalidPathNameException'),
+      PathNotFoundException    = require('./exception/PathNotFoundException'),
+      TypeException            = require('./exception/TypeException');
+
+/*
+ |----------------------------------------------------------------------------------------------------------------------
  | Helper Functions
  |----------------------------------------------------------------------------------------------------------------------
  */
@@ -60,6 +70,7 @@ function arrayMerge(array) {
 }
 
 const self = class Path {
+
     /**
      * The default values of options, when adding paths.
      *
@@ -121,7 +132,7 @@ const self = class Path {
     getPath(name) {
 
         if ( ! this.hasPath(name) ) {
-            throw new Exception('The given name cannot be found: \'' + name +'\'');
+            throw new PathNotFoundException(name);
         }
 
         return this._paths[name];
@@ -146,17 +157,15 @@ const self = class Path {
     setPath(name, glob, options) {
 
         if ( ! isString(name) || isEmptyString(name) ) {
-            throw new Exception('The name must be a non-empty string, got:\'' + name + '\'.');
+            throw new InvalidPathNameException(name);
         }
 
         if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new Exception('The glob most be a string or an array, got: \'' + typeof glob + '\'.');
+            throw new InvalidGlobException(glob);
         }
 
         if ( isPresent(options) && ! isObject(options) ) {
-            throw new Exception(
-                'The optional argument \'options\' must be an object, got:\'' + typeof options + '\'.'
-            );
+            throw new TypeException(options);
         }
 
         let processedGlob = this._processGlob(glob, options);
@@ -181,7 +190,7 @@ const self = class Path {
     hasPath(name) {
 
         if ( ! isString(name) || isEmptyString(name) ) {
-            throw new Exception('The name must be a non-empty string, got:\'' + name + '\'.');
+            throw new InvalidPathNameException(name);
         }
 
         return name in this._paths;
@@ -205,11 +214,11 @@ const self = class Path {
     containsPath(name, glob) {
 
         if ( ! isString(name) || isEmptyString(name) ) {
-            throw new Exception('The name must be a non-empty string, got:\'' + name + '\'.');
+            throw new InvalidPathNameException(name);
         }
 
         if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new Exception('The glob most be a string or an array, got: \'' + typeof glob + '\'.');
+            throw new InvalidGlobException(glob);
         }
 
         let filteredGlob,
@@ -254,9 +263,8 @@ const self = class Path {
      *                              the return value will be null;
      */
     removePath(name) {
-
         if ( ! isString(name) || isEmptyString(name) ) {
-            throw new Exception('The name must be a non-empty string, got:\'' + name + '\'.');
+            throw new InvalidPathNameException(name);
         }
 
         let removedGlob = null;
@@ -290,17 +298,15 @@ const self = class Path {
     appendToPath(name, glob, options) {
 
         if ( ! isString(name) || isEmptyString(name) ) {
-            throw new Exception('The name must be a non-empty string, got:\'' + name + '\'.');
+            throw new InvalidPathNameException(name);
         }
 
         if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new Exception('The glob most be a string or an array, got: \'' + typeof glob + '\'.');
+            throw new InvalidGlobException(glob);
         }
 
         if ( isPresent(options) && ! isObject(options) ) {
-            throw new Exception(
-                'The optional argument \'options\' must be an object, got:\'' + typeof options + '\'.'
-            );
+            throw new TypeException(options);
         }
 
         let filteredGlob;
@@ -359,11 +365,11 @@ const self = class Path {
     removeFromPath(name, glob) {
 
         if ( ! isString(name) || isEmptyString(name) ) {
-            throw new Exception('The name must be a non-empty string, got:\'' + name + '\'.');
+            throw new InvalidPathNameException(name);
         }
 
         if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new Exception('The glob most be a string or an array, got: \'' + typeof glob + '\'.');
+            throw new InvalidGlobException(glob);
         }
 
         let removedGlob = null;
@@ -507,7 +513,7 @@ const self = class Path {
                 path;
 
             if ( ! this.hasPath(name)) {
-                throw new Exception('Path name :\'' + name + '\' cannot be found, given glob: \'' + glob + '\'.');
+                throw new PathNotFoundException(name, glob);
             }
 
             path = this.getPath(name);

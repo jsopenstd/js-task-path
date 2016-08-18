@@ -8,17 +8,17 @@ var root;
 
 module.exports = {
     'js-task-paths' : {
-        'before' : function() {
+        'before' : () => {
             root = path.getRoot();
         },
-        'beforeEach' : function() {
+        'beforeEach' : () => {
             path.removeAll();
         },
         'default cases' : {
-            'root check' : function() {
+            'root check' : () => {
                 assert(path.getRoot() === root);
             },
-            'set paths' : function() {
+            'set paths' : () => {
                 assert(path.setPath('dist', '<root>/dist') === root + '/dist');
                 assert(path.setPath('bin',  '<root>/bin')  === root + '/bin');
                 assert(path.setPath('lib',  '<root>/lib')  === root + '/lib');
@@ -33,7 +33,7 @@ module.exports = {
                     }
                 );
             },
-            'remove paths' : function() {
+            'remove paths' : () => {
                 assert(path.setPath('src',   '<root>/src')   === root + '/src');
                 assert(path.setPath('tests', '<root>/tests') === root + '/tests');
                 assert(path.setPath('doc',   '<root>/doc')   === root + '/doc');
@@ -71,7 +71,7 @@ module.exports = {
             }
         },
         'extended cases' : {
-            'appendTo paths' : function() {
+            'appendTo paths' : () => {
                 path.setPath('src', '<root>/src');
 
                 assert.deepStrictEqual(
@@ -103,7 +103,7 @@ module.exports = {
                     ]
                 );
             },
-            'removeFrom paths' : function() {
+            'removeFrom paths' : () => {
                 path.setPath('src', '<root>/src');
 
                 assert.deepStrictEqual(
@@ -142,10 +142,80 @@ module.exports = {
                         ]
                     }
                 );
+            },
+
+            'exceptions' : () => {
+                const InvalidGlobException     = require('../src/exception/InvalidGlobException'),
+                      InvalidPathNameException = require('../src/exception/InvalidPathNameException'),
+                      PathNotFoundException    = require('../src/exception/PathNotFoundException'),
+                      TypeException            = require('../src/exception/TypeException');
+
+                // without parameter
+                try {
+                    path.getPath();
+                } catch (exception) {
+                    assert(exception instanceof InvalidPathNameException);
+                }
+
+                // empty string
+                try {
+                    path.getPath('');
+                } catch (exception) {
+                    assert(exception instanceof InvalidPathNameException);
+                }
+
+                // invalid name
+                try {
+                    path.setPath();
+                } catch (exception) {
+                    assert(exception instanceof InvalidPathNameException);
+                }
+
+                // invalid name
+                try {
+                    path.setPath('');
+                } catch (exception) {
+                    assert(exception instanceof InvalidPathNameException);
+                }
+
+                // invalid glob
+                try {
+                    path.setPath('path-name');
+                } catch (exception) {
+                    assert(exception instanceof InvalidGlobException);
+                }
+
+                // invalid glob
+                try {
+                    path.setPath('path-name', {});
+                } catch (exception) {
+                    assert(exception instanceof InvalidGlobException);
+                }
+
+                // invalid options
+                try {
+                    path.setPath('path-name', [], []);
+                } catch (exception) {
+                    assert(exception instanceof TypeException);
+                }
+
+                // invalid name
+                try {
+                    path.getPath();
+                } catch (exception) {
+                    assert(exception instanceof InvalidPathNameException);
+                }
+
+                // invalid name
+                try {
+                    path.getPath('');
+                } catch (exception) {
+                    assert(exception instanceof InvalidPathNameException);
+                }
             }
         },
         'edge cases' : {
-            'overwrite root' : function() {
+            'overwrite root' : () => {
                 assert(path.getRoot() === root);
 
                 assert(path.setRoot('/differentRoot') === '/differentRoot');
@@ -172,7 +242,7 @@ module.exports = {
                     }
                 );
             },
-            'remove all paths' : function() {
+            'remove all paths' : () => {
                 path.setPath('A', 'A');
                 path.setPath('B', 'B');
                 path.setPath('C', 'C');

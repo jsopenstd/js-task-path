@@ -11,6 +11,7 @@
 ## Synopsis
 
 A utility singleton to help manage task-related paths more easily throughout the whole project.
+**Node-only**.
 
 ## Install
 
