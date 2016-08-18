@@ -1,11 +1,17 @@
-const gulp  = require('gulp'),
-      debug = require('gulp-debug');
+`use strict`;
 
-require('./tasks/build');
-require('./tasks/test');
-require('./tasks/bump');
-require('./tasks/ci');
+const gulp  = require(`gulp`),
+      debug = require(`gulp-debug`);
 
-gulp.task('default', function() {
-    return gulp;
-});
+require(`./tasks/build`);
+require(`./tasks/bump`);
+require(`./tasks/test`);
+require(`./tasks/ci`);
+
+// left here for quick check whether gulp works
+gulp.task(
+    `default`,
+    () => {
+        return gulp;
+    }
+);
