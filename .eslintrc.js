@@ -1,10 +1,12 @@
 module.exports = {
-    'extends' : [
+    extends : [
         'eslint:all'
     ],
-    'globals' : {
+    globals : {
         'define': true,
         'module': true,
+        'require' : true,
+        'console' : true,
 
         // typed arrays
         'Int8Array' : true,
@@ -20,7 +22,7 @@ module.exports = {
     'parserOptions': {
         'ecmaVersion': 6
     },
-    'rules' : {
+    rules : {
         'strict': 'off',
         'padded-blocks': 'off',
         'func-names': 'off',
@@ -46,12 +48,34 @@ module.exports = {
         'no-inline-comments' : 'off',
         'lines-around-comment' : 'off',
         'no-underscore-dangle': 'off',
+        'no-unused-expressions': 'off',
+        'one-var': 'off',
+        'indent': 'off',
+        'arrow-body-style' : 'off',
+        'wrap-regex' : 'off',
+        'no-console': [
+            'error', {
+                allow: [
+                    'warn',
+                    'error'
+                ]
+            }
+        ],
+        'new-cap': [
+            'error', {
+                'newIsCap': false,
+                'capIsNew': true,
+            }
+        ],
+        'comma-dangle' : [
+            'error', 'always-multiline'
+        ],
         'max-params': [
             'error', 5
         ],
         'max-lines': [
             'error', {
-                'max' : 250,
+                'max' : 999,
                 'skipBlankLines' : true,
                 'skipComments' : true
             }
@@ -79,12 +103,6 @@ module.exports = {
         'max-statements': [
             'error', 40
         ],
-        'indent': [
-            'error', 4,
-            {
-                'SwitchCase': 1
-            }
-        ],
         'max-len': [
             'error', 120, 4
         ],
@@ -106,7 +124,7 @@ module.exports = {
         ],
         'no-magic-numbers': [
             'error', {
-                'ignore' : [0, 1],
+                'ignore' : [-1, 0, 1, 2],
                 'ignoreArrayIndexes' : true
             }
         ],
