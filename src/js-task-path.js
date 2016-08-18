@@ -88,7 +88,7 @@ const self = class Path {
              * @type {RegExp}
              * @default \s*(<[\s\-\\\/\.\*\w]+>)\s* /i
              */
-            nameTokenPattern : /\s*(<[\s\-\\\/\.\*\w]+>)\s*/i,
+            nameTokenPattern : /\s*(<[\s\-\\\/.*\w]+>)\s*/i,
         };
     }
 
