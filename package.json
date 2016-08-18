@@ -18,7 +18,7 @@
     "url": "https://github.com/richrdkng"
   },
   "scripts": {
-    "g": "gulp --gulpfile scripts/gulp/main.js",
+    "g": "node --harmony `which gulp` --gulpfile scripts/gulp/main.js",
     "gulp": "npm run g",
     "build": "npm run g -- tasks/build",
     "test": "npm run g -- tasks/test",
