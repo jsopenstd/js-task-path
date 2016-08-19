@@ -10,7 +10,7 @@
 
 ## Synopsis
 
-A helper class to manage **task**, **build** and **deployment**-related paths more easily throughout the whole project.
+A helper class to manage **task-**, **build-** and **deployment-related** paths more easily throughout the whole project.
 
 - Written in **ES6**
 - **Node-only compatible**.
