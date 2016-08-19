@@ -19,9 +19,9 @@ module.exports = {
                 assert(path.getRoot() === root);
             },
             'set paths' : () => {
-                assert(path.setPath('dist', '<root>/dist') === root + '/dist');
-                assert(path.setPath('bin',  '<root>/bin')  === root + '/bin');
-                assert(path.setPath('lib',  '<root>/lib')  === root + '/lib');
+                assert(path.set('dist', '<root>/dist') === root + '/dist');
+                assert(path.set('bin',  '<root>/bin')  === root + '/bin');
+                assert(path.set('lib',  '<root>/lib')  === root + '/lib');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -34,9 +34,9 @@ module.exports = {
                 );
             },
             'remove paths' : () => {
-                assert(path.setPath('src',   '<root>/src')   === root + '/src');
-                assert(path.setPath('tests', '<root>/tests') === root + '/tests');
-                assert(path.setPath('doc',   '<root>/doc')   === root + '/doc');
+                assert(path.set('src',   '<root>/src')   === root + '/src');
+                assert(path.set('tests', '<root>/tests') === root + '/tests');
+                assert(path.set('doc',   '<root>/doc')   === root + '/doc');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -48,7 +48,7 @@ module.exports = {
                     }
                 );
 
-                assert(path.removePath('src') === root + '/src');
+                assert(path.remove('src') === root + '/src');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -59,8 +59,8 @@ module.exports = {
                     }
                 );
 
-                assert(path.removePath('tests') === root + '/tests');
-                assert(path.removePath('doc')   === root + '/doc');
+                assert(path.remove('tests') === root + '/tests');
+                assert(path.remove('doc')   === root + '/doc');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -72,7 +72,7 @@ module.exports = {
         },
         'extended cases' : {
             'appendTo paths' : () => {
-                path.setPath('src', '<root>/src');
+                path.set('src', '<root>/src');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -82,7 +82,7 @@ module.exports = {
                     }
                 );
 
-                let newGlob = path.appendToPath('src', '<root>/src/another-path/');
+                let newGlob = path.appendTo('src', '<root>/src/another-path/');
 
                 assert.deepStrictEqual(
                     newGlob,
@@ -93,7 +93,7 @@ module.exports = {
                 );
 
                 // add a glob, that is already in the named glob path
-                newGlob = path.appendToPath('src', '<root>/src');
+                newGlob = path.appendTo('src', '<root>/src');
 
                 assert.deepStrictEqual(
                     newGlob,
@@ -104,7 +104,7 @@ module.exports = {
                 );
             },
             'removeFrom paths' : () => {
-                path.setPath('src', '<root>/src');
+                path.set('src', '<root>/src');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -114,7 +114,7 @@ module.exports = {
                     }
                 );
 
-                let newGlob = path.appendToPath('src', '<root>/src/another-path/');
+                let newGlob = path.appendTo('src', '<root>/src/another-path/');
 
                 assert.deepStrictEqual(
                     newGlob,
@@ -124,7 +124,7 @@ module.exports = {
                     ]
                 );
 
-                let removedGlob = path.removeFromPath('src', '<root>/src');
+                let removedGlob = path.removeFrom('src', '<root>/src');
 
                 assert.deepStrictEqual(
                     removedGlob,
@@ -152,69 +152,69 @@ module.exports = {
 
                 // without parameter
                 try {
-                    path.getPath();
+                    path.get();
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
 
                 // empty string
                 try {
-                    path.getPath('');
+                    path.get('');
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
 
                 // invalid name
                 try {
-                    path.setPath();
+                    path.set();
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
 
                 // invalid name
                 try {
-                    path.setPath('');
+                    path.set('');
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
 
                 // invalid glob
                 try {
-                    path.setPath('path-name');
+                    path.set('path-name');
                 } catch (exception) {
                     assert(exception instanceof InvalidGlobException);
                 }
 
                 // invalid glob
                 try {
-                    path.setPath('path-name', {});
+                    path.set('path-name', {});
                 } catch (exception) {
                     assert(exception instanceof InvalidGlobException);
                 }
 
                 // invalid options
                 try {
-                    path.setPath('path-name', [], []);
+                    path.set('path-name', [], []);
                 } catch (exception) {
                     assert(exception instanceof TypeException);
                 }
 
                 // invalid name
                 try {
-                    path.getPath();
+                    path.get();
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
 
                 // invalid name
                 try {
-                    path.getPath('');
+                    path.get('');
                 } catch (exception) {
                     assert(exception instanceof InvalidPathNameException);
                 }
 
                 try {
-                    path.getPath('q3xg5487kdd7');
+                    path.get('q3xg5487kdd7');
                 } catch (exception) {
                     assert(exception instanceof PathNotFoundException);
                 }
@@ -227,7 +227,7 @@ module.exports = {
                 assert(path.setRoot('/differentRoot') === '/differentRoot');
                 assert(path.getRoot() === '/differentRoot');
 
-                assert(path.setPath('src', '<root>/src') === '/differentRoot/src');
+                assert(path.set('src', '<root>/src') === '/differentRoot/src');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -249,9 +249,9 @@ module.exports = {
                 );
             },
             'remove all paths' : () => {
-                path.setPath('A', 'A');
-                path.setPath('B', 'B');
-                path.setPath('C', 'C');
+                path.set('A', 'A');
+                path.set('B', 'B');
+                path.set('C', 'C');
 
                 assert.deepStrictEqual(
                     path.getAll(),

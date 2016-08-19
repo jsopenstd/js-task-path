@@ -74,71 +74,6 @@ const self = class Path {
     }
 
     /**
-     * Check whether the name is valid.
-     *
-     * @private
-     * @method _checkName
-     *
-     * @param {string} name - The name of a path entry.
-     *
-     * @returns {void}
-     */
-    _checkName(name) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
-    }
-
-    /**
-     * Check whether the glob is valid.
-     *
-     * @private
-     * @method _checkGlob
-     *
-     * @param {string} glob - The glob of a path.
-     *
-     * @returns {void}
-     */
-    _checkGlob(glob) {
-        if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new InvalidGlobException(glob);
-        }
-    }
-
-    /**
-     * Check whether the options object is valid.
-     *
-     * @private
-     * @method _checkOptions
-     *
-     * @param {string} options - The options object.
-     *
-     * @returns {void}
-     */
-    _checkOptions(options) {
-        if ( isPresent(options) && ! isObject(options) ) {
-            throw new TypeException(options);
-        }
-    }
-
-    /**
-     * Check whether the the path entry under name exists.
-     *
-     * @private
-     * @method _checkPathExists
-     *
-     * @param {string} name   - The name of the path entry.
-     * @param {string} [glob] - The glob of the path.
-     *
-     * @returns {void}
-     */
-    _checkPathExists(name, glob) {
-        if ( ! this.hasPath(name) ) {
-            throw new PathNotFoundException(name, glob);
-        }
-    }
-
-    /**
      * @constructor
      */
     constructor() {
@@ -164,16 +99,14 @@ const self = class Path {
     /**
      * Gets the glob path by the given name.
      *
-     * Alias: {@link js/task/Paths#get}
-     *
-     * @method getPath
+     * @function get
      * @memberOf js.task.Path
      *
      * @param {string} name - The name of the glob path.
      *
      * @returns {string|Array} The glob path.
      */
-    getPath(name) {
+    get(name) {
         this._checkPathExists(name);
 
         return this._paths[name];
@@ -183,9 +116,8 @@ const self = class Path {
      * Sets the given glob path by the given name.
      *
      * If the glob path by the same name already exists, it will be overridden.
-     * Alias: {@link js/task/Paths#set}
      *
-     * @method setPath
+     * @function set
      * @memberOf js.task.Path
      *
      * @param {string}       name                     - The name of the glob path.
@@ -195,7 +127,7 @@ const self = class Path {
      *
      * @returns {string|Array} The filtered glob path.
      */
-    setPath(name, glob, options) {
+    set(name, glob, options) {
         this._checkName(name);
         this._checkGlob(glob);
         this._checkOptions(options);
@@ -210,16 +142,14 @@ const self = class Path {
     /**
      * Returns whether a glob path by the given name was stored previously.
      *
-     * Alias: {@link js/task/Paths#has}
-     *
-     * @method hasPath
+     * @function has
      * @memberOf js.task.Path
      *
      * @param {string} name - The name of the glob path.
      *
      * @returns {boolean} Whether has a path under this name.
      */
-    hasPath(name) {
+    has(name) {
         this._checkName(name);
 
         return name in this._paths;
@@ -230,9 +160,8 @@ const self = class Path {
      *
      * If the previously stored glob path is the same (if it is a string) as -
      * or contains (if it is an array of glob paths) - the given glob path, it will return true.
-     * Alias: {@link js/task/Paths#contains}
      *
-     * @method containsPath
+     * @function contains
      * @memberOf js.task.Path
      *
      * @param {string} name - The name of the glob path.
@@ -240,16 +169,16 @@ const self = class Path {
 
      * @returns {boolean} Whether the path with a name contains the glob.
      */
-    containsPath(name, glob) {
+    contains(name, glob) {
         this._checkName(name);
         this._checkGlob(glob);
 
         let filteredGlob,
             storedGlob;
 
-        if (this.hasPath(name)) {
+        if (this.has(name)) {
             filteredGlob = this._filterGlob(glob);
-            storedGlob   = this.getPath(name);
+            storedGlob   = this.get(name);
 
             if (isArray(storedGlob)) {
                 let contains = false;
@@ -273,9 +202,7 @@ const self = class Path {
     /**
      * Removes the glob path by the given name from the stored glob paths.
      *
-     * Alias: {@link js/task/Paths#remove}
-     *
-     * @method removePath
+     * @function remove
      * @memberOf js.task.Path
      *
      * @param {string} name - The name of the glob path.
@@ -285,13 +212,13 @@ const self = class Path {
      *                              if the removal was unsuccessful by other means,
      *                              the return value will be null;
      */
-    removePath(name) {
+    remove(name) {
         this._checkName(name);
 
         let removedGlob = null;
 
-        if (this.hasPath(name)) {
-            removedGlob = this.getPath(name);
+        if (this.has(name)) {
+            removedGlob = this.get(name);
 
             delete this._paths[name];
         }
@@ -303,10 +230,9 @@ const self = class Path {
      * Appends the given glob path to the given name.
      *
      * If there is no stored glob path under the given name,
-     * it will be added anyway, as just as it was added via setPath(...).
-     * Alias: {@link js/task/Paths#appendTo}
+     * it will be added anyway, as just as it was added via set(...).
      *
-     * @method appendToPath
+     * @function appendTo
      * @memberOf js.task.Path
      *
      * @param {string}       name                     - The name of the glob path.
@@ -316,20 +242,20 @@ const self = class Path {
      *
      * @returns {string|Array} The new glob path, contains the appended glob path.
      */
-    appendToPath(name, glob, options) {
+    appendTo(name, glob, options) {
         this._checkName(name);
         this._checkGlob(glob);
         this._checkOptions(options);
 
         let filteredGlob;
 
-        if ( ! this.hasPath(name)) {
+        if ( ! this.has(name)) {
             filteredGlob = this.addPath(name, glob, options);
 
         } else {
             // only append to the given name, if the stored glob isn't equal to/doesn't contain the given glob
-            if ( ! this.containsPath(name, glob)) {
-                let storedGlob = this.getPath(name);
+            if ( ! this.contains(name, glob)) {
+                let storedGlob = this.get(name);
 
                 // if the stored glob isn't an array, convert it
                 if ( ! isArray(storedGlob) ) {
@@ -348,7 +274,7 @@ const self = class Path {
                 this._paths[name] = filteredGlob;
 
             } else {
-                filteredGlob = this.getPath(name);
+                filteredGlob = this.get(name);
             }
         }
 
@@ -361,9 +287,8 @@ const self = class Path {
      * After the successful removal of the given glob path,
      * if the given name will be empty (as the last glob path was removed),
      * it will be removed from the stored named glob paths.
-     * Alias: {@link js/task/Paths#removeFrom}
      *
-     * @method removeFromPath
+     * @function removeFrom
      * @memberOf js.task.Path
      *
      * @param {string}       name - The name of the glob path.
@@ -374,19 +299,19 @@ const self = class Path {
      *                              if the removal was unsuccessful by other means,
      *                              the return value will be null;
      */
-    removeFromPath(name, glob) {
+    removeFrom(name, glob) {
         this._checkName(name);
         this._checkGlob(glob);
 
         let removedGlob = null;
 
-        if (this.hasPath(name) && this.containsPath(name, glob)) {
+        if (this.has(name) && this.contains(name, glob)) {
             let processedGlob = this._processGlob(glob),
-                storedGlob    = this.getPath(name);
+                storedGlob    = this.get(name);
 
             if (isString(processedGlob) && isString(storedGlob)) {
                 if (processedGlob === storedGlob) {
-                    this.removePath(name);
+                    this.remove(name);
                 }
 
                 removedGlob = processedGlob;
@@ -409,7 +334,7 @@ const self = class Path {
                 });
 
                 if (storedGlob.length === 0) {
-                    this.removePath(name);
+                    this.remove(name);
                 }
 
                 removedGlob = processedGlob;
@@ -425,7 +350,7 @@ const self = class Path {
      * The root glob path is determined at the instantiation of the Paths class.
      * Be cautious regarding the value of this root glob path, after the original root glob path is changed.
      *
-     * @method getRoot
+     * @function getRoot
      * @memberOf js.task.Path
      *
      * @returns {string} The root glob path.
@@ -440,7 +365,7 @@ const self = class Path {
      * As the root glob path is determined at the instantiation of the Paths class,
      * be cautious, when changing the root glob path to avoid unwanted errors.
      *
-     * @method setRoot
+     * @function setRoot
      * @memberOf js.task.Path
      *
      * @param {string} glob - The root glob path.
@@ -448,7 +373,7 @@ const self = class Path {
      * @returns {string} The new, filtered root glob path.
      */
     setRoot(glob) {
-        this._root = this.setPath(`root`, glob);
+        this._root = this.set(`root`, glob);
 
         return this._root;
     }
@@ -459,7 +384,7 @@ const self = class Path {
      * The returned object will be a deep copy of the original object,
      * modifying the returned object will not change the original object.
      *
-     * @method getAll
+     * @function getAll
      * @memberOf js.task.Path
      *
      * @returns {Object} The object containing all of the named glob paths.
@@ -471,7 +396,7 @@ const self = class Path {
     /**
      * Removes all the stored named glob paths.
      *
-     * @method removeAll
+     * @function removeAll
      * @memberOf js.task.Path
      *
      * @param {boolean} [removeRoot=false] - Remove the `root` named glob path too.
@@ -499,9 +424,75 @@ const self = class Path {
     }
 
     /**
+     * Check whether the name is valid.
+     *
+     * @private
+     * @function _checkName
+     *
+     * @param {string} name - The name of a path entry.
+     *
+     * @returns {void}
+     */
+    _checkName(name) {
+        if ( ! isString(name) || isEmptyString(name)) {
+            throw new InvalidPathNameException(name);
+        }
+    }
+
+    /**
+     * Check whether the glob is valid.
+     *
+     * @private
+     * @function _checkGlob
+     *
+     * @param {string} glob - The glob of a path.
+     *
+     * @returns {void}
+     */
+    _checkGlob(glob) {
+        if ( ! isString(glob) && ! isArray(glob)) {
+            throw new InvalidGlobException(glob);
+        }
+    }
+
+    /**
+     * Check whether the options object is valid.
+     *
+     * @private
+     * @function _checkOptions
+     *
+     * @param {string} options - The options object.
+     *
+     * @returns {void}
+     */
+    _checkOptions(options) {
+        if ( isPresent(options) && ! isObject(options)) {
+            throw new TypeException(options);
+        }
+    }
+
+    /**
+     * Check whether the the path entry under name exists.
+     *
+     * @private
+     * @function _checkPathExists
+     *
+     * @param {string} name   - The name of the path entry.
+     * @param {string} [glob] - The glob of the path.
+     *
+     * @returns {void}
+     */
+    _checkPathExists(name, glob) {
+        if ( ! this.has(name) ) {
+            throw new PathNotFoundException(name, glob);
+        }
+    }
+
+    /**
      * Resolves the path by name-tokens.
      *
      * @private
+     * @function _resolveNameTokens
      *
      * @param {string} glob - The glob path. A name-token could be e.g.: <root>
      *                        If the resolved name-token is an array containing multiple paths,
@@ -515,7 +506,7 @@ const self = class Path {
 
             this._checkPathExists(name, glob);
 
-            let path = this.getPath(name);
+            let path = this.get(name);
 
             // if the p consists of multiple globs in an array, only the 1st glob in the array will be used
             if (isArray(path)) {
@@ -530,6 +521,7 @@ const self = class Path {
      * Filters the given glob path by the passed options.
      *
      * @private
+     * @function _filterGlob
      *
      * @param {string} glob                     - The glob path.
      * @param {Object} [options=Paths.DEFAULTS] - The options that used to filter the glob path.
@@ -553,6 +545,7 @@ const self = class Path {
      * Processes the given glob path by the given options.
      *
      * @private
+     * @function _processGlob
      *
      * @param {string|Array} glob                     - The glob path.
      * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
