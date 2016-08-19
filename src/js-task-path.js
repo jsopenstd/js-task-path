@@ -74,6 +74,71 @@ const self = class Path {
     }
 
     /**
+     * Check whether the name is valid.
+     *
+     * @private
+     * @method _checkName
+     *
+     * @param {string} name - The name of a path entry.
+     *
+     * @returns {void}
+     */
+    _checkName(name) {
+        if ( ! isString(name) || isEmptyString(name) ) {
+            throw new InvalidPathNameException(name);
+        }
+    }
+
+    /**
+     * Check whether the glob is valid.
+     *
+     * @private
+     * @method _checkGlob
+     *
+     * @param {string} glob - The glob of a path.
+     *
+     * @returns {void}
+     */
+    _checkGlob(glob) {
+        if ( ! isString(glob) && ! isArray(glob) ) {
+            throw new InvalidGlobException(glob);
+        }
+    }
+
+    /**
+     * Check whether the options object is valid.
+     *
+     * @private
+     * @method _checkOptions
+     *
+     * @param {string} options - The options object.
+     *
+     * @returns {void}
+     */
+    _checkOptions(options) {
+        if ( isPresent(options) && ! isObject(options) ) {
+            throw new TypeException(options);
+        }
+    }
+
+    /**
+     * Check whether the the path entry under name exists.
+     *
+     * @private
+     * @method _checkPathExists
+     *
+     * @param {string} name   - The name of the path entry.
+     * @param {string} [glob] - The glob of the path.
+     *
+     * @returns {void}
+     */
+    _checkPathExists(name, glob) {
+        if ( ! this.hasPath(name) ) {
+            throw new PathNotFoundException(name, glob);
+        }
+    }
+
+    /**
      * @constructor
      */
     constructor() {
@@ -109,9 +174,7 @@ const self = class Path {
      * @returns {string|Array} The glob path.
      */
     getPath(name) {
-        if ( ! this.hasPath(name) ) {
-            throw new PathNotFoundException(name);
-        }
+        this._checkPathExists(name);
 
         return this._paths[name];
     }
@@ -133,17 +196,9 @@ const self = class Path {
      * @returns {string|Array} The filtered glob path.
      */
     setPath(name, glob, options) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
-
-        if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new InvalidGlobException(glob);
-        }
-
-        if ( isPresent(options) && ! isObject(options) ) {
-            throw new TypeException(options);
-        }
+        this._checkName(name);
+        this._checkGlob(glob);
+        this._checkOptions(options);
 
         const processedGlob = this._processGlob(glob, options);
 
@@ -165,9 +220,7 @@ const self = class Path {
      * @returns {boolean} Whether has a path under this name.
      */
     hasPath(name) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
+        this._checkName(name);
 
         return name in this._paths;
     }
@@ -188,13 +241,8 @@ const self = class Path {
      * @returns {boolean} Whether the path with a name contains the glob.
      */
     containsPath(name, glob) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
-
-        if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new InvalidGlobException(glob);
-        }
+        this._checkName(name);
+        this._checkGlob(glob);
 
         let filteredGlob,
             storedGlob;
@@ -238,9 +286,7 @@ const self = class Path {
      *                              the return value will be null;
      */
     removePath(name) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
+        this._checkName(name);
 
         let removedGlob = null;
 
@@ -271,17 +317,9 @@ const self = class Path {
      * @returns {string|Array} The new glob path, contains the appended glob path.
      */
     appendToPath(name, glob, options) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
-
-        if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new InvalidGlobException(glob);
-        }
-
-        if ( isPresent(options) && ! isObject(options) ) {
-            throw new TypeException(options);
-        }
+        this._checkName(name);
+        this._checkGlob(glob);
+        this._checkOptions(options);
 
         let filteredGlob;
 
@@ -337,13 +375,8 @@ const self = class Path {
      *                              the return value will be null;
      */
     removeFromPath(name, glob) {
-        if ( ! isString(name) || isEmptyString(name) ) {
-            throw new InvalidPathNameException(name);
-        }
-
-        if ( ! isString(glob) && ! isArray(glob) ) {
-            throw new InvalidGlobException(glob);
-        }
+        this._checkName(name);
+        this._checkGlob(glob);
 
         let removedGlob = null;
 
@@ -480,18 +513,16 @@ const self = class Path {
         return glob.replace(self.DEFAULTS.nameTokenPattern, (match) => {
             const name = match.substr(1, match.length - 2);
 
-            if ( ! this.hasPath(name)) {
-                throw new PathNotFoundException(name, glob);
-            }
+            this._checkPathExists(name, glob);
 
-            let p = this.getPath(name);
+            let path = this.getPath(name);
 
             // if the p consists of multiple globs in an array, only the 1st glob in the array will be used
-            if (isArray(p)) {
-                p = p[0];
+            if (isArray(path)) {
+                path = path[0];
             }
 
-            return p;
+            return path;
         });
     }
 
