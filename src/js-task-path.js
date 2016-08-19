@@ -2,7 +2,7 @@
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
- | A utility singleton to help manage task-related paths more easily throughout the whole project.
+ | A helper class to manage task-, build- and deployment-related paths more easily throughout the whole project.
  |----------------------------------------------------------------------------------------------------------------------
  */
 
@@ -16,10 +16,16 @@
  * @license [MIT]{@link https://github.com/jsopenstd/js-partial-foreach/blob/master/license.md}
  */
 
-const path    = require('path'),
-      appRoot = require('app-root-path'),
-      extend  = require('extend'),
-      foreach = require('js-partial-foreach');
+const path          = require('path'),
+      appRoot       = require('app-root-path'),
+      extend        = require('extend'),
+      foreach       = require('js-partial-foreach'),
+      isPresent     = require('js-partial-is-present'),
+      isString      = require('js-partial-is-string'),
+      isEmptyString = require('js-partial-is-empty-string'),
+      isArray       = require('js-partial-is-array'),
+      isObject      = require('js-partial-is-object'),
+      arrayMerge    = require('js-partial-array-merge');
 /*
  |----------------------------------------------------------------------------------------------------------------------
  | Exceptions
@@ -29,40 +35,6 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       InvalidPathNameException = require('./exception/InvalidPathNameException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
-
-/*
- |----------------------------------------------------------------------------------------------------------------------
- | Helper Functions
- |----------------------------------------------------------------------------------------------------------------------
- */
-const isPresent = (object) => {
-    return typeof object !== `undefined` &&
-           object !== null;
-};
-
-const isString = (object) => {
-    return typeof object === `string`;
-};
-
-const isEmptyString = (object) => {
-    return typeof object === `string` &&
-           (
-               object.length === 0 ||
-               /^\s+$/.test(object) === true
-           );
-};
-
-const isArray = (object) => {
-    return Object.prototype.toString.call(object) === `[object Array]`;
-};
-
-const isObject = (object) => {
-    return Object.prototype.toString.call(object) === `[object Object]`;
-};
-
-const arrayMerge = (array, ...rest) => {
-    return array.concat(...rest);
-};
 
 const self = class Path {
 
@@ -86,7 +58,7 @@ const self = class Path {
             /**
              *
              * @type {RegExp}
-             * @default \s*(<[\s\-\\\/\.\*\w]+>)\s* /i
+             * @default \s*(<[\s\-\\\/.*\w]+>)\s* /i
              */
             nameTokenPattern : /\s*(<[\s\-\\\/.*\w]+>)\s*/i,
         };
@@ -125,7 +97,6 @@ const self = class Path {
      * @returns {string|Array} The glob path.
      */
     getPath(name) {
-
         if ( ! this.hasPath(name) ) {
             throw new PathNotFoundException(name);
         }
@@ -150,7 +121,6 @@ const self = class Path {
      * @returns {string|Array} The filtered glob path.
      */
     setPath(name, glob, options) {
-
         if ( ! isString(name) || isEmptyString(name) ) {
             throw new InvalidPathNameException(name);
         }
@@ -183,7 +153,6 @@ const self = class Path {
      * @returns {boolean} Whether has a path under this name.
      */
     hasPath(name) {
-
         if ( ! isString(name) || isEmptyString(name) ) {
             throw new InvalidPathNameException(name);
         }
@@ -207,7 +176,6 @@ const self = class Path {
      * @returns {boolean} Whether the path with a name contains the glob.
      */
     containsPath(name, glob) {
-
         if ( ! isString(name) || isEmptyString(name) ) {
             throw new InvalidPathNameException(name);
         }
@@ -291,7 +259,6 @@ const self = class Path {
      * @returns {string|Array} The new glob path, contains the appended glob path.
      */
     appendToPath(name, glob, options) {
-
         if ( ! isString(name) || isEmptyString(name) ) {
             throw new InvalidPathNameException(name);
         }
@@ -358,7 +325,6 @@ const self = class Path {
      *                              the return value will be null;
      */
     removeFromPath(name, glob) {
-
         if ( ! isString(name) || isEmptyString(name) ) {
             throw new InvalidPathNameException(name);
         }
@@ -500,7 +466,6 @@ const self = class Path {
      */
     _resolveNameTokens(glob) {
         return glob.replace(self.DEFAULTS.nameTokenPattern, (match) => {
-
             const name = match.substr(1, match.length - 2);
 
             if ( ! this.hasPath(name)) {
@@ -530,7 +495,6 @@ const self = class Path {
      * @returns {string} The filtered glob path.
      */
     _filterGlob(glob, options) {
-
         const opt = extend(true, {}, self.DEFAULTS, options);
 
         let filteredGlob = this._resolveNameTokens(glob);
