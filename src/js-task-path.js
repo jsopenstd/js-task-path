@@ -22,7 +22,7 @@
  |----------------------------------------------------------------------------------------------------------------------
  */
 const nodePath      = require('path'),
-      appRoot       = require('app-root-path'),
+      appRootPath   = require('app-root-path'),
       extend        = require('extend'),
       foreach       = require('js-partial-foreach'),
       isPresent     = require('js-partial-is-present'),
@@ -93,7 +93,7 @@ const self = class Path {
          */
         this._paths = {};
 
-        this.setRoot(appRoot.toString());
+        this.setRoot(appRootPath.toString());
     }
 
     /**
