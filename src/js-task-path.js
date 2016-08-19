@@ -16,7 +16,12 @@
  * @license [MIT]{@link https://github.com/jsopenstd/js-partial-foreach/blob/master/license.md}
  */
 
-const path          = require('path'),
+/*
+ |----------------------------------------------------------------------------------------------------------------------
+ | Essentials
+ |----------------------------------------------------------------------------------------------------------------------
+ */
+const nodePath      = require('path'),
       appRoot       = require('app-root-path'),
       extend        = require('extend'),
       foreach       = require('js-partial-foreach'),
@@ -36,6 +41,10 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
 
+/**
+ * @memberOf js.task
+ * @class Path
+ */
 const self = class Path {
 
     /**
@@ -64,6 +73,9 @@ const self = class Path {
         };
     }
 
+    /**
+     * @constructor
+     */
     constructor() {
         /**
          * The root of the project determined when the Paths class was instantiated.
@@ -500,7 +512,7 @@ const self = class Path {
         let filteredGlob = this._resolveNameTokens(glob);
 
         if (opt.autoNormalizePath) {
-            filteredGlob = path.normalize(filteredGlob);
+            filteredGlob = nodePath.normalize(filteredGlob);
         }
 
         return filteredGlob;
