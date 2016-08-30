@@ -12,9 +12,27 @@ const assert = require('assert'),
 
 module.exports = {
     'js-task-paths' : {
+        'beforeEach' : () => {
+            // reset paths by removing all
+            path.removeAll();
+        },
+
         '.set()' : {
             'default' : () => {
+                const root = path.getRoot();
 
+                assert(path.set('dist', '<root>/dist') === `${root}/dist`);
+                assert(path.set('bin',  '<root>/bin')  === `${root}/bin`);
+                assert(path.set('lib',  '<root>/lib')  === `${root}/lib`);
+
+                assert.deepStrictEqual(
+                    path.getAll(),
+                    {
+                        dist : `${root}/dist`,
+                        bin  : `${root}/bin`,
+                        lib  : `${root}/lib`,
+                    }
+                );
             },
             'extended' : () => {
 

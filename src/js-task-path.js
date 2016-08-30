@@ -121,6 +121,10 @@ const self = class Path {
     get(name) {
         this._checkPathExists(name);
 
+        if (name === 'root') {
+            return this._root;
+        }
+
         return this._paths[name];
     }
 
@@ -140,15 +144,7 @@ const self = class Path {
      * @returns {string|Array} The filtered glob path.
      */
     set(name, glob, options) {
-        this._checkName(name);
-        this._checkGlob(glob);
-        this._checkOptions(options);
-
-        const processedGlob = this._processGlob(glob, options);
-
-        this._paths[name] = processedGlob;
-
-        return processedGlob;
+        return this._setGlobPath(this._paths, name, glob, options);
     }
 
     /**
@@ -385,9 +381,7 @@ const self = class Path {
      * @returns {string} The new, filtered root glob path.
      */
     setRoot(glob) {
-        this._root = this.set(`root`, glob);
-
-        return this._root;
+        return this._setGlobPath(this, '_root', glob);
     }
 
     /**
@@ -411,26 +405,13 @@ const self = class Path {
      * @function removeAll
      * @memberOf js.task.Path
      *
-     * @param {boolean} [removeRoot=false] - Remove the `root` named glob path too.
-     *                                       Be cautious, when removing the root glob path
-     *                                       to avoid unwanted errors.
-     *
      * @returns {Object} Returns the removed named glob paths.
      *                   For example: { `src` : `/root/src` }
      */
-    removeAll(removeRoot) {
+    removeAll() {
         const removedGlobs = this.getAll();
 
         this._paths = {};
-
-        if ( ! removeRoot) {
-            this._paths['root'] = this._root;
-
-            // if removeRoot === false, the 'root' named glob path will be still stored, and since 'root'
-            // practically wasn't removed from the stored glob paths,
-            // do not return it as the part of removedGlobs
-            delete removedGlobs['root'];
-        }
 
         return removedGlobs;
     }
@@ -495,6 +476,10 @@ const self = class Path {
      * @returns {void}
      */
     _checkPathExists(name, glob) {
+        if (name === 'root') {
+            return;
+        }
+
         if ( ! this.has(name) ) {
             throw new PathNotFoundException(name, glob);
         }
@@ -583,6 +568,18 @@ const self = class Path {
         }
 
         return filteredGlob;
+    }
+
+    _setGlobPath(object, name, glob, options) {
+        this._checkName(name);
+        this._checkGlob(glob);
+        this._checkOptions(options);
+
+        const processedGlob = this._processGlob(glob, options);
+
+        object[name] = processedGlob;
+
+        return processedGlob;
     }
 };
 
