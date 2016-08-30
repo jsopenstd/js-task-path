@@ -15,5 +15,9 @@ module.exports = {
         '.getOptions()' : () => {
 
         },
+
+        '.setOptions()' : () => {
+
+        },
     }
 };

@@ -94,6 +94,18 @@ const self = class Path {
         this._paths = {};
 
         this.setRoot(appRootPath.toString());
+
+        this._options = {
+
+        };
+    }
+
+    getOptions() {
+        return extend(true, {}, this._options);
+    }
+
+    setOptions(options) {
+        extend(this._options, options);
     }
 
     /**
@@ -412,12 +424,12 @@ const self = class Path {
         this._paths = {};
 
         if ( ! removeRoot) {
-            this._paths[`root`] = this._root;
+            this._paths['root'] = this._root;
 
-            // if removeRoot === false, the `root` named glob path will be still stored, and since `root`
+            // if removeRoot === false, the 'root' named glob path will be still stored, and since 'root'
             // practically wasn't removed from the stored glob paths,
             // do not return it as the part of removedGlobs
-            delete removedGlobs[`root`];
+            delete removedGlobs['root'];
         }
 
         return removedGlobs;
@@ -574,20 +586,4 @@ const self = class Path {
     }
 };
 
-const Path = new self();
-
-// add `.exception` namespace for easy exception access
-extend(
-    Path,
-    {
-        exception :
-        {
-            InvalidGlobException,
-            InvalidPathNameException,
-            PathNotFoundException,
-            TypeException,
-        },
-    }
-);
-
-module.exports = Path;
+module.exports = new self();

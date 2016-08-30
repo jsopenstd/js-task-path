@@ -1,66 +1,75 @@
 'use strict';
 
-const gulp     = require(`gulp`),
-      mocha    = require(`gulp-mocha`),
-      coverage = require(`gulp-istanbul`),
-      sequence = require(`gulp-sequence`),
-      lint     = require(`gulp-eslint`),
-      debug    = require(`gulp-debug`),
-      vars     = require(`../../../../tests/variables`);
+const gulp     = require('gulp'),
+      mocha    = require('gulp-mocha'),
+      coverage = require('gulp-istanbul'),
+      sequence = require('gulp-sequence'),
+      lint     = require('gulp-eslint'),
+      debug    = require('gulp-debug'),
+      vars     = require('../../../../tests/variables');
+
+const setVars = () => {
+    vars.path = '../../src/js-task-path.js';
+
+    vars.exception.InvalidGlobException     = '../../src/exception/InvalidGlobException';
+    vars.exception.InvalidPathNameException = '../../src/exception/InvalidPathNameException';
+    vars.exception.PathNotFoundException    = '../../src/exception/PathNotFoundException';
+    vars.exception.TypeException            = '../../src/exception/TypeException';
+};
 
 gulp.task(
-    `tasks/test.src`,
+    'tasks/test.src',
     () => {
-        vars.path = `../src/js-task-path.js`;
+        setVars();
 
         return gulp
             .src(
-                `../../tests/tests.js`,
+                '../../tests/cases/*.test.js',
                 {
                     read : false
                 }
             )
             .pipe(
                 mocha({
-                    ui : `exports`
+                    ui : 'exports'
                 })
             );
     }
 );
 
 gulp.task(
-    `tasks/test.init-cov`,
+    'tasks/test.init-cov',
     () => {
         return gulp
-            .src(`../../src/**/*.js`)
+            .src('../../src/**/*.js')
             .pipe(coverage())
             .pipe(coverage.hookRequire());
     }
 );
 
 gulp.task(
-    `tasks/test.with-cov`,
+    'tasks/test.with-cov',
     [
-      `tasks/test.init-cov`
+      'tasks/test.init-cov'
     ],
     () => {
-        vars.path = `../src/js-task-path.js`;
+        setVars();
 
         return gulp
             .src(
-                `../../tests/tests.js`,
+                '../../tests/cases/*.test.js',
                 {
                     read : false
                 }
             )
             .pipe(
                 mocha({
-                    ui : `exports`
+                    ui : 'exports'
                 })
             )
             .pipe(
                 coverage.writeReports({
-                    dir : `../../cov`
+                    dir : '../../cov'
                 })
             )
             .pipe(
@@ -74,13 +83,13 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/test.with-lint`,
+    'tasks/test.with-lint',
     [
-        `tasks/test.src`
+        'tasks/test.src'
     ],
     () => {
         return gulp
-            .src(`../../src/**/*.js`)
+            .src('../../src/**/*.js')
             .pipe(lint())
             .pipe(lint.format())
             .pipe(lint.failAfterError());
@@ -88,12 +97,12 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/test`,
+    'tasks/test',
     (cb) => {
         sequence(
-            `tasks/test.src`,
-            `tasks/test.with-cov`,
-            `tasks/test.with-lint`
+            'tasks/test.src',
+            'tasks/test.with-cov',
+            'tasks/test.with-lint'
         )(cb);
     }
 );
