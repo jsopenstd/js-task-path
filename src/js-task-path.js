@@ -48,43 +48,9 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
 const self = class Path {
 
     /**
-     * The default values of options, when adding paths.
-     *
-     * @const
-     * @type {Object} DEFAULTS
-     * @memberOf js/task/Paths
-     */
-    static get DEFAULTS() {
-        return {
-            /**
-             * Whether use path.normalize(...) on passed globs.
-             *
-             * @type {boolean}
-             * @default true
-             */
-            autoNormalizePath : true,
-
-            /**
-             *
-             * @type {RegExp}
-             * @default \s*(<[\s\-\\\/.*\w]+>)\s* /i
-             */
-            nameTokenPattern : /\s*(<[\s\-\\\/.*\w]+>)\s*/i,
-        };
-    }
-
-    /**
      * @constructor
      */
     constructor() {
-        /**
-         * The root of the project determined when the Paths class was instantiated.
-         *
-         * @private {string}
-         * @default ''
-         */
-        this._root = '';
-
         /**
          * The storage object for the named glob paths.
          *
@@ -93,19 +59,15 @@ const self = class Path {
          */
         this._paths = {};
 
+        // set the default values of options
+        this.setOptions({
+            rootName : self.DEFAULT_ROOT_NAME,
+            prefix   : self.DEFAULT_NAME_TOKEN.prefix,
+            suffix   : self.DEFAULT_NAME_TOKEN.suffix,
+        });
+
+        // set the default value for root
         this.setRoot(appRootPath.toString());
-
-        this._options = {
-
-        };
-    }
-
-    getOptions() {
-        return extend(true, {}, this._options);
-    }
-
-    setOptions(options) {
-        extend(this._options, options);
     }
 
     /**
@@ -121,8 +83,8 @@ const self = class Path {
     get(name) {
         this._checkPathExists(name);
 
-        if (name === 'root') {
-            return this._root;
+        if (name === this._options.rootName) {
+            return this.getRoot();
         }
 
         return this._paths[name];
@@ -139,7 +101,7 @@ const self = class Path {
      * @param {string}       name                     - The name of the glob path.
      * @param {string|Array} glob                     - The glob path. Can be an array of globs.
      * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js/task/Paths.DEFAULTS}
+     *                                                  see: {@link js.task.Paths.DEFAULTS}
      *
      * @returns {string|Array} The filtered glob path.
      */
@@ -246,7 +208,7 @@ const self = class Path {
      * @param {string}       name                     - The name of the glob path.
      * @param {string|Array} glob                     - The glob path. Can be an array of globs.
      * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js/task/Paths.DEFAULTS}
+     *                                                  see: {@link js.task.Paths.DEFAULTS}
      *
      * @returns {string|Array} The new glob path, contains the appended glob path.
      */
@@ -353,38 +315,6 @@ const self = class Path {
     }
 
     /**
-     * Returns the root glob path.
-     *
-     * The root glob path is determined at the instantiation of the Paths class.
-     * Be cautious regarding the value of this root glob path, after the original root glob path is changed.
-     *
-     * @function getRoot
-     * @memberOf js.task.Path
-     *
-     * @returns {string} The root glob path.
-     */
-    getRoot() {
-        return this._root;
-    }
-
-    /**
-     * Sets the root glob path by the given glob path.
-     *
-     * As the root glob path is determined at the instantiation of the Paths class,
-     * be cautious, when changing the root glob path to avoid unwanted errors.
-     *
-     * @function setRoot
-     * @memberOf js.task.Path
-     *
-     * @param {string} glob - The root glob path.
-     *
-     * @returns {string} The new, filtered root glob path.
-     */
-    setRoot(glob) {
-        return this._setGlobPath(this, '_root', glob);
-    }
-
-    /**
      * Returns all of the stored named glob paths.
      *
      * The returned object will be a deep copy of the original object,
@@ -414,6 +344,81 @@ const self = class Path {
         this._paths = {};
 
         return removedGlobs;
+    }
+
+    /**
+     * Returns the options of path.
+     *
+     * @function getOptions
+     * @memberOf js.task.Path
+     *
+     * @returns {Object} The storage object, that holds the values of the options.
+     */
+    getOptions() {
+        return extend(true, {}, this._options);
+    }
+
+    /**
+     * Sets the options for paths.
+     *
+     * @function setOptions
+     * @memberOf js.task.Path
+     *
+     * @param {Object} options The storage object, which holds the values of the options to change.
+     *
+     * @returns {void}
+     */
+    setOptions(options) {
+        /**
+         * The storage object for options
+         *
+         * @private {Object}
+         * @default {}
+         */
+        this._options = this._options || {};
+
+        extend(this._options, options);
+
+        /**
+         * The RegExp for matching name tokens.
+         *
+         * @private {RegExp}
+         */
+        this._nameTokenPattern = new RegExp(
+            `\\s*(${this._options.prefix}[\\s\\-\\\\\\/.*\\w]+${this._options.suffix})\\s*`, 'i'
+        );
+    }
+
+    /**
+     * Returns the root glob path.
+     *
+     * The root glob path is determined at the instantiation of the Paths class.
+     * Be cautious regarding the value of this root glob path, after the original root glob path is changed.
+     *
+     * @function getRoot
+     * @memberOf js.task.Path
+     *
+     * @returns {string} The root glob path.
+     */
+    getRoot() {
+        return this[`_${this._options.rootName}`];
+    }
+
+    /**
+     * Sets the root glob path by the given glob path.
+     *
+     * As the root glob path is determined at the instantiation of the Paths class,
+     * be cautious, when changing the root glob path to avoid unwanted errors.
+     *
+     * @function setRoot
+     * @memberOf js.task.Path
+     *
+     * @param {string} glob - The root glob path.
+     *
+     * @returns {string} The new, filtered root glob path.
+     */
+    setRoot(glob) {
+        return this._setGlobPath(this, `_${this._options.rootName}`, glob);
     }
 
     /**
@@ -476,7 +481,7 @@ const self = class Path {
      * @returns {void}
      */
     _checkPathExists(name, glob) {
-        if (name === 'root') {
+        if (name === this._options.rootName) {
             return;
         }
 
@@ -498,7 +503,7 @@ const self = class Path {
      * @returns {string} The resolved glob path.
      */
     _resolveNameTokens(glob) {
-        return glob.replace(self.DEFAULTS.nameTokenPattern, (match) => {
+        return glob.replace(this._nameTokenPattern, (match) => {
             const name = match.substr(1, match.length - 2);
 
             this._checkPathExists(name, glob);
@@ -522,18 +527,18 @@ const self = class Path {
      *
      * @param {string} glob                     - The glob path.
      * @param {Object} [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                            see: {@link js/task/Paths.DEFAULTS}
+     *                                            see: {@link js.task.Paths.DEFAULTS}
      *
      * @returns {string} The filtered glob path.
      */
     _filterGlob(glob, options) {
-        const opt = extend(true, {}, self.DEFAULTS, options);
+        this._checkGlob(glob);
+        this._checkOptions(options);
+
+        this.setOptions(options);
 
         let filteredGlob = this._resolveNameTokens(glob);
-
-        if (opt.autoNormalizePath) {
-            filteredGlob = nodePath.normalize(filteredGlob);
-        }
+        filteredGlob = nodePath.normalize(filteredGlob);
 
         return filteredGlob;
     }
@@ -546,7 +551,7 @@ const self = class Path {
      *
      * @param {string|Array} glob                     - The glob path.
      * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js/task/Paths.DEFAULTS}
+     *                                                  see: {@link js.task.Paths.DEFAULTS}
      *
      * @returns {string|Array} The filtered glob path.
      */
@@ -581,6 +586,32 @@ const self = class Path {
 
         return processedGlob;
     }
+};
+
+/**
+ * The default name for root path.
+ *
+ * @public
+ * @static
+ * @const {string}
+ * @default 'root'
+ * @memberOf js.task.Paths
+ */
+self.DEFAULT_ROOT_NAME = 'root';
+
+/**
+ * The default name tokens.
+ *
+ * @public
+ * @static
+ * @const
+ * @type {{prefix: string, suffix: string}}
+ * @default {{prefix: '<', suffix: '>'}}
+ * @memberOf js.task.Paths
+ */
+self.DEFAULT_NAME_TOKEN = {
+    prefix : '<',
+    suffix : '>',
 };
 
 module.exports = new self();
