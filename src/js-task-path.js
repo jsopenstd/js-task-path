@@ -76,15 +76,31 @@ const self = class Path {
      * @memberOf js.task.Path
      *
      * @param {string} name - The name of the glob path.
+     *                        If the name contains an existing path name (e.g.: path.get('<root>/package.json')),
+     *                        then it will be automatically resolved.
      *
      * @returns {string|Array} The glob path.
+     *
+     * @example
+     * // auto-resolve a path, so
+     * // instead of this below:
+     * path.get('root') + '/package.json';
+     *
+     * // it can be used like this:
+     * path.get('<root>/package.json');
      */
     get(name) {
-        this._checkPathExists(name);
-
+        // in case of root
         if (name === this._options.rootName) {
             return this.getRoot();
         }
+
+        // in case of auto-resolvable path names
+        if (isString(name) && this._nameTokenPattern.test(name)) {
+            return this._resolveNameTokens(name);
+        }
+
+        this._checkPathExists(name);
 
         return this._paths[name];
     }
