@@ -1,10 +1,10 @@
 'use strict';
 
-const gulp     = require(`gulp`),
-      sequence = require(`gulp-sequence`),
-      debug    = require(`gulp-debug`),
-      semver   = require(`semver`),
-      fs       = require(`fs`);
+const gulp     = require('gulp'),
+      sequence = require('gulp-sequence'),
+      debug    = require('gulp-debug'),
+      semver   = require('semver'),
+      fs       = require('fs');
 
 const MAJOR = 1,
       MINOR = 2,
@@ -18,19 +18,19 @@ const getNextVersion = () => {
     var ver;
 
     if ( ! _nextVersion) {
-        ver = require(`../../../../package.json`).version;
+        ver = require('../../../../package.json').version;
 
         switch (bumpType) {
             case MAJOR :
-                ver = semver.inc(ver, `major`);
+                ver = semver.inc(ver, 'major');
                 break;
 
             case MINOR :
-                ver = semver.inc(ver, `minor`);
+                ver = semver.inc(ver, 'minor');
                 break;
 
             case PATCH :
-                ver = semver.inc(ver, `patch`);
+                ver = semver.inc(ver, 'patch');
                 break;
         }
 
@@ -41,7 +41,7 @@ const getNextVersion = () => {
 };
 
 gulp.task(
-    `tasks/bump.set-bump-major`,
+    'tasks/bump.set-bump-major',
     (cb) => {
         bumpType = MAJOR;
         cb();
@@ -49,7 +49,7 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/bump.set-bump-minor`,
+    'tasks/bump.set-bump-minor',
     (cb) => {
         bumpType = MINOR;
         cb();
@@ -57,7 +57,7 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/bump.set-bump-patch`,
+    'tasks/bump.set-bump-patch',
     (cb) => {
         bumpType = PATCH;
         cb();
@@ -65,9 +65,9 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/bump.package_json`,
+    'tasks/bump.package_json',
     (cb) => {
-        var path = `/vagrant/package.json`;
+        var path = '/vagrant/package.json';
         var package_json = require(path);
 
         package_json.version = getNextVersion();
@@ -75,7 +75,7 @@ gulp.task(
         var data = JSON.stringify(package_json, null, 2);
 
         // add new line to the end of the file by adding to the data
-        data += `\n`;
+        data += '\n';
 
         fs.writeFileSync(path, data);
 
@@ -84,21 +84,21 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/bump.src`,
+    'tasks/bump.src',
     (cb) => {
         bumpType = MAJOR;
 
-        var path = `/vagrant/src/js-task-path.js`;
+        var path = '/vagrant/src/js-task-path.js';
         var version = getNextVersion();
         var src = fs.readFileSync(
                 path,
                 {
-                    encoding : `utf8`
+                    encoding : 'utf8'
                 }
             );
 
         var pattern = /\* @version [\d.]+/;
-        src = src.replace(pattern, `* @version ` + version);
+        src = src.replace(pattern, '* @version ' + version);
 
         fs.writeFileSync(path, src);
 
@@ -107,11 +107,11 @@ gulp.task(
 );
 
 gulp.task(
-    `tasks/bump.bump-files`,
+    'tasks/bump.bump-files',
     (cb) => {
         sequence(
-            `tasks/bump.package_json`,
-            `tasks/bump.src`
+            'tasks/bump.package_json',
+            'tasks/bump.src'
         )(cb);
     }
 );
@@ -123,31 +123,31 @@ gulp.task(
  */
 
 gulp.task(
-    `tasks/bump-project-major`,
+    'tasks/bump-project-major',
     (cb) => {
         sequence(
-            `tasks/bump.set-bump-major`,
-            `tasks/bump.package_json`
+            'tasks/bump.set-bump-major',
+            'tasks/bump.package_json'
         )(cb);
     }
 );
 
 gulp.task(
-    `tasks/bump-project-minor`,
+    'tasks/bump-project-minor',
     (cb) => {
         sequence(
-            `tasks/bump.set-bump-minor`,
-            `tasks/bump.package_json`
+            'tasks/bump.set-bump-minor',
+            'tasks/bump.package_json'
         )(cb);
     }
 );
 
 gulp.task(
-    `tasks/bump-project-patch`,
+    'tasks/bump-project-patch',
     (cb) => {
         sequence(
-            `tasks/bump.set-bump-patch`,
-            `tasks/bump.package_json`
+            'tasks/bump.set-bump-patch',
+            'tasks/bump.package_json'
         )(cb);
     }
 );
@@ -159,31 +159,31 @@ gulp.task(
  */
 
 gulp.task(
-    `tasks/bump-major`,
+    'tasks/bump-major',
     (cb) => {
         sequence(
-            `tasks/bump.set-bump-major`,
-            `tasks/bump.bump-files`
+            'tasks/bump.set-bump-major',
+            'tasks/bump.bump-files'
         )(cb);
     }
 );
 
 gulp.task(
-    `tasks/bump-minor`,
+    'tasks/bump-minor',
     (cb) => {
         sequence(
-            `tasks/bump.set-bump-minor`,
-            `tasks/bump.bump-files`
+            'tasks/bump.set-bump-minor',
+            'tasks/bump.bump-files'
         )(cb);
     }
 );
 
 gulp.task(
-    `tasks/bump-patch`,
+    'tasks/bump-patch',
     (cb) => {
         sequence(
-            `tasks/bump.set-bump-patch`,
-            `tasks/bump.bump-files`
+            'tasks/bump.set-bump-patch',
+            'tasks/bump.bump-files'
         )(cb);
     }
 );
