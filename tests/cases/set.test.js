@@ -18,12 +18,12 @@ module.exports = {
         },
 
         '.set()' : {
-            'default' : () => {
+            'multiple paths with single globs' : () => {
                 const root = path.getRoot();
 
-                assert(path.set('dist', '<root>/dist') === `${root}/dist`);
-                assert(path.set('bin',  '<root>/bin')  === `${root}/bin`);
-                assert(path.set('lib',  '<root>/lib')  === `${root}/lib`);
+                path.set('dist', '<root>/dist');
+                path.set('bin',  '<root>/bin');
+                path.set('lib',  '<root>/lib');
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -34,11 +34,45 @@ module.exports = {
                     }
                 );
             },
-            'extended' : () => {
+            'one path, multiple globs' : () => {
+                const root = path.getRoot();
 
+                path.set(
+                    'watch',
+                    [
+                        '<root>/dist',
+                        '<root>/bin',
+                        '<root>/lib',
+                    ]
+                );
+
+                assert.deepStrictEqual(
+                    path.getAll(),
+                    {
+                        watch : [
+                            `${root}/dist`,
+                            `${root}/bin`,
+                            `${root}/lib`,
+                        ],
+                    }
+                );
             },
-            'edge' : () => {
+            'chaining' : () => {
+                const root = path.getRoot();
 
+                path
+                    .set('dist', '<root>/dist')
+                    .set('bin',  '<root>/bin')
+                    .set('lib',  '<root>/lib');
+
+                assert.deepStrictEqual(
+                    path.getAll(),
+                    {
+                        dist : `${root}/dist`,
+                        bin  : `${root}/bin`,
+                        lib  : `${root}/lib`,
+                    }
+                );
             },
             'exceptions' : () => {
                 // invalid name

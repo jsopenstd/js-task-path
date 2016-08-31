@@ -23,9 +23,20 @@ module.exports = {
             },
 
             'return previously set paths' : () => {
+
+                // paths with single globs
                 path.set('a', '1');
                 path.set('b', '2');
                 path.set('c', '3');
+
+                // path with multiple glob
+                path.set(
+                    'd',
+                    [
+                        '4',
+                        '5',
+                    ]
+                );
 
                 assert.deepStrictEqual(
                     path.getAll(),
@@ -33,6 +44,10 @@ module.exports = {
                         a : '1',
                         b : '2',
                         c : '3',
+                        d : [
+                            '4',
+                            '5',
+                        ],
                     }
                 );
             },

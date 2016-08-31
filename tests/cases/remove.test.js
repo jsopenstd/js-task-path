@@ -20,9 +20,9 @@ module.exports = {
         '.remove()' : () => {
             const root = path.getRoot();
 
-            assert(path.set('src',   '<root>/src')   === `${root}/src`);
-            assert(path.set('tests', '<root>/tests') === `${root}/tests`);
-            assert(path.set('doc',   '<root>/doc')   === `${root}/doc`);
+            path.set('src',   '<root>/src');
+            path.set('tests', '<root>/tests');
+            path.set('doc',   '<root>/doc');
 
             assert.deepStrictEqual(
                 path.getAll(),
@@ -33,7 +33,7 @@ module.exports = {
                 }
             );
 
-            assert(path.remove('src') === `${root}/src`);
+            path.remove('src');
 
             assert.deepStrictEqual(
                 path.getAll(),
@@ -43,8 +43,8 @@ module.exports = {
                 }
             );
 
-            assert(path.remove('tests') === `${root}/tests`);
-            assert(path.remove('doc')   === `${root}/doc`);
+            path.remove('tests');
+            path.remove('doc');
 
             assert.deepStrictEqual(path.getAll(), {});
         },

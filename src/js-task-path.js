@@ -24,7 +24,6 @@
 const nodePath      = require('path'),
       appRootPath   = require('app-root-path'),
       extend        = require('extend'),
-      foreach       = require('js-partial-foreach'),
       isPresent     = require('js-partial-is-present'),
       isString      = require('js-partial-is-string'),
       isEmptyString = require('js-partial-is-empty-string'),
@@ -103,10 +102,12 @@ const self = class Path {
      * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
      *                                                  see: {@link js.task.Paths.DEFAULTS}
      *
-     * @returns {string|Array} The filtered glob path.
+     * @returns {Path} The path instance to provide chainability.
      */
     set(name, glob, options) {
-        return this._setGlobPath(this._paths, name, glob, options);
+        this._setGlobPath(this._paths, name, glob, options);
+
+        return this;
     }
 
     /**
@@ -177,23 +178,14 @@ const self = class Path {
      *
      * @param {string} name - The name of the glob path.
      *
-     * @returns {string|Array|null} The removed glob path.
-     *                              If there was no matching named glob path in the stored glob paths, or
-     *                              if the removal was unsuccessful by other means,
-     *                              the return value will be null;
+     * @returns {void}
      */
     remove(name) {
         this._checkName(name);
 
-        let removedGlob = null;
-
         if (this.has(name)) {
-            removedGlob = this.get(name);
-
             delete this._paths[name];
         }
-
-        return removedGlob;
     }
 
     /**
@@ -210,7 +202,7 @@ const self = class Path {
      * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
      *                                                  see: {@link js.task.Paths.DEFAULTS}
      *
-     * @returns {string|Array} The new glob path, contains the appended glob path.
+     * @returns {Path} The path instance to provide chainability.
      */
     appendTo(name, glob, options) {
         this._checkName(name);
@@ -220,7 +212,7 @@ const self = class Path {
         let filteredGlob;
 
         if ( ! this.has(name)) {
-            filteredGlob = this.addPath(name, glob, options);
+            this.add(name, glob, options);
 
         } else {
             // only append to the given name, if the stored glob isn't equal to/doesn't contain the given glob
@@ -242,13 +234,10 @@ const self = class Path {
                 filteredGlob = arrayMerge(storedGlob, filteredGlob);
 
                 this._paths[name] = filteredGlob;
-
-            } else {
-                filteredGlob = this.get(name);
             }
         }
 
-        return filteredGlob;
+        return this;
     }
 
     /**
@@ -264,16 +253,11 @@ const self = class Path {
      * @param {string}       name - The name of the glob path.
      * @param {string|Array} glob - The glob path. Can be an array of globs.
      *
-     * @returns {string|Array|null} The removed glob path.
-     *                              If there was no matching named glob path in the stored glob paths, or
-     *                              if the removal was unsuccessful by other means,
-     *                              the return value will be null;
+     * @returns {void}
      */
     removeFrom(name, glob) {
         this._checkName(name);
         this._checkGlob(glob);
-
-        let removedGlob = null;
 
         if (this.has(name) && this.contains(name, glob)) {
             let processedGlob = this._processGlob(glob),
@@ -283,8 +267,6 @@ const self = class Path {
                 if (processedGlob === storedGlob) {
                     this.remove(name);
                 }
-
-                removedGlob = processedGlob;
 
             } else {
                 if ( ! isArray(processedGlob)) {
@@ -306,12 +288,8 @@ const self = class Path {
                 if (storedGlob.length === 0) {
                     this.remove(name);
                 }
-
-                removedGlob = processedGlob;
             }
         }
-
-        return removedGlob;
     }
 
     /**
@@ -415,10 +393,10 @@ const self = class Path {
      *
      * @param {string} glob - The root glob path.
      *
-     * @returns {string} The new, filtered root glob path.
+     * @returns {void}
      */
     setRoot(glob) {
-        return this._setGlobPath(this, `_${this._options.rootName}`, glob);
+        this._setGlobPath(this, `_${this._options.rootName}`, glob);
     }
 
     /**
@@ -561,12 +539,9 @@ const self = class Path {
         if (isArray(glob)) {
             filteredGlob = [];
 
-            foreach(
-                glob,
-                (entry) => {
-                    filteredGlob.push(this._filterGlob(entry, options));
-                }
-            );
+            glob.forEach((entry) => {
+                filteredGlob.push(this._filterGlob(entry, options));
+            });
 
         } else {
             filteredGlob = this._filterGlob(glob, options);

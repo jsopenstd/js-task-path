@@ -29,24 +29,17 @@ module.exports = {
                 }
             );
 
-            let newGlob = path.appendTo('src', '<root>/src/another-path/');
+            path.appendTo('src', '<root>/src/another-path/');
 
             assert.deepStrictEqual(
-                newGlob,
+                path.get('src'),
                 [
                     root + '/src',
                     root + '/src/another-path/',
                 ]
             );
 
-            let removedGlob = path.removeFrom('src', '<root>/src');
-
-            assert.deepStrictEqual(
-                removedGlob,
-                [
-                    root + '/src',
-                ]
-            );
+            path.removeFrom('src', '<root>/src');
 
             assert.deepStrictEqual(
                 path.getAll(),

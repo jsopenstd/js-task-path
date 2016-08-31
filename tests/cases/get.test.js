@@ -18,14 +18,34 @@ module.exports = {
         },
 
         '.get()' : {
-            'default' : () => {
+            'general' : () => {
+                const root = path.getRoot();
 
-            },
-            'extended' : () => {
+                // paths with single globs
+                path.set('dist', '<root>/dist');
+                path.set('bin',  '<root>/bin');
+                path.set('lib',  '<root>/lib');
 
-            },
-            'edge' : () => {
+                // path with multiple globs
+                path.set(
+                    'src',
+                    [
+                        '<root>/src/one',
+                        '<root>/src/two',
+                    ]
+                );
 
+                assert(path.get('dist') === `${root}/dist`);
+                assert(path.get('bin')  === `${root}/bin`);
+                assert(path.get('lib')  === `${root}/lib`);
+
+                assert.deepStrictEqual(
+                    path.get('src'),
+                    [
+                        `${root}/src/one`,
+                        `${root}/src/two`,
+                    ]
+                );
             },
             'exceptions' : () => {
                 // without parameter

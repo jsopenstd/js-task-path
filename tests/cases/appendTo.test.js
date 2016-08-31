@@ -17,45 +17,112 @@ module.exports = {
             path.removeAll();
         },
 
-        '.appendTo()' : () => {
-            const root = path.getRoot();
+        '.appendTo()' : {
+            'general' : () => {
+                const root = path.getRoot();
 
-            path.set('src', '<root>/src');
+                path.set('src', '<root>/src');
 
-            assert.deepStrictEqual(
-                path.getAll(),
-                {
-                    src  : root + '/src',
-                }
-            );
+                assert.deepStrictEqual(
+                    path.getAll(),
+                    {
+                        src  : `${root}/src`,
+                    }
+                );
 
-            let newGlob = path.appendTo('src', '<root>/src/another-path/');
+                path.appendTo('src', '<root>/src/another-path/');
 
-            assert.deepStrictEqual(
-                newGlob,
-                [
-                    root + '/src',
-                    root + '/src/another-path/',
-                ]
-            );
+                assert.deepStrictEqual(
+                    path.get('src'),
+                    [
+                        `${root}/src`,
+                        `${root}/src/another-path/`,
+                    ]
+                );
 
-            let removedGlob = path.removeFrom('src', '<root>/src');
+                path.removeFrom('src', '<root>/src');
 
-            assert.deepStrictEqual(
-                removedGlob,
-                [
-                    root + '/src',
-                ]
-            );
+                assert.deepStrictEqual(
+                    path.get('src'),
+                    [
+                        `${root}/src/another-path/`,
+                    ]
+                );
 
-            assert.deepStrictEqual(
-                path.getAll(),
-                {
-                    src  : [
-                        root + '/src/another-path/',
-                    ],
-                }
-            );
+                assert.deepStrictEqual(
+                    path.getAll(),
+                    {
+                        src  : [
+                            `${root}/src/another-path/`,
+                        ],
+                    }
+                );
+            },
+            'chaining' : {
+                'append only' : () => {
+                    const root = path.getRoot();
+
+                    path.set('src', '<root>/src');
+
+                    path
+                        .appendTo('src', '<root>/src/one/')
+                        .appendTo('src', '<root>/src/two/')
+                        .appendTo('src', '<root>/src/three/');
+
+                    assert.deepStrictEqual(
+                        path.get('src'),
+                        [
+                            `${root}/src`,
+                            `${root}/src/one/`,
+                            `${root}/src/two/`,
+                            `${root}/src/three/`,
+                        ]
+                    );
+
+                    assert.deepStrictEqual(
+                        path.getAll(),
+                        {
+                            src : [
+                                `${root}/src`,
+                                `${root}/src/one/`,
+                                `${root}/src/two/`,
+                                `${root}/src/three/`,
+                            ]
+                        }
+                    );
+                },
+                'set and append' : () => {
+                    const root = path.getRoot();
+
+                    path
+                        .set('src', '<root>/src')
+                        .appendTo('src', '<root>/src/one/')
+                        .appendTo('src', '<root>/src/two/')
+                        .appendTo('src', '<root>/src/three/');
+
+                    assert.deepStrictEqual(
+                        path.get('src'),
+                        [
+                            `${root}/src`,
+                            `${root}/src/one/`,
+                            `${root}/src/two/`,
+                            `${root}/src/three/`,
+                        ]
+                    );
+
+                    assert.deepStrictEqual(
+                        path.getAll(),
+                        {
+                            src : [
+                                `${root}/src`,
+                                `${root}/src/one/`,
+                                `${root}/src/two/`,
+                                `${root}/src/three/`,
+                            ]
+                        }
+                    );
+                },
+            },
         },
     }
 };
