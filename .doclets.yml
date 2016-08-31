@@ -11,3 +11,5 @@ branches:
   - feature/*
   - release/*
   - hotfix/*
+
+  - feature/#11-cleanup-project
