@@ -59,7 +59,11 @@
     "js.task.path",
     "js-task-path",
     "js-task-paths",
+    "javascript",
+    "open",
+    "standards",
     "jsopenstd",
+    "josh",
     "node",
     "node-only"
   ]
