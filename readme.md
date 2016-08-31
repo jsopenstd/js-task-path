@@ -10,8 +10,11 @@
 
 ## Synopsis
 
-A utility singleton to help manage task-related paths more easily throughout the whole project.
-**Node-only**.
+A helper class to manage **task-**, **build-** and **deployment-related** paths more easily throughout 
+the whole project. It provides an intuitive method to handle **path shortcuts for custom paths**.
+
+- Written in **ES6**
+- **Node-only**.
 
 ## Install
 
@@ -22,45 +25,39 @@ npm install js-task-path
 ## Usage
 
 For additional examples,
-check the **[test folder](https://github.com/jsstd/js-task-path/tree/master/test)**
+check the **[tests folder](https://github.com/jsstd/js-task-path/tree/master/tests)**
 
 ```javascript
-const paths = require("js-task-path");
+const path = require('js-task-path');
 
-// add general paths
-paths.addPath("dist",  "<root>/dist");
-paths.addPath("src",   "<root>/src");
-paths.addPath("doc",   "<root>/doc");
-paths.addPath("tasks", "<root>/tasks");
-paths.addPath("tests", "<root>/tests");
+// after require, you can use path right away without instantiation, since it's a singleton
+
+// add general/custom paths
+path.add('dist',  '<root>/dist');
+path.add('src',   '<root>/src');
+path.add('doc',   '<root>/doc');
+path.add('tasks', '<root>/tasks');
+path.add('tests', '<root>/tests');
 
 // use previously given, custom paths via token
-paths.addPath("build-tasks", "<tasks>/build/*.js");
+path.add('build-tasks', '<tasks>/build/*.js');
 
 // add individual files
-paths.addPath("source-file", "<src>/src.js");
-paths.addPath("dist-file",   "<dist>/dist.js");
+path.add('source-file', '<src>/src.js');
+path.add('dist-file',   '<dist>/dist.js');
 
 // get paths by name
-paths.getPath("source-file");
-paths.getPath("dist-file");
+path.get('source-file');
+path.get('dist-file');
+```
 
+```javascript
 // example, when using gulp
-gulp.task("build::copy-source", function() {
+gulp.task('build-source', function() {
     return gulp
-        .src(paths.getPath("source-file"))
+        .src(path.get('src'))
         .pipe(
-            gulp.dest(paths.getPath("dist")
-        ));
-});
-
-// example, when using gulp, using shorter paths aliases
-// for shorter paths aliases, check the documentation
-gulp.task("build::copy-source", function() {
-    return gulp
-        .src(paths.get("source-file"))
-        .pipe(
-            gulp.dest(paths.get("dist")
+            gulp.dest(path.get('dist')
         ));
 });
 ```
@@ -72,7 +69,7 @@ Check the source
 since it's well structured and documented. Also you can find the rendered jsDoc documentation on 
 [Doclets.io](https://doclets.io/jsopenstd/js-task-path/master). 
 
-Also, check the [unit tests](https://github.com/jsopenstd/js-task-path/blob/master/tests/tests.js) 
+Also, check the [unit tests](https://github.com/jsopenstd/js-task-path/blob/master/tests/cases) 
 in order to grasp the full-fledged capabilities.
 
 Have fun! ;)
@@ -127,6 +124,3 @@ Any means of support is beneficial and helpful.
 
 [chat-badge]:    https://badges.gitter.im/jsopenstd/js-task-path.svg
 [chat-url]:      https://gitter.im/jsopenstd/js-task-path?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
-
-[partial-link]:  https://github.com/jsopenstd/jsopenstd/blob/master/readme.md#partial 
-[umd-link]:      https://github.com/jsopenstd/jsopenstd/blob/master/readme.md#umd

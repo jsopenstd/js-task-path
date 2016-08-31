@@ -1,3 +1,9 @@
 module.exports = {
-    path : ''
+    path : '',
+    exception : {
+        'InvalidGlobException'     : '',
+        'InvalidPathNameException' : '',
+        'PathNotFoundException'    : '',
+        'TypeException'            : '',
+    }
 };
