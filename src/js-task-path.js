@@ -21,16 +21,17 @@
  | Essential modules
  |----------------------------------------------------------------------------------------------------------------------
  */
-const nodePath      = require('path'),
-      appRootPath   = require('app-root-path'),
-      extend        = require('extend'),
-      foreach       = require('js-partial-foreach'),
-      isPresent     = require('js-partial-is-present'),
-      isString      = require('js-partial-is-string'),
-      isEmptyString = require('js-partial-is-empty-string'),
-      isArray       = require('js-partial-is-array'),
-      isObject      = require('js-partial-is-object'),
-      arrayMerge    = require('js-partial-array-merge');
+const nodePath           = require('path'),
+      appRootPath        = require('app-root-path'),
+      escapeStringRegexp = require('escape-string-regexp'),
+      extend             = require('extend'),
+      foreach            = require('js-partial-foreach'),
+      isPresent          = require('js-partial-is-present'),
+      isString           = require('js-partial-is-string'),
+      isEmptyString      = require('js-partial-is-empty-string'),
+      isArray            = require('js-partial-is-array'),
+      isObject           = require('js-partial-is-object'),
+      arrayMerge         = require('js-partial-array-merge');
 /*
  |----------------------------------------------------------------------------------------------------------------------
  | Exceptions
@@ -142,7 +143,7 @@ Path.prototype = {
         }
 
         // in case of auto-resolvable path names
-        if (isString(name) && this._nameTokenPattern.test(name)) {
+        if (this._containsToken(name)) {
             return this._resolveNameTokens(name);
         }
 
@@ -159,10 +160,10 @@ Path.prototype = {
      * @function set
      * @memberOf js.task.Path
      *
-     * @param {string}       name                     - The name of the glob path.
-     * @param {string|Array} glob                     - The glob path. Can be an array of globs.
+     * @param {string}       name                    - The name of the glob path.
+     * @param {string|Array} glob                    - The glob path. Can be an array of globs.
      * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js.task.Path.DEFAULTS}
+     *                                                 see: {@link js.task.Path.DEFAULTS}
      *
      * @returns {Path} The path instance to provide chainability.
      */
@@ -427,6 +428,8 @@ Path.prototype = {
      * @returns {void}
      */
     setOptions(options) {
+        this._checkOptions(options);
+
         /**
          * The storage object for options
          *
@@ -437,14 +440,41 @@ Path.prototype = {
 
         extend(this._options, options);
 
-        /**
-         * The RegExp for matching name tokens.
-         *
-         * @private {RegExp}
-         */
-        this._nameTokenPattern = new RegExp(
-            `\\s*(${this._options.prefix}[\\s\\-\\\\\\/.*\\w]+${this._options.suffix})\\s*`, 'i'
-        );
+        // if tokens were changed, regenerate the RegExp patterns;
+        if (options.tokens) {
+            /**
+             * The RegExp patterns for matching name tokens.
+             *
+             * @private {RegExp[]}
+             */
+            this._tokens = [];
+
+            let prefix,
+                suffix;
+
+            foreach(
+                options.tokens,
+                (index, token) => {
+                    token = escapeStringRegexp(token);
+
+                    if (index % 2 === 0) {
+                        prefix = token;
+                    } else {
+                        suffix = token;
+                    }
+
+                    // construct a new RegExp pattern from the actual prefix and suffix,
+                    // then prepare them for the next token iteration by resetting them (prefix = suffix = null)
+                    if (prefix && suffix) {
+                        this._tokens.unshift(new RegExp(`\\s*(${prefix})([\\s\\-\\\\\\/.*\\w]+)(${suffix})\\s*`, 'i'));
+                        prefix = suffix = null;
+                    }
+                }
+            );
+        }
+
+        // sort RegExp patterns to check longer tokens first and shortest last to ensure proper token resolution
+        this._tokens = this._tokens.sort().reverse();
     },
 
     /**
@@ -549,6 +579,53 @@ Path.prototype = {
     },
 
     /**
+     * Returns the index for an existing token if an existing token pattern can be found in the string.
+     *
+     * @private
+     * @function _getTokenIndexFor
+     *
+     * @param {string} string - The string to check.
+     *
+     * @returns {number} If the string contains an index for an existing token, returns its index.
+     *                   Otherwise returns -1;
+     */
+    _getTokenIndexFor(string) {
+        let tokenIndex = -1;
+
+        if (isString(string) && ! isEmptyString(string)) {
+            foreach(
+                this._tokens,
+                /**
+                 * @param {number} index
+                 * @param {RegExp} token
+                 */
+                (index, token) => {
+                    if (token.test(string)) {
+                        tokenIndex = index;
+                        return false;
+                    }
+                }
+            );
+        }
+
+        return tokenIndex;
+    },
+
+    /**
+     * Determines whether the string contains tokens.
+     *
+     * @private
+     * @function _containsToken
+     *
+     * @param {string} string - The string to check.
+     *
+     * @returns {boolean} If the string contains token, returns true.
+     */
+    _containsToken(string) {
+        return this._getTokenIndexFor(string) > -1;
+    },
+
+    /**
      * Resolves the path by name-tokens.
      *
      * @private
@@ -561,9 +638,9 @@ Path.prototype = {
      * @returns {string} The resolved glob path.
      */
     _resolveNameTokens(glob) {
-        return glob.replace(this._nameTokenPattern, (match) => {
-            const name = match.substr(1, match.length - 2);
+        let index = this._getTokenIndexFor(glob);
 
+        return glob.replace(this._tokens[index], (match, prefix, name, suffix) => {
             this._checkPathExists(name, glob);
 
             let path = this.get(name);
@@ -592,8 +669,6 @@ Path.prototype = {
     _filterGlob(glob, options) {
         this._checkGlob(glob);
         this._checkOptions(options);
-
-        this.setOptions(options);
 
         let filteredGlob = this._resolveNameTokens(glob);
         filteredGlob = nodePath.normalize(filteredGlob);
@@ -664,14 +739,19 @@ self.DEFAULT_ROOT_NAME = 'root';
  * @public
  * @static
  * @const
- * @type {{prefix: string, suffix: string}}
- * @default {{prefix: '<', suffix: '>'}}
+ * @type {string[]}
  * @memberOf js.task.Path
  */
-self.DEFAULT_NAME_TOKEN = {
-    prefix : '<',
-    suffix : '>',
-};
+self.DEFAULT_TOKENS = [
+    '<',   '>',
+    '<<',  '>>',
+
+    '@',  '@',
+    '{@', '@}',
+
+    '{%', '%}',
+    '{{', '}}',
+];
 
 /**
  * The default value for creating a path, when doesn't exist.
@@ -720,8 +800,7 @@ self.DEFAULT_APPEND_TO_NON_EXISTENT = self.CREATE_IF_PATH_NOT_EXISTS;
  */
 self.DEFAULTS = {
     rootName            : self.DEFAULT_ROOT_NAME,
-    prefix              : self.DEFAULT_NAME_TOKEN.prefix,
-    suffix              : self.DEFAULT_NAME_TOKEN.suffix,
+    tokens              : self.DEFAULT_TOKENS,
     appendToNonExistent : self.DEFAULT_APPEND_TO_NON_EXISTENT,
 };
 

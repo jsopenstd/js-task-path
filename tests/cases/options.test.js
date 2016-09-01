@@ -27,9 +27,11 @@ module.exports = {
             );
 
             assert(path.getOptions('rootName')            === path.DEFAULT_ROOT_NAME);
-            assert(path.getOptions('prefix')              === path.DEFAULT_NAME_TOKEN.prefix);
-            assert(path.getOptions('suffix')              === path.DEFAULT_NAME_TOKEN.suffix);
             assert(path.getOptions('appendToNonExistent') === path.DEFAULT_APPEND_TO_NON_EXISTENT);
+            assert.deepStrictEqual(
+                path.getOptions('tokens'),
+                path.DEFAULT_TOKENS
+            );
         },
 
         '.setOptions()' : () => {
@@ -43,13 +45,90 @@ module.exports = {
             // set multiple options
             path.setOptions({
                 rootName : '/home',
-                prefix   : '<<',
-                suffix   : '>>',
+                tokens   : [
+                    '<', '>'
+                ],
             });
 
             assert(path.getOptions('rootName') === '/home');
-            assert(path.getOptions('prefix')   === '<<');
-            assert(path.getOptions('suffix')   === '>>');
+            assert.deepStrictEqual(
+                path.getOptions('tokens'),
+                [
+                    '<', '>'
+                ]
+            );
+        },
+
+        'tokens' : {
+            'set tokens' : () => {
+                path.setOptions({
+                    tokens : [
+                        '<<', '>>'
+                    ]
+                });
+
+                assert.deepStrictEqual(
+                    path.getOptions('tokens'),
+                    [
+                        '<<', '>>'
+                    ]
+                );
+            },
+
+            'built-in tokens' : () => {
+                const root = path.getRoot();
+
+                assert(path.get('<root>')   === `${root}`);
+                assert(path.get('<<root>>') === `${root}`);
+
+                assert(path.get('@root@')   === `${root}`);
+                assert(path.get('{@root@}') === `${root}`);
+
+                assert(path.get('{%root%}') === `${root}`);
+                assert(path.get('{{root}}') === `${root}`);
+            },
+
+            'custom tokens' : () => {
+                const root = path.getRoot();
+
+                // one pair
+                path.setOptions({
+                    tokens : [
+                        '[[', ']]',
+                    ]
+                });
+
+                assert(path.get('[[root]]') === `${root}`);
+
+                assert.deepStrictEqual(
+                    path.getOptions('tokens'),
+                    [
+                        '[[', ']]',
+                    ]
+                );
+
+                // multiple pairs
+                path.setOptions({
+                    tokens : [
+                        '#',  '#',
+                        '[[', ']]',
+                        '::', '::',
+                    ]
+                });
+
+                assert(path.get('#root#')   === `${root}`);
+                assert(path.get('[[root]]') === `${root}`);
+                assert(path.get('::root::') === `${root}`);
+
+                assert.deepStrictEqual(
+                    path.getOptions('tokens'),
+                    [
+                        '#',  '#',
+                        '[[', ']]',
+                        '::', '::',
+                    ]
+                );
+            },
         },
     }
 };
