@@ -24,6 +24,7 @@
 const nodePath      = require('path'),
       appRootPath   = require('app-root-path'),
       extend        = require('extend'),
+      foreach       = require('js-partial-foreach'),
       isPresent     = require('js-partial-is-present'),
       isString      = require('js-partial-is-string'),
       isEmptyString = require('js-partial-is-empty-string'),
@@ -40,34 +41,82 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
 
-/**
- * @memberOf js.task
- * @class Path
- */
-const self = class Path {
+function Path() {
+    // create a placeholder function as a base function for further extension
 
     /**
-     * @constructor
+     * A getter/setter shorthand for path.
+     *
+     * @param {string|Object}   name   - The name of the glob.
+     *                                   If it is an object, multiple path globs can be set at once.
+     * @param {string|string[]} [glob] - The glob of path.
+     *
+     * @returns {string|string[]|Path} If used as a getter, returns glob of path.
+     *                                 If used a setter, returns Path to provide chainability.
      */
-    constructor() {
-        /**
-         * The storage object for the named glob paths.
-         *
-         * @private {Object}
-         * @default {}
-         */
-        this._paths = {};
+    const instancePlaceholder = function PathInstance(name, glob) {
 
-        // set the default values of options
-        this.setOptions({
-            rootName : self.DEFAULT_ROOT_NAME,
-            prefix   : self.DEFAULT_NAME_TOKEN.prefix,
-            suffix   : self.DEFAULT_NAME_TOKEN.suffix,
-        });
+        // if glob is present, behave as a setter
+        if (isPresent(glob)) {
+            return PathInstance.set(name, glob);
+        }
 
-        // set the default value for root
-        this.setRoot(appRootPath.toString());
-    }
+        // if name is an array, behave as setter for multiple paths
+        if (isObject(name)) {
+            foreach(
+                name,
+                (pathName, pathGlob) => {
+                    PathInstance.set(pathName, pathGlob);
+                }
+            );
+
+            return PathInstance;
+        }
+
+        // behave as a getter
+        return PathInstance.get(name);
+    };
+
+    /*
+     |------------------------------------------------------------------------------------------------------------------
+     | Extension and Instantiations
+     |------------------------------------------------------------------------------------------------------------------
+     */
+
+    // extend the placeholder function with Path's prototype
+    // as the placeholder function will behave as an instance of Path and '.this' will be properly usable,
+    // but at the same time it will be still just a function and it can be just simply called
+    // providing a shorthand getter/setter functionality for the path globs (e.g.: path('<root>'))
+    extend(
+        instancePlaceholder,
+        Path.prototype
+    );
+
+    /**
+     * The storage object for the named glob paths.
+     *
+     * @private {Object}
+     * @default {}
+     */
+    instancePlaceholder._paths = {};
+
+    // set the default values of options
+    instancePlaceholder.setOptions({
+        rootName : self.DEFAULT_ROOT_NAME,
+        prefix   : self.DEFAULT_NAME_TOKEN.prefix,
+        suffix   : self.DEFAULT_NAME_TOKEN.suffix,
+    });
+
+    // set the default value for root
+    instancePlaceholder.setRoot(appRootPath.toString());
+
+    // return the placeholder function with all the necessary functionality from Path's prototype
+    // and with initial, instantiated values
+    return instancePlaceholder;
+}
+
+Path.prototype = {
+    constructor : Path,
 
     /**
      * Gets the glob path by the given name.
@@ -103,7 +152,7 @@ const self = class Path {
         this._checkPathExists(name);
 
         return this._paths[name];
-    }
+    },
 
     /**
      * Sets the given glob path by the given name.
@@ -115,8 +164,8 @@ const self = class Path {
      *
      * @param {string}       name                     - The name of the glob path.
      * @param {string|Array} glob                     - The glob path. Can be an array of globs.
-     * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js.task.Paths.DEFAULTS}
+     * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
+     *                                                  see: {@link js.task.Path.DEFAULTS}
      *
      * @returns {Path} The path instance to provide chainability.
      */
@@ -124,7 +173,7 @@ const self = class Path {
         this._setGlobPath(this._paths, name, glob, options);
 
         return this;
-    }
+    },
 
     /**
      * Returns whether a glob path by the given name was stored previously.
@@ -140,7 +189,7 @@ const self = class Path {
         this._checkName(name);
 
         return name in this._paths;
-    }
+    },
 
     /**
      * Returns whether a previously stored glob path by the given name contains the given glob path.
@@ -184,7 +233,7 @@ const self = class Path {
         }
 
         return false;
-    }
+    },
 
     /**
      * Removes the glob path by the given name from the stored glob paths.
@@ -202,7 +251,7 @@ const self = class Path {
         if (this.has(name)) {
             delete this._paths[name];
         }
-    }
+    },
 
     /**
      * Appends the given glob path to the given name.
@@ -215,8 +264,8 @@ const self = class Path {
      *
      * @param {string}       name                     - The name of the glob path.
      * @param {string|Array} glob                     - The glob path. Can be an array of globs.
-     * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js.task.Paths.DEFAULTS}
+     * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
+     *                                                  see: {@link js.task.Path.DEFAULTS}
      *
      * @returns {Path} The path instance to provide chainability.
      */
@@ -254,7 +303,7 @@ const self = class Path {
         }
 
         return this;
-    }
+    },
 
     /**
      * Removes the given glob path by the given name.
@@ -306,7 +355,7 @@ const self = class Path {
                 }
             }
         }
-    }
+    },
 
     /**
      * Returns all of the stored named glob paths.
@@ -321,7 +370,7 @@ const self = class Path {
      */
     getAll() {
         return extend(true, {}, this._paths);
-    }
+    },
 
     /**
      * Removes all the stored named glob paths.
@@ -338,7 +387,7 @@ const self = class Path {
         this._paths = {};
 
         return removedGlobs;
-    }
+    },
 
     /**
      * Returns the options of path.
@@ -350,7 +399,7 @@ const self = class Path {
      */
     getOptions() {
         return extend(true, {}, this._options);
-    }
+    },
 
     /**
      * Sets the options for paths.
@@ -381,12 +430,12 @@ const self = class Path {
         this._nameTokenPattern = new RegExp(
             `\\s*(${this._options.prefix}[\\s\\-\\\\\\/.*\\w]+${this._options.suffix})\\s*`, 'i'
         );
-    }
+    },
 
     /**
      * Returns the root glob path.
      *
-     * The root glob path is determined at the instantiation of the Paths class.
+     * The root glob path is determined at the instantiation of the Path class.
      * Be cautious regarding the value of this root glob path, after the original root glob path is changed.
      *
      * @function getRoot
@@ -396,12 +445,12 @@ const self = class Path {
      */
     getRoot() {
         return this[`_${this._options.rootName}`];
-    }
+    },
 
     /**
      * Sets the root glob path by the given glob path.
      *
-     * As the root glob path is determined at the instantiation of the Paths class,
+     * As the root glob path is determined at the instantiation of the Path class,
      * be cautious, when changing the root glob path to avoid unwanted errors.
      *
      * @function setRoot
@@ -413,7 +462,7 @@ const self = class Path {
      */
     setRoot(glob) {
         this._setGlobPath(this, `_${this._options.rootName}`, glob);
-    }
+    },
 
     /**
      * Check whether the name is valid.
@@ -429,7 +478,7 @@ const self = class Path {
         if ( ! isString(name) || isEmptyString(name)) {
             throw new InvalidPathNameException(name);
         }
-    }
+    },
 
     /**
      * Check whether the glob is valid.
@@ -445,7 +494,7 @@ const self = class Path {
         if ( ! isString(glob) && ! isArray(glob)) {
             throw new InvalidGlobException(glob);
         }
-    }
+    },
 
     /**
      * Check whether the options object is valid.
@@ -461,7 +510,7 @@ const self = class Path {
         if ( isPresent(options) && ! isObject(options)) {
             throw new TypeException(options);
         }
-    }
+    },
 
     /**
      * Check whether the the path entry under name exists.
@@ -482,7 +531,7 @@ const self = class Path {
         if ( ! this.has(name) ) {
             throw new PathNotFoundException(name, glob);
         }
-    }
+    },
 
     /**
      * Resolves the path by name-tokens.
@@ -511,7 +560,7 @@ const self = class Path {
 
             return path;
         });
-    }
+    },
 
     /**
      * Filters the given glob path by the passed options.
@@ -519,9 +568,9 @@ const self = class Path {
      * @private
      * @function _filterGlob
      *
-     * @param {string} glob                     - The glob path.
-     * @param {Object} [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                            see: {@link js.task.Paths.DEFAULTS}
+     * @param {string} glob                    - The glob path.
+     * @param {Object} [options=Path.DEFAULTS] - The options that used to filter the glob path.
+     *                                           see: {@link js.task.Path.DEFAULTS}
      *
      * @returns {string} The filtered glob path.
      */
@@ -535,7 +584,7 @@ const self = class Path {
         filteredGlob = nodePath.normalize(filteredGlob);
 
         return filteredGlob;
-    }
+    },
 
     /**
      * Processes the given glob path by the given options.
@@ -543,9 +592,9 @@ const self = class Path {
      * @private
      * @function _processGlob
      *
-     * @param {string|Array} glob                     - The glob path.
-     * @param {Object}       [options=Paths.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js.task.Paths.DEFAULTS}
+     * @param {string|Array} glob                    - The glob path.
+     * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
+     *                                                 see: {@link js.task.Path.DEFAULTS}
      *
      * @returns {string|Array} The filtered glob path.
      */
@@ -564,7 +613,7 @@ const self = class Path {
         }
 
         return filteredGlob;
-    }
+    },
 
     _setGlobPath(object, name, glob, options) {
         this._checkName(name);
@@ -576,8 +625,12 @@ const self = class Path {
         object[name] = processedGlob;
 
         return processedGlob;
-    }
+    },
 };
+
+// use a shorthand, a fairly know convention named 'self'
+// to represent 'static' properties and methods of Path
+const self = Path;
 
 /**
  * The default name for root path.
@@ -586,7 +639,7 @@ const self = class Path {
  * @static
  * @const {string}
  * @default 'root'
- * @memberOf js.task.Paths
+ * @memberOf js.task.Path
  */
 self.DEFAULT_ROOT_NAME = 'root';
 
@@ -598,7 +651,7 @@ self.DEFAULT_ROOT_NAME = 'root';
  * @const
  * @type {{prefix: string, suffix: string}}
  * @default {{prefix: '<', suffix: '>'}}
- * @memberOf js.task.Paths
+ * @memberOf js.task.Path
  */
 self.DEFAULT_NAME_TOKEN = {
     prefix : '<',

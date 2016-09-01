@@ -68,6 +68,50 @@ module.exports = {
                 assert(path.get('<src/images>/*.jpg') === `${root}/src/images/*.jpg`);
                 assert(path.get('<src/watch>')        === `${root}/src/**/*.*`);
             },
+            'getter shorthand' : () => {
+                const root = path.getRoot();
+
+                // check the default 'root' existence
+                assert(path('root')   === root);
+                assert(path('<root>') === root);
+
+                // paths with single globs
+                path('dist', '<root>/dist');
+                path('bin',  '<root>/bin');
+                path('lib',  '<root>/lib');
+
+                // path with multiple globs
+                path(
+                    'src',
+                    [
+                        '<root>/src/one',
+                        '<root>/src/two',
+                    ]
+                );
+
+                // general
+                assert(path('dist') === `${root}/dist`);
+                assert(path('bin')  === `${root}/bin`);
+                assert(path('lib')  === `${root}/lib`);
+
+                // auto-resolve
+                assert(path('<dist>') === `${root}/dist`);
+                assert(path('<bin>')  === `${root}/bin`);
+                assert(path('<lib>')  === `${root}/lib`);
+
+                assert.deepStrictEqual(
+                    path.getAll(),
+                    {
+                        src  : [
+                            `${root}/src/one`,
+                            `${root}/src/two`,
+                        ],
+                        dist : `${root}/dist`,
+                        bin  : `${root}/bin`,
+                        lib  : `${root}/lib`,
+                    }
+                );
+            },
             'exceptions' : () => {
                 // without parameter
                 try {

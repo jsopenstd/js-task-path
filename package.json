@@ -30,6 +30,7 @@
     "js-lang-exception": "^1.0.2",
     "js-partial-array-merge": "0.0.2",
     "js-partial-default-of": "0.0.2",
+    "js-partial-foreach": "^1.0.5",
     "js-partial-is-array": "0.0.2",
     "js-partial-is-empty-string": "0.0.1",
     "js-partial-is-object": "0.0.2",
