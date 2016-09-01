@@ -95,12 +95,6 @@ module.exports = {
                 'append to non-existing' : () => {
                     const root = path.getRoot();
 
-                    /*
-                    path.setOptions({
-                        appendToNonExistent : path.THROW_IF_PATH_NOT_EXISTS
-                    });
-                    */
-
                     path.appendTo('src', '<root>/src');
 
                     assert(path.get('src') === `${root}/src`);
