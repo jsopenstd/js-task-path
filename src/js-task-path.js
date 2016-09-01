@@ -89,7 +89,8 @@ function Path() {
     // providing a shorthand getter/setter functionality for the path globs (e.g.: path('<root>'))
     extend(
         instancePlaceholder,
-        Path.prototype
+        Path.prototype,
+        self
     );
 
     /**
@@ -101,11 +102,7 @@ function Path() {
     instancePlaceholder._paths = {};
 
     // set the default values of options
-    instancePlaceholder.setOptions({
-        rootName : self.DEFAULT_ROOT_NAME,
-        prefix   : self.DEFAULT_NAME_TOKEN.prefix,
-        suffix   : self.DEFAULT_NAME_TOKEN.suffix,
-    });
+    instancePlaceholder.setOptions(self.DEFAULTS);
 
     // set the default value for root
     instancePlaceholder.setRoot(appRootPath.toString());
@@ -277,7 +274,15 @@ Path.prototype = {
         let filteredGlob;
 
         if ( ! this.has(name)) {
-            this.add(name, glob, options);
+            switch (this._options.appendToNonExistent) {
+                case self.CREATE_IF_PATH_NOT_EXISTS:
+                    this.set(name, glob, options);
+                    break;
+
+                case self.THROW_IF_PATH_NOT_EXISTS:
+                    throw new PathNotFoundException(name, glob);
+                    break;
+            }
 
         } else {
             // only append to the given name, if the stored glob isn't equal to/doesn't contain the given glob
@@ -407,7 +412,7 @@ Path.prototype = {
      * @function setOptions
      * @memberOf js.task.Path
      *
-     * @param {Object} options The storage object, which holds the values of the options to change.
+     * @param {Object} options - The storage object, which holds the values of the options to change.
      *
      * @returns {void}
      */
@@ -656,6 +661,58 @@ self.DEFAULT_ROOT_NAME = 'root';
 self.DEFAULT_NAME_TOKEN = {
     prefix : '<',
     suffix : '>',
+};
+
+/**
+ * The default value for creating a path, when doesn't exist.
+ *
+ * @public
+ * @static
+ * @const
+ * @type {number}
+ * @default 1
+ * @memberOf js.task.Path
+ */
+self.CREATE_IF_PATH_NOT_EXISTS = 1;
+
+/**
+ * The default value for throwing an exception, when path doesn't exist.
+ *
+ * @public
+ * @static
+ * @const
+ * @type {number}
+ * @default 2
+ * @memberOf js.task.Path
+ */
+self.THROW_IF_PATH_NOT_EXISTS = 2;
+
+/**
+ * The default value for non-existent appendTo() path behaviour.
+ *
+ * @public
+ * @static
+ * @const
+ * @type {number}
+ * @default 1
+ * @memberOf js.task.Path
+ */
+self.DEFAULT_APPEND_TO_NON_EXISTENT = self.CREATE_IF_PATH_NOT_EXISTS;
+
+/**
+ * The default values for Path.
+ *
+ * @public
+ * @static
+ * @const
+ * @type {Object}
+ * @memberOf js.task.Path
+ */
+self.DEFAULTS = {
+    rootName            : self.DEFAULT_ROOT_NAME,
+    prefix              : self.DEFAULT_NAME_TOKEN.prefix,
+    suffix              : self.DEFAULT_NAME_TOKEN.suffix,
+    appendToNonExistent : self.DEFAULT_APPEND_TO_NON_EXISTENT,
 };
 
 module.exports = new self();

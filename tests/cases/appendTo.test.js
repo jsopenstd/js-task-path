@@ -15,6 +15,7 @@ module.exports = {
         'beforeEach' : () => {
             // reset paths by removing all
             path.removeAll();
+            path.setOptions(path.DEFAULTS);
         },
 
         '.appendTo()' : {
@@ -91,7 +92,33 @@ module.exports = {
                         }
                     );
                 },
-                'set and append' : () => {
+                'append to non-existing' : () => {
+                    const root = path.getRoot();
+
+                    /*
+                    path.setOptions({
+                        appendToNonExistent : path.THROW_IF_PATH_NOT_EXISTS
+                    });
+                    */
+
+                    path.appendTo('src', '<root>/src');
+
+                    assert(path.get('src') === `${root}/src`);
+
+                    path.appendTo('dist', '<root>/dist/one/')
+                        .appendTo('dist', '<root>/dist/two/')
+                        .appendTo('dist', '<root>/dist/three/');
+
+                    assert.deepStrictEqual(
+                        path.get('dist'),
+                        [
+                            `${root}/dist/one/`,
+                            `${root}/dist/two/`,
+                            `${root}/dist/three/`,
+                        ]
+                    );
+                },
+                'set and append to existing' : () => {
                     const root = path.getRoot();
 
                     path
@@ -123,6 +150,17 @@ module.exports = {
                     );
                 },
             },
+        },
+        'exceptions' : () => {
+            path.setOptions({
+                appendToNonExistent : path.THROW_IF_PATH_NOT_EXISTS
+            });
+
+            try {
+                path.appendTo('src', '<root>/src');
+            } catch (exception) {
+                assert(exception instanceof PathNotFoundException);
+            }
         },
     }
 };
