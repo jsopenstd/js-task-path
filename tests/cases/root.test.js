@@ -14,6 +14,9 @@ const assert        = require('assert'),
 module.exports = {
     'js-task-paths' : {
         'beforeEach' : () => {
+            // reset options
+            path.setOptions(path.DEFAULTS);
+
             // reset paths by removing all
             path.removeAll();
         },

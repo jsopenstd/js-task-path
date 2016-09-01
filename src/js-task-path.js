@@ -400,10 +400,20 @@ Path.prototype = {
      * @function getOptions
      * @memberOf js.task.Path
      *
-     * @returns {Object} The storage object, that holds the values of the options.
+     * @param {string} [specificOption] - If specified, the specific option with that name will be returned.
+     *
+     * @returns {Object|*} The storage object, that holds the values of the options.
+     *                     If a specific option was specified, return that specific option.
+     *
      */
-    getOptions() {
-        return extend(true, {}, this._options);
+    getOptions(specificOption) {
+        let clonedOptions = extend(true, {}, this._options);
+
+        if (isString(specificOption) && ! isEmptyString(specificOption)) {
+            return clonedOptions[specificOption];
+        }
+
+        return clonedOptions;
     },
 
     /**
