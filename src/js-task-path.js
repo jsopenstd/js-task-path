@@ -568,7 +568,7 @@ Path.prototype = {
 
             let path = this.get(name);
 
-            // if the p consists of multiple globs in an array, only the 1st glob in the array will be used
+            // if the path consists of multiple globs in an array, only the 1st glob in the array will be used
             if (isArray(path)) {
                 path = path[0];
             }
