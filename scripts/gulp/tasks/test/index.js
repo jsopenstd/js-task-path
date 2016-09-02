@@ -75,7 +75,7 @@ gulp.task(
             .pipe(
                 coverage.enforceThresholds({
                     thresholds : {
-                        global : 50 // enforce 100% coverage
+                        global : 100 // enforce 100% coverage
                     }
                 }
             ));
