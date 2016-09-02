@@ -44,18 +44,97 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
- | 'self' for module's class (Path)
- |
- |     - use a shorthand, a fairly know convention named 'self'
- |       to represent 'static' properties and methods of module's class (Path)
- |     - after the module's class constructed, it will be assigned to self.
+ | Constants
  |----------------------------------------------------------------------------------------------------------------------
  */
 /**
  * @ignore
- * @type {js.task.Path}
  */
-let self;
+const constants = () => {
+    const self = {};
+
+    /**
+     * The default name for root path.
+     *
+     * @public
+     * @static
+     * @const {string} DEFAULT_ROOT_NAME
+     * @default root
+     *
+     * @memberOf js.task.Path
+     */
+    self.DEFAULT_ROOT_NAME = 'root';
+
+    /**
+     * The default name tokens.
+     *
+     * @public
+     * @static
+     * @const {string[]} DEFAULT_TOKENS
+     *
+     * @memberOf js.task.Path
+     */
+    self.DEFAULT_TOKENS = [
+        '<',  '>',
+        '<<', '>>',
+
+        '@',  '@',
+        '{@', '@}',
+
+        '{%', '%}',
+        '{{', '}}',
+    ];
+
+    /**
+     * The default value for creating a path, when doesn't exist.
+     *
+     * @public
+     * @static
+     * @const {number} CREATE_IF_PATH_NOT_EXISTS
+     *
+     * @memberOf js.task.Path
+     */
+    self.CREATE_IF_PATH_NOT_EXISTS = 1;
+
+    /**
+     * The default value for throwing an exception, when path doesn't exist.
+     *
+     * @public
+     * @static
+     * @const {number} THROW_IF_PATH_NOT_EXISTS
+     *
+     * @memberOf js.task.Path
+     */
+    self.THROW_IF_PATH_NOT_EXISTS = 2;
+
+    /**
+     * The default value for non-existent appendTo() path behaviour.
+     *
+     * @public
+     * @static
+     * @const {number} DEFAULT_APPEND
+     *
+     * @memberOf js.task.Path
+     */
+    self.DEFAULT_APPEND = self.CREATE_IF_PATH_NOT_EXISTS;
+
+    /**
+     * The default values for Path.
+     *
+     * @public
+     * @static
+     * @const {{}} DEFAULTS
+     *
+     * @memberOf js.task.Path
+     */
+    self.DEFAULTS = {
+        rootName : self.DEFAULT_ROOT_NAME,
+        tokens   : self.DEFAULT_TOKENS,
+        append   : self.DEFAULT_APPEND,
+    };
+
+    return self;
+};
 
 /**
  * The helper class to manage **task-**, **build-** and **deployment-related** paths more easily throughout
@@ -785,93 +864,24 @@ Path.prototype = {
     },
 };
 
-// assign Path to self after the Path is fully constructed
-self = Path;
+// add constants to module's class
+extend(
+    Path,
+    constants()
+);
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
- | Constants
+ | 'self' for module's class (Path)
+ |
+ |     - use a shorthand, a fairly know convention named 'self'
+ |       to represent 'static' properties and methods of module's class (Path)
  |----------------------------------------------------------------------------------------------------------------------
  */
-
 /**
- * The default name for root path.
- *
- * @public
- * @static
- * @const {string} DEFAULT_ROOT_NAME
- * @default root
- *
- * @memberOf js.task.Path
+ * @ignore
+ * @type {js.task.Path}
  */
-self.DEFAULT_ROOT_NAME = 'root';
-
-/**
- * The default name tokens.
- *
- * @public
- * @static
- * @const {string[]} DEFAULT_TOKENS
- *
- * @memberOf js.task.Path
- */
-self.DEFAULT_TOKENS = [
-    '<',  '>',
-    '<<', '>>',
-
-    '@',  '@',
-    '{@', '@}',
-
-    '{%', '%}',
-    '{{', '}}',
-];
-
-/**
- * The default value for creating a path, when doesn't exist.
- *
- * @public
- * @static
- * @const {number} CREATE_IF_PATH_NOT_EXISTS
- *
- * @memberOf js.task.Path
- */
-self.CREATE_IF_PATH_NOT_EXISTS = 1;
-
-/**
- * The default value for throwing an exception, when path doesn't exist.
- *
- * @public
- * @static
- * @const {number} THROW_IF_PATH_NOT_EXISTS
- *
- * @memberOf js.task.Path
- */
-self.THROW_IF_PATH_NOT_EXISTS = 2;
-
-/**
- * The default value for non-existent appendTo() path behaviour.
- *
- * @public
- * @static
- * @const {number} DEFAULT_APPEND
- *
- * @memberOf js.task.Path
- */
-self.DEFAULT_APPEND = self.CREATE_IF_PATH_NOT_EXISTS;
-
-/**
- * The default values for Path.
- *
- * @public
- * @static
- * @const {{}} DEFAULTS
- *
- * @memberOf js.task.Path
- */
-self.DEFAULTS = {
-    rootName : self.DEFAULT_ROOT_NAME,
-    tokens   : self.DEFAULT_TOKENS,
-    append   : self.DEFAULT_APPEND,
-};
+const self = Path;
 
 module.exports = new self();
