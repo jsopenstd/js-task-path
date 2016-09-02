@@ -9,7 +9,7 @@
 /**
  * More information on [JavaScript Open Standards]{@link https://github.com/jsopenstd/jsopenstd}.
  *
- * @namespace js.task
+ * @namespace js.task.path
  * @version 1.0.3
  *
  * @author Richard King <richrdkng@gmail.com> [GitHub]{@link https://github.com/richrdkng}
@@ -64,7 +64,7 @@ const self = (() => {
          * the whole project.
          *
          * @class Path
-         * @memberOf js.task
+         * @memberOf js.task.path
          */
         function Path() {
             // create a placeholder function as a base function for further extension
@@ -75,7 +75,7 @@ const self = (() => {
              * @public
              * @instance
              * @function ()
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              *
              * @param {string|{}}       name   - The name of the glob.
              *                                   If it is an object, multiple path globs can be set at once.
@@ -158,7 +158,7 @@ const self = (() => {
              * @const {string} DEFAULT_ROOT_NAME
              * @default root
              *
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              */
             constant.DEFAULT_ROOT_NAME = 'root';
 
@@ -169,7 +169,7 @@ const self = (() => {
              * @static
              * @const {string[]} DEFAULT_TOKENS
              *
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              */
             constant.DEFAULT_TOKENS = [
                 '<',  '>',
@@ -189,7 +189,7 @@ const self = (() => {
              * @static
              * @const {number} CREATE_IF_PATH_NOT_EXISTS
              *
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              */
             constant.CREATE_IF_PATH_NOT_EXISTS = 1;
 
@@ -200,7 +200,7 @@ const self = (() => {
              * @static
              * @const {number} THROW_IF_PATH_NOT_EXISTS
              *
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              */
             constant.THROW_IF_PATH_NOT_EXISTS = 2;
 
@@ -211,7 +211,7 @@ const self = (() => {
              * @static
              * @const {number} DEFAULT_APPEND
              *
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              */
             constant.DEFAULT_APPEND = constant.CREATE_IF_PATH_NOT_EXISTS;
 
@@ -222,7 +222,7 @@ const self = (() => {
              * @static
              * @const {{}} DEFAULTS
              *
-             * @memberOf js.task.Path
+             * @memberOf js.task.path.Path
              */
             constant.DEFAULTS = {
                 rootName : constant.DEFAULT_ROOT_NAME,
@@ -252,7 +252,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function get
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string} name - The name of the glob path.
                  *                        If the name contains an existing
@@ -293,7 +293,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function set
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string}          name - The name of the glob path.
                  * @param {string|string[]} glob - The glob path. Can be an array of globs.
@@ -312,7 +312,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function has
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string} name - The name of the glob path.
                  *
@@ -333,7 +333,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function contains
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string} name - The name of the glob path.
                  * @param {string} glob - The glob path.
@@ -376,7 +376,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function remove
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string} name - The name of the glob path.
                  *
@@ -399,7 +399,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function appendTo
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string}          name - The name of the glob path.
                  * @param {string|string[]} glob - The glob path. Can be an array of globs.
@@ -461,7 +461,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function removeFrom
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string}          name - The name of the glob path.
                  * @param {string|string[]} glob - The glob path. Can be an array of globs.
@@ -514,7 +514,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function getAll
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @returns {{}} The object containing all of the named glob paths.
                  */
@@ -528,7 +528,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function removeAll
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @returns {{}} Returns the removed named glob paths.
                  *               For example: { `src` : `/root/src` }
@@ -547,7 +547,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function getOptions
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string} [specificOption] - If specified, the specific option
                  *                                    with that name will be returned.
@@ -572,7 +572,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function setOptions
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {{}} options - The storage object, which holds the values of the options to change.
                  *
@@ -641,7 +641,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function getRoot
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @returns {string} The root glob path.
                  */
@@ -658,7 +658,7 @@ const self = (() => {
                  * @public
                  * @instance
                  * @function setRoot
-                 * @memberOf js.task.Path
+                 * @memberOf js.task.path.Path
                  *
                  * @param {string} glob - The root glob path.
                  *
