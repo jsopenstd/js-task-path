@@ -85,7 +85,7 @@ const self = (() => {
              * @returns {string|string[]|Path} If used as a getter, returns glob of path.
              *                                 If used a setter, returns Path to provide chainability.
              */
-            const instancePlaceholder = function PathInstance(name, glob) {
+            const instance = function PathInstance(name, glob) {
 
                 // if glob is present, behave as a setter
                 if (isPresent(glob)) {
@@ -119,7 +119,7 @@ const self = (() => {
             // but at the same time it will be still just a function and it can be just simply called
             // providing a shorthand getter/setter functionality for the path globs (e.g.: path('<root>'))
             extend(
-                instancePlaceholder,
+                instance,
                 Path.prototype,
                 self
             );
@@ -130,17 +130,17 @@ const self = (() => {
              * @private {{}}
              * @default {}
              */
-            instancePlaceholder._paths = {};
+            instance._paths = {};
 
             // set the default values of options
-            instancePlaceholder.setOptions(self.DEFAULTS);
+            instance.setOptions(self.DEFAULTS);
 
             // set the default value for root
-            instancePlaceholder.setRoot(appRootPath.toString());
+            instance.setRoot(appRootPath.toString());
 
             // return the placeholder function with all the necessary functionality from Path's prototype
             // and with initial, instantiated values
-            return instancePlaceholder;
+            return instance;
         },
 
         /*
