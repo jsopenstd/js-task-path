@@ -26,8 +26,8 @@ module.exports = {
                 path.DEFAULTS
             );
 
-            assert(path.getOptions('rootName')            === path.DEFAULT_ROOT_NAME);
-            assert(path.getOptions('appendToNonExistent') === path.DEFAULT_APPEND_TO_NON_EXISTENT);
+            assert(path.getOptions('rootName') === path.DEFAULT_ROOT_NAME);
+            assert(path.getOptions('append')   === path.DEFAULT_APPEND);
             assert.deepStrictEqual(
                 path.getOptions('tokens'),
                 path.DEFAULT_TOKENS

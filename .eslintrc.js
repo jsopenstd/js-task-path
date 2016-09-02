@@ -139,5 +139,10 @@ module.exports = {
                 'named' : 'never'
             }
         ],
+        'prefer-const' : [
+            'error', {
+                'ignoreReadBeforeAssign' : true
+            }
+        ],
     }
 };

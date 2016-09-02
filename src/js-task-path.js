@@ -42,6 +42,8 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
 
+let self;
+
 /**
  * @class Path
  * @memberOf js.task
@@ -279,7 +281,7 @@ Path.prototype = {
         let filteredGlob;
 
         if ( ! this.has(name)) {
-            switch (this._options.appendToNonExistent) {
+            switch (this._options.append) {
                 case self.CREATE_IF_PATH_NOT_EXISTS:
                     this.set(name, glob, options);
                     break;
@@ -731,7 +733,7 @@ Path.prototype = {
  * @ignore
  * @type {js.task.Path}
  */
-const self = Path;
+self = Path;
 
 /**
  * The default name for root path.
@@ -792,12 +794,11 @@ self.THROW_IF_PATH_NOT_EXISTS = 2;
  *
  * @public
  * @static
- * @const {number} DEFAULT_APPEND_TO_NON_EXISTENT
- * @default js.task.Path.CREATE_IF_PATH_NOT_EXISTS
+ * @const {number} DEFAULT_APPEND
  *
  * @memberOf js.task.Path
  */
-self.DEFAULT_APPEND_TO_NON_EXISTENT = self.CREATE_IF_PATH_NOT_EXISTS;
+self.DEFAULT_APPEND = self.CREATE_IF_PATH_NOT_EXISTS;
 
 /**
  * The default values for Path.
@@ -809,9 +810,9 @@ self.DEFAULT_APPEND_TO_NON_EXISTENT = self.CREATE_IF_PATH_NOT_EXISTS;
  * @memberOf js.task.Path
  */
 self.DEFAULTS = {
-    rootName            : self.DEFAULT_ROOT_NAME,
-    tokens              : self.DEFAULT_TOKENS,
-    appendToNonExistent : self.DEFAULT_APPEND_TO_NON_EXISTENT,
+    rootName : self.DEFAULT_ROOT_NAME,
+    tokens   : self.DEFAULT_TOKENS,
+    append   : self.DEFAULT_APPEND,
 };
 
 module.exports = new self();

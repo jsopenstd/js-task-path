@@ -147,7 +147,7 @@ module.exports = {
         },
         'exceptions' : () => {
             path.setOptions({
-                appendToNonExistent : path.THROW_IF_PATH_NOT_EXISTS
+                append : path.THROW_IF_PATH_NOT_EXISTS
             });
 
             try {
