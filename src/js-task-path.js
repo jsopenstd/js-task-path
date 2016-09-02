@@ -42,6 +42,19 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
 
+/*
+ |----------------------------------------------------------------------------------------------------------------------
+ | 'self' for module's class (Path)
+ |
+ |     - use a shorthand, a fairly know convention named 'self'
+ |       to represent 'static' properties and methods of module's class (Path)
+ |     - after the module's class constructed, it will be assigned to self.
+ |----------------------------------------------------------------------------------------------------------------------
+ */
+/**
+ * @ignore
+ * @type {js.task.Path}
+ */
 let self;
 
 /**
@@ -772,12 +785,7 @@ Path.prototype = {
     },
 };
 
-// use a shorthand, a fairly know convention named 'self'
-// to represent 'static' properties and methods of Path
-/**
- * @ignore
- * @type {js.task.Path}
- */
+// assign Path to self after the Path is fully constructed
 self = Path;
 
 /*
