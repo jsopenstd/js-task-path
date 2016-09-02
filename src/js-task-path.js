@@ -738,8 +738,9 @@ const self = Path;
  *
  * @public
  * @static
- * @const {string}
- * @default 'root'
+ * @const
+ * @type {string}
+ * @default root
  * @memberOf js.task.Path
  */
 self.DEFAULT_ROOT_NAME = 'root';
