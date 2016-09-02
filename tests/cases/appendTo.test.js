@@ -5,10 +5,7 @@ const assert = require('assert'),
 
       path = require(vars.path),
 
-      InvalidGlobException     = require(vars.exception.InvalidGlobException),
-      InvalidPathNameException = require(vars.exception.InvalidPathNameException),
-      PathNotFoundException    = require(vars.exception.PathNotFoundException),
-      TypeException            = require(vars.exception.TypeException);
+      PathNotFoundException = require(vars.exception.PathNotFoundException);
 
 module.exports = {
     'js-task-paths' : {
@@ -27,7 +24,7 @@ module.exports = {
                 assert.deepStrictEqual(
                     path.getAll(),
                     {
-                        src  : `${root}/src`,
+                        src : `${root}/src`,
                     }
                 );
 
@@ -53,12 +50,13 @@ module.exports = {
                 assert.deepStrictEqual(
                     path.getAll(),
                     {
-                        src  : [
+                        src : [
                             `${root}/src/another-path/`,
                         ],
                     }
                 );
             },
+
             'chaining' : {
                 'append only' : () => {
                     const root = path.getRoot();
@@ -91,7 +89,41 @@ module.exports = {
                             ]
                         }
                     );
+
+                    // append an array to a path
+                    path.set('dist', '<root>/dist')
+                        .appendTo(
+                            'dist',
+                            [
+                                '<root>/doc',
+                                '<root>/license',
+                            ]
+                        );
+
+                    assert.deepStrictEqual(
+                        path.get('dist'),
+                        [
+                            `${root}/dist`,
+                            `${root}/doc`,
+                            `${root}/license`,
+                        ]
+                    );
+
+                    // append an already existing glob to the globs
+                    // in this case since the glob already exists, nothing will happen.
+                    path.appendTo('src', '<root>/src/one/');
+
+                    assert.deepStrictEqual(
+                        path.get('src'),
+                        [
+                            `${root}/src`,
+                            `${root}/src/one/`,
+                            `${root}/src/two/`,
+                            `${root}/src/three/`,
+                        ]
+                    );
                 },
+
                 'append to non-existing' : () => {
                     const root = path.getRoot();
 
@@ -112,6 +144,7 @@ module.exports = {
                         ]
                     );
                 },
+
                 'set and append to existing' : () => {
                     const root = path.getRoot();
 
@@ -145,6 +178,7 @@ module.exports = {
                 },
             },
         },
+
         'exceptions' : () => {
             path.setOptions({
                 append : path.THROW_IF_PATH_NOT_EXISTS

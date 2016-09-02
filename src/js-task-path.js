@@ -335,8 +335,8 @@ const self = (() => {
                  * @function contains
                  * @memberOf js.task.path.Path
                  *
-                 * @param {string} name - The name of the glob path.
-                 * @param {string} glob - The glob path.
+                 * @param {string}          name - The name of the glob path.
+                 * @param {string|string[]} glob - The glob path of multiple glob paths to check.
 
                  * @returns {boolean} Whether the path with a name contains the glob.
                  */
@@ -352,16 +352,22 @@ const self = (() => {
                         storedGlob   = this.get(name);
 
                         if (isArray(storedGlob)) {
-                            let contains = false;
+                            if (isString(filteredGlob)) {
+                                filteredGlob = [filteredGlob];
+                            }
 
-                            storedGlob.forEach((entry) => {
-                                if (filteredGlob === entry) {
-                                    contains = true;
+                            let contains = true;
+
+                            filteredGlob.forEach(
+                                (value) => {
+                                    if (storedGlob.indexOf(value) === -1) {
+                                        contains = false;
+                                        return false;
+                                    }
                                 }
-                            });
+                            );
 
                             return contains;
-
                         }
 
                         return filteredGlob === storedGlob;
@@ -431,14 +437,14 @@ const self = (() => {
                             let storedGlob = this.get(name);
 
                             // if the stored glob isn't an array, convert it
-                            if ( ! isArray(storedGlob) ) {
+                            if (isString(storedGlob) ) {
                                 storedGlob = [storedGlob];
                             }
 
                             filteredGlob = this._processGlob(glob);
 
                             // if the processed glob isn't an array, convert it
-                            if ( ! isArray(filteredGlob)) {
+                            if (isString(filteredGlob)) {
                                 filteredGlob = [filteredGlob];
                             }
 
@@ -476,27 +482,30 @@ const self = (() => {
                         let processedGlob = this._processGlob(glob),
                             storedGlob    = this.get(name);
 
-                        if (isString(processedGlob) && isString(storedGlob)) {
-                            if (processedGlob === storedGlob) {
-                                this.remove(name);
-                            }
+                        // if globs are string and they are the same (the glob to be removed is the only one)
+                        // delete the glob path, since empty glob paths are not allowed
+                        if (isString(processedGlob)
+                            && isString(storedGlob)
+                            && processedGlob === storedGlob) {
+
+                            this.remove(name);
 
                         } else {
-                            if ( ! isArray(processedGlob)) {
+                            if (isString(processedGlob)) {
                                 processedGlob = [processedGlob];
                             }
 
-                            if ( ! isArray(storedGlob)) {
+                            if (isString(storedGlob)) {
                                 storedGlob = [storedGlob];
                             }
 
-                            processedGlob.forEach((processedGlobEntry) => {
-                                const index = storedGlob.indexOf(processedGlobEntry);
+                            processedGlob.forEach(
+                                (processedGlobEntry) => {
+                                    const index = storedGlob.indexOf(processedGlobEntry);
 
-                                if (index > -1) {
                                     storedGlob.splice(index, 1);
                                 }
-                            });
+                            );
 
                             if (storedGlob.length === 0) {
                                 this.remove(name);
@@ -804,29 +813,49 @@ const self = (() => {
                  * @instance
                  * @function _resolveNameTokens
                  *
-                 * @param {string} glob - The glob path. A name-token could be e.g.: <root>
-                 *                        If the resolved name-token is an array containing multiple paths,
-                 *                        only the 1st of those paths will be used -- for more information
-                 *                        check the source.
+                 * @param {string|string[]} glob - The glob path. A name-token could be e.g.: <root>
+                 *                                 If the resolved name-token is an array containing multiple paths,
+                 *                                 only the 1st of those paths will be used -- for more information
+                 *                                 check the source.
                  *
-                 * @returns {string} The resolved glob path.
+                 * @returns {string|string[]} The resolved glob path.
                  */
                 _resolveNameTokens(glob) {
-                    const index = this._getTokenIndexFor(glob);
+                    let globs = glob;
 
-                    return glob.replace(this._tokens[index], (match, name) => {
-                        this._checkPathExists(name, glob);
+                    if (isString(glob)) {
+                        globs = [glob];
+                    }
 
-                        let path = this.get(name);
+                    globs.forEach(
+                        (value, index, array) => {
+                            const globValue  = value,
+                                  tokenIndex = this._getTokenIndexFor(globValue);
 
-                        // if the path consists of multiple globs in an array,
-                        // only the 1st glob in the array will be used
-                        if (isArray(path)) {
-                            path = path[0];
+                            array[index] = globValue.replace(this._tokens[tokenIndex], (match, name) => {
+                                this._checkPathExists(name, globValue);
+
+                                let path = this.get(name);
+
+                                // if the path consists of multiple globs in an array,
+                                // only the 1st glob in the array will be used
+                                if (isArray(path)) {
+                                    path = path[0];
+                                }
+
+                                return path;
+                            });
                         }
+                    );
 
-                        return path;
-                    });
+                    // if it contains only one glob, then return just that one
+                    // and the return value will be a string
+                    if (globs.length === 1) {
+                        return globs[0];
+                    }
+
+                    // be default, the return value will be a string[]
+                    return globs;
                 },
 
                 /**
@@ -836,17 +865,32 @@ const self = (() => {
                  * @instance
                  * @function _filterGlob
                  *
-                 * @param {string} glob - The glob path.
+                 * @param {string|string[]} glob - The glob path or multiple glob paths.
                  *
-                 * @returns {string} The filtered glob path.
+                 * @returns {string|string[]} The filtered glob path.
                  */
                 _filterGlob(glob) {
                     this._checkGlob(glob);
 
                     let filteredGlob = this._resolveNameTokens(glob);
 
-                    filteredGlob = nodePath.normalize(filteredGlob);
+                    if (isString(filteredGlob)) {
+                        filteredGlob = [filteredGlob];
+                    }
 
+                    filteredGlob.forEach(
+                        (value, index, array) => {
+                            array[index] = nodePath.normalize(value);
+                        }
+                    );
+
+                    // if it contains only one glob, then return just that one
+                    // and the return value will be a string
+                    if (filteredGlob.length === 1) {
+                        return filteredGlob[0];
+                    }
+
+                    // be default, the return value will be a string[]
                     return filteredGlob;
                 },
 
@@ -867,9 +911,11 @@ const self = (() => {
                     if (isArray(glob)) {
                         filteredGlob = [];
 
-                        glob.forEach((entry) => {
-                            filteredGlob.push(this._filterGlob(entry));
-                        });
+                        glob.forEach(
+                            (entry) => {
+                                filteredGlob.push(this._filterGlob(entry));
+                            }
+                        );
 
                     } else {
                         filteredGlob = this._filterGlob(glob);

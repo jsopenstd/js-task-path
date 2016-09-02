@@ -3,12 +3,7 @@
 const assert = require('assert'),
       vars   = require('../variables'),
 
-      path = require(vars.path),
-
-      InvalidGlobException     = require(vars.exception.InvalidGlobException),
-      InvalidPathNameException = require(vars.exception.InvalidPathNameException),
-      PathNotFoundException    = require(vars.exception.PathNotFoundException),
-      TypeException            = require(vars.exception.TypeException);
+      path = require(vars.path);
 
 module.exports = {
     'js-task-paths' : {
@@ -48,6 +43,12 @@ module.exports = {
 
             path.remove('tests');
             path.remove('doc');
+
+            // remove already removed
+            path.remove('doc');
+
+            // remove never-existed
+            path.remove('dist');
 
             assert.deepStrictEqual(path.getAll(), {});
         },

@@ -7,7 +7,6 @@ const assert = require('assert'),
 
       InvalidGlobException     = require(vars.exception.InvalidGlobException),
       InvalidPathNameException = require(vars.exception.InvalidPathNameException),
-      PathNotFoundException    = require(vars.exception.PathNotFoundException),
       TypeException            = require(vars.exception.TypeException);
 
 module.exports = {
@@ -37,6 +36,7 @@ module.exports = {
                     }
                 );
             },
+
             'one path, multiple globs' : () => {
                 const root = path.getRoot();
 
@@ -60,6 +60,7 @@ module.exports = {
                     }
                 );
             },
+
             'chaining' : () => {
                 const root = path.getRoot();
 
@@ -77,6 +78,7 @@ module.exports = {
                     }
                 );
             },
+
             'setter shorthand' : {
                 'general' : () => {
                     const root = path.getRoot();
@@ -122,6 +124,7 @@ module.exports = {
                         }
                     );
                 },
+
                 'multiple' : () => {
                     const root = path.getRoot();
 
@@ -149,6 +152,7 @@ module.exports = {
                     );
                 },
             },
+
             'exceptions' : () => {
                 // invalid name
                 try {

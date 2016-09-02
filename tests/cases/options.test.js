@@ -5,10 +5,7 @@ const assert = require('assert'),
 
       path = require(vars.path),
 
-      InvalidGlobException     = require(vars.exception.InvalidGlobException),
-      InvalidPathNameException = require(vars.exception.InvalidPathNameException),
-      PathNotFoundException    = require(vars.exception.PathNotFoundException),
-      TypeException            = require(vars.exception.TypeException);
+      TypeException = require(vars.exception.TypeException);
 
 module.exports = {
     'js-task-paths' : {
@@ -129,6 +126,14 @@ module.exports = {
                     ]
                 );
             },
+        },
+
+        'exceptions' : () => {
+            try {
+                path.setOptions([]);
+            } catch (exception) {
+                assert(exception instanceof TypeException);
+            }
         },
     }
 };

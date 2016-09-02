@@ -5,10 +5,8 @@ const assert = require('assert'),
 
       path = require(vars.path),
 
-      InvalidGlobException     = require(vars.exception.InvalidGlobException),
       InvalidPathNameException = require(vars.exception.InvalidPathNameException),
-      PathNotFoundException    = require(vars.exception.PathNotFoundException),
-      TypeException            = require(vars.exception.TypeException);
+      PathNotFoundException    = require(vars.exception.PathNotFoundException);
 
 module.exports = {
     'js-task-paths' : {
@@ -53,6 +51,7 @@ module.exports = {
                     ]
                 );
             },
+
             'auto resolve' : () => {
                 const root = path.getRoot();
 
@@ -71,6 +70,7 @@ module.exports = {
                 assert(path.get('<src/images>/*.jpg') === `${root}/src/images/*.jpg`);
                 assert(path.get('<src/watch>')        === `${root}/src/**/*.*`);
             },
+
             'getter shorthand' : () => {
                 const root = path.getRoot();
 
@@ -115,6 +115,40 @@ module.exports = {
                     }
                 );
             },
+
+            'edge cases' : () => {
+                const root = path.getRoot();
+
+                // set a path with multiple globs, then resolve it
+                // in that case, the first glob from the globs should be returned
+                path.set(
+                    'src',
+                    [
+                        '{{root}}/src',
+                        '{{root}}/assets',
+                        '{{root}}/data',
+                    ]
+                );
+
+                // returns all of the globs, if not auto-resolved
+                assert.deepStrictEqual(
+                    path.get('src'),
+                    [
+                        `${root}/src`,
+                        `${root}/assets`,
+                        `${root}/data`,
+                    ]
+                );
+
+                // returns the first glob from the globs, if auto-resolved
+                assert(path.get('{{src}}') === `${root}/src`);
+
+                // use the first glob from the globs, if auto-resolved for another glob
+                path.set('doc', '{{src}}/doc');
+
+                assert(path.get('doc') === `${root}/src/doc`);
+            },
+
             'exceptions' : () => {
                 // without parameter
                 try {
