@@ -60,6 +60,7 @@ const Path = function Path() {
      * @public
      * @instance
      * @function ()
+     * @memberOf js.task.Path
      *
      * @param {string|{}}       name   - The name of the glob.
      *                                   If it is an object, multiple path globs can be set at once.
