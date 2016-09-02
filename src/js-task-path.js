@@ -45,6 +45,9 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
 let self;
 
 /**
+ * The helper class to manage **task-**, **build-** and **deployment-related** paths more easily throughout
+ * the whole project.
+ *
  * @class Path
  * @memberOf js.task
  */
@@ -132,7 +135,7 @@ Path.prototype = {
      *                        If the name contains an existing path name (e.g.: path.get('<root>/package.json')),
      *                        then it will be automatically resolved.
      *
-     * @returns {string|Array} The glob path.
+     * @returns {string|string[]} The glob path.
      *
      * @example
      * // auto-resolve a path, so
@@ -166,15 +169,13 @@ Path.prototype = {
      * @function set
      * @memberOf js.task.Path
      *
-     * @param {string}       name                    - The name of the glob path.
-     * @param {string|Array} glob                    - The glob path. Can be an array of globs.
-     * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
-     *                                                 see: {@link js.task.Path.DEFAULTS}
+     * @param {string}          name - The name of the glob path.
+     * @param {string|string[]} glob - The glob path. Can be an array of globs.
      *
      * @returns {Path} The path instance to provide chainability.
      */
-    set(name, glob, options) {
-        this._setGlobPath(this._paths, name, glob, options);
+    set(name, glob) {
+        this._setGlobPath(this._paths, name, glob);
 
         return this;
     },
@@ -266,24 +267,21 @@ Path.prototype = {
      * @function appendTo
      * @memberOf js.task.Path
      *
-     * @param {string}       name                     - The name of the glob path.
-     * @param {string|Array} glob                     - The glob path. Can be an array of globs.
-     * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
-     *                                                  see: {@link js.task.Path.DEFAULTS}
+     * @param {string}          name - The name of the glob path.
+     * @param {string|string[]} glob - The glob path. Can be an array of globs.
      *
      * @returns {Path} The path instance to provide chainability.
      */
-    appendTo(name, glob, options) {
+    appendTo(name, glob) {
         this._checkName(name);
         this._checkGlob(glob);
-        this._checkOptions(options);
 
         let filteredGlob;
 
         if ( ! this.has(name)) {
             switch (this._options.append) {
                 case self.CREATE_IF_PATH_NOT_EXISTS:
-                    this.set(name, glob, options);
+                    this.set(name, glob);
                     break;
 
                 case self.THROW_IF_PATH_NOT_EXISTS:
@@ -302,7 +300,7 @@ Path.prototype = {
                     storedGlob = [storedGlob];
                 }
 
-                filteredGlob = this._processGlob(glob, options);
+                filteredGlob = this._processGlob(glob);
 
                 // if the processed glob isn't an array, convert it
                 if ( ! isArray(filteredGlob)) {
@@ -328,8 +326,8 @@ Path.prototype = {
      * @function removeFrom
      * @memberOf js.task.Path
      *
-     * @param {string}       name - The name of the glob path.
-     * @param {string|Array} glob - The glob path. Can be an array of globs.
+     * @param {string}          name - The name of the glob path.
+     * @param {string|string[]} glob - The glob path. Can be an array of globs.
      *
      * @returns {void}
      */
@@ -379,7 +377,7 @@ Path.prototype = {
      * @function getAll
      * @memberOf js.task.Path
      *
-     * @returns {Object} The object containing all of the named glob paths.
+     * @returns {{}} The object containing all of the named glob paths.
      */
     getAll() {
         return extend(true, {}, this._paths);
@@ -391,8 +389,8 @@ Path.prototype = {
      * @function removeAll
      * @memberOf js.task.Path
      *
-     * @returns {Object} Returns the removed named glob paths.
-     *                   For example: { `src` : `/root/src` }
+     * @returns {{}} Returns the removed named glob paths.
+     *               For example: { `src` : `/root/src` }
      */
     removeAll() {
         const removedGlobs = this.getAll();
@@ -410,8 +408,8 @@ Path.prototype = {
      *
      * @param {string} [specificOption] - If specified, the specific option with that name will be returned.
      *
-     * @returns {Object|*} The storage object, that holds the values of the options.
-     *                     If a specific option was specified, return that specific option.
+     * @returns {{}|*} The storage object, that holds the values of the options.
+     *                 If a specific option was specified, return that specific option.
      *
      */
     getOptions(specificOption) {
@@ -430,7 +428,7 @@ Path.prototype = {
      * @function setOptions
      * @memberOf js.task.Path
      *
-     * @param {Object} options - The storage object, which holds the values of the options to change.
+     * @param {{}} options - The storage object, which holds the values of the options to change.
      *
      * @returns {void}
      */
@@ -668,15 +666,12 @@ Path.prototype = {
      * @private
      * @function _filterGlob
      *
-     * @param {string} glob                    - The glob path.
-     * @param {Object} [options=Path.DEFAULTS] - The options that used to filter the glob path.
-     *                                           see: {@link js.task.Path.DEFAULTS}
+     * @param {string} glob - The glob path.
      *
      * @returns {string} The filtered glob path.
      */
-    _filterGlob(glob, options) {
+    _filterGlob(glob) {
         this._checkGlob(glob);
-        this._checkOptions(options);
 
         let filteredGlob = this._resolveNameTokens(glob);
 
@@ -691,35 +686,44 @@ Path.prototype = {
      * @private
      * @function _processGlob
      *
-     * @param {string|Array} glob                    - The glob path.
-     * @param {Object}       [options=Path.DEFAULTS] - The options that used to filter the glob path.
-     *                                                 see: {@link js.task.Path.DEFAULTS}
+     * @param {string|string[]} glob - The glob path.
      *
-     * @returns {string|Array} The filtered glob path.
+     * @returns {string|string[]} The filtered glob path.
      */
-    _processGlob(glob, options) {
+    _processGlob(glob) {
         let filteredGlob;
 
         if (isArray(glob)) {
             filteredGlob = [];
 
             glob.forEach((entry) => {
-                filteredGlob.push(this._filterGlob(entry, options));
+                filteredGlob.push(this._filterGlob(entry));
             });
 
         } else {
-            filteredGlob = this._filterGlob(glob, options);
+            filteredGlob = this._filterGlob(glob);
         }
 
         return filteredGlob;
     },
 
-    _setGlobPath(object, name, glob, options) {
+    /**
+     * Sets glob path in the given object.
+     *
+     * @private
+     * @function _setGlobPath
+     *
+     * @param {{}}              object - The object in which the glob path will be set.
+     * @param {string}          name   - The name of the glob.
+     * @param {string|string[]} glob   - The blog path.
+     *
+     * @returns {string|string[]} The glob, that was set in the given object.
+     */
+    _setGlobPath(object, name, glob) {
         this._checkName(name);
         this._checkGlob(glob);
-        this._checkOptions(options);
 
-        const processedGlob = this._processGlob(glob, options);
+        const processedGlob = this._processGlob(glob);
 
         object[name] = processedGlob;
 
@@ -734,6 +738,12 @@ Path.prototype = {
  * @type {js.task.Path}
  */
 self = Path;
+
+/*
+ |----------------------------------------------------------------------------------------------------------------------
+ | Constants
+ |----------------------------------------------------------------------------------------------------------------------
+ */
 
 /**
  * The default name for root path.
