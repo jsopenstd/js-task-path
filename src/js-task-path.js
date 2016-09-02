@@ -750,10 +750,7 @@ self.DEFAULT_ROOT_NAME = 'root';
  *
  * @public
  * @static
- * @const
- *
- * @name DEFAULT_TOKENS
- * @type {string[]}
+ * @const {string[]} DEFAULT_TOKENS
  *
  * @memberOf js.task.Path
  */
@@ -773,9 +770,9 @@ self.DEFAULT_TOKENS = [
  *
  * @public
  * @static
- * @const
- * @type {number}
+ * @const {number} CREATE_IF_PATH_NOT_EXISTS
  * @default 1
+ *
  * @memberOf js.task.Path
  */
 self.CREATE_IF_PATH_NOT_EXISTS = 1;
@@ -785,9 +782,9 @@ self.CREATE_IF_PATH_NOT_EXISTS = 1;
  *
  * @public
  * @static
- * @const
- * @type {number}
+ * @const {number} THROW_IF_PATH_NOT_EXISTS
  * @default 2
+ *
  * @memberOf js.task.Path
  */
 self.THROW_IF_PATH_NOT_EXISTS = 2;
@@ -797,9 +794,9 @@ self.THROW_IF_PATH_NOT_EXISTS = 2;
  *
  * @public
  * @static
- * @const
- * @type {number}
- * @default 1
+ * @const {number} DEFAULT_APPEND_TO_NON_EXISTENT
+ * @default CREATE_IF_PATH_NOT_EXISTS
+ *
  * @memberOf js.task.Path
  */
 self.DEFAULT_APPEND_TO_NON_EXISTENT = self.CREATE_IF_PATH_NOT_EXISTS;
@@ -809,8 +806,8 @@ self.DEFAULT_APPEND_TO_NON_EXISTENT = self.CREATE_IF_PATH_NOT_EXISTS;
  *
  * @public
  * @static
- * @const
- * @type {Object}
+ * @const {{}} DEFAULTS
+ *
  * @memberOf js.task.Path
  */
 self.DEFAULTS = {
