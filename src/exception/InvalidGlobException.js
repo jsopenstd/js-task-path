@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @namespace js.exception
+ * @namespace js.task.exception
  */
 
 const Exception = require('js-lang-exception');
