@@ -725,6 +725,14 @@ Path.prototype = {
     },
 };
 
+// use a shorthand, a fairly know convention named 'self'
+// to represent 'static' properties and methods of Path
+/**
+ * @ignore
+ * @type {js.task.Path}
+ */
+const self = Path;
+
 /**
  * The default name for root path.
  *
@@ -732,6 +740,7 @@ Path.prototype = {
  * @static
  * @const
  * @type {string}
+ * @name DEFAULT_ROOT_NAME
  * @default root
  * @memberOf js.task.Path
  */
@@ -747,8 +756,8 @@ Path.DEFAULT_ROOT_NAME = 'root';
  * @memberOf js.task.Path
  */
 Path.DEFAULT_TOKENS = [
-    '<',   '>',
-    '<<',  '>>',
+    '<',  '>',
+    '<<', '>>',
 
     '@',  '@',
     '{@', '@}',
@@ -807,13 +816,5 @@ Path.DEFAULTS = {
     tokens              : self.DEFAULT_TOKENS,
     appendToNonExistent : self.DEFAULT_APPEND_TO_NON_EXISTENT,
 };
-
-// use a shorthand, a fairly know convention named 'self'
-// to represent 'static' properties and methods of Path
-/**
- * @ignore
- * @type {js.task.Path}
- */
-const self = Path;
 
 module.exports = new self();
