@@ -11,6 +11,8 @@ const ID = 1001;
 /**
  * Exception, when the glob must be a string or an array.
  *
+ * @namespace js.task.Path.exception
+ * 
  * @class InvalidGlobException
  * @extends js.lang.Exception
  *
