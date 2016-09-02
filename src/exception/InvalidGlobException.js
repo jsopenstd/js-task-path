@@ -9,9 +9,12 @@ const Exception = require('js-lang-exception');
 const ID = 1001;
 
 /**
+ * Exception, when the glob must be a string or an array.
  *
  * @class InvalidGlobException
  * @extends js.lang.Exception
+ *
+ * @memberOf js.task.Path.exception
  */
 module.exports = class InvalidGlobException extends Exception {
 
