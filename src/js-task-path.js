@@ -785,7 +785,6 @@ self = Path;
  * The default name for root path.
  *
  * @public
- * @static
  * @const {string} DEFAULT_ROOT_NAME
  * @default root
  *
