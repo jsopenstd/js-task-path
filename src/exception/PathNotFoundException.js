@@ -23,14 +23,6 @@ const ID = 1003;
  */
 module.exports = class PathNotFoundException extends Exception {
 
-    /**
-     * @ignore
-     * @return {number} Exception ID
-     */
-    static get ID() {
-        return ID;
-    }
-
     constructor(pathName, glob) {
         if (isString(glob)) {
             super(`Path not found with name: "${pathName}", glob: "${glob}"'`, ID);

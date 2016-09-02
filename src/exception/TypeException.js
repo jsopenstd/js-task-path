@@ -22,14 +22,6 @@ const ID = 1004;
  */
 module.exports = class TypeException extends Exception {
 
-    /**
-     * @ignore
-     * @return {number} Exception ID
-     */
-    static get ID() {
-        return ID;
-    }
-
     constructor(options) {
         const type = typeof options;
 
