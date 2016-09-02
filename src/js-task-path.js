@@ -362,6 +362,7 @@ const self = (() => {
                                 (value) => {
                                     if (storedGlob.indexOf(value) === -1) {
                                         contains = false;
+
                                         return false;
                                     }
                                 }
@@ -484,9 +485,9 @@ const self = (() => {
 
                         // if globs are string and they are the same (the glob to be removed is the only one)
                         // delete the glob path, since empty glob paths are not allowed
-                        if (isString(processedGlob)
-                            && isString(storedGlob)
-                            && processedGlob === storedGlob) {
+                        if (isString(processedGlob) &&
+                            isString(storedGlob) &&
+                            processedGlob === storedGlob) {
 
                             this.remove(name);
 
