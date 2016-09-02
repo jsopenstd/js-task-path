@@ -18,7 +18,7 @@
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
- | Essential modules
+ | Essential Modules
  |----------------------------------------------------------------------------------------------------------------------
  */
 const nodePath           = require('path'),
@@ -47,7 +47,7 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
  | 'self' for module's class (Path)
  |
  |     - use a shorthand, a fairly know convention named 'self'
- |       to represent 'static' properties and methods of module's class (Path)
+ |       to represent 'static' properties and methods of module's class (Path) in a short form
  |     - after the module's class constructed, it will be assigned to self.
  |----------------------------------------------------------------------------------------------------------------------
  */
