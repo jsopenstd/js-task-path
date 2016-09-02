@@ -128,6 +128,8 @@ Path.prototype = {
     /**
      * Gets the glob path by the given name.
      *
+     * @public
+     * @instance
      * @function get
      * @memberOf js.task.Path
      *
@@ -166,6 +168,8 @@ Path.prototype = {
      *
      * If the glob path by the same name already exists, it will be overridden.
      *
+     * @public
+     * @instance
      * @function set
      * @memberOf js.task.Path
      *
@@ -183,6 +187,8 @@ Path.prototype = {
     /**
      * Returns whether a glob path by the given name was stored previously.
      *
+     * @public
+     * @instance
      * @function has
      * @memberOf js.task.Path
      *
@@ -202,6 +208,8 @@ Path.prototype = {
      * If the previously stored glob path is the same (if it is a string) as -
      * or contains (if it is an array of glob paths) - the given glob path, it will return true.
      *
+     * @public
+     * @instance
      * @function contains
      * @memberOf js.task.Path
      *
@@ -243,6 +251,8 @@ Path.prototype = {
     /**
      * Removes the glob path by the given name from the stored glob paths.
      *
+     * @public
+     * @instance
      * @function remove
      * @memberOf js.task.Path
      *
@@ -264,6 +274,8 @@ Path.prototype = {
      * If there is no stored glob path under the given name,
      * it will be added anyway, as just as it was added via set(...).
      *
+     * @public
+     * @instance
      * @function appendTo
      * @memberOf js.task.Path
      *
@@ -323,6 +335,8 @@ Path.prototype = {
      * if the given name will be empty (as the last glob path was removed),
      * it will be removed from the stored named glob paths.
      *
+     * @public
+     * @instance
      * @function removeFrom
      * @memberOf js.task.Path
      *
@@ -374,6 +388,8 @@ Path.prototype = {
      * The returned object will be a deep copy of the original object,
      * modifying the returned object will not change the original object.
      *
+     * @public
+     * @instance
      * @function getAll
      * @memberOf js.task.Path
      *
@@ -386,6 +402,8 @@ Path.prototype = {
     /**
      * Removes all the stored named glob paths.
      *
+     * @public
+     * @instance
      * @function removeAll
      * @memberOf js.task.Path
      *
@@ -403,6 +421,8 @@ Path.prototype = {
     /**
      * Returns the options of path.
      *
+     * @public
+     * @instance
      * @function getOptions
      * @memberOf js.task.Path
      *
@@ -425,6 +445,8 @@ Path.prototype = {
     /**
      * Sets the options for paths.
      *
+     * @public
+     * @instance
      * @function setOptions
      * @memberOf js.task.Path
      *
@@ -488,6 +510,8 @@ Path.prototype = {
      * The root glob path is determined at the instantiation of the Path class.
      * Be cautious regarding the value of this root glob path, after the original root glob path is changed.
      *
+     * @public
+     * @instance
      * @function getRoot
      * @memberOf js.task.Path
      *
@@ -503,6 +527,8 @@ Path.prototype = {
      * As the root glob path is determined at the instantiation of the Path class,
      * be cautious, when changing the root glob path to avoid unwanted errors.
      *
+     * @public
+     * @instance
      * @function setRoot
      * @memberOf js.task.Path
      *
@@ -518,6 +544,7 @@ Path.prototype = {
      * Check whether the name is valid.
      *
      * @private
+     * @instance
      * @function _checkName
      *
      * @param {string} name - The name of a path entry.
@@ -534,6 +561,7 @@ Path.prototype = {
      * Check whether the glob is valid.
      *
      * @private
+     * @instance
      * @function _checkGlob
      *
      * @param {string} glob - The glob of a path.
@@ -550,6 +578,7 @@ Path.prototype = {
      * Check whether the options object is valid.
      *
      * @private
+     * @instance
      * @function _checkOptions
      *
      * @param {string} options - The options object.
@@ -566,6 +595,7 @@ Path.prototype = {
      * Check whether the the path entry under name exists.
      *
      * @private
+     * @instance
      * @function _checkPathExists
      *
      * @param {string} name   - The name of the path entry.
@@ -587,6 +617,7 @@ Path.prototype = {
      * Returns the index for an existing token if an existing token pattern can be found in the string.
      *
      * @private
+     * @instance
      * @function _getTokenIndexFor
      *
      * @param {string} string - The string to check.
@@ -621,6 +652,7 @@ Path.prototype = {
      * Determines whether the string contains tokens.
      *
      * @private
+     * @instance
      * @function _containsToken
      *
      * @param {string} string - The string to check.
@@ -635,6 +667,7 @@ Path.prototype = {
      * Resolves the path by name-tokens.
      *
      * @private
+     * @instance
      * @function _resolveNameTokens
      *
      * @param {string} glob - The glob path. A name-token could be e.g.: <root>
@@ -664,6 +697,7 @@ Path.prototype = {
      * Filters the given glob path by the passed options.
      *
      * @private
+     * @instance
      * @function _filterGlob
      *
      * @param {string} glob - The glob path.
@@ -684,6 +718,7 @@ Path.prototype = {
      * Processes the given glob path by the given options.
      *
      * @private
+     * @instance
      * @function _processGlob
      *
      * @param {string|string[]} glob - The glob path.
@@ -711,6 +746,7 @@ Path.prototype = {
      * Sets glob path in the given object.
      *
      * @private
+     * @instance
      * @function _setGlobPath
      *
      * @param {{}}              object - The object in which the glob path will be set.
