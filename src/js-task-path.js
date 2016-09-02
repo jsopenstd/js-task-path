@@ -728,7 +728,7 @@ Path.prototype = {
 // use a shorthand, a fairly know convention named 'self'
 // to represent 'static' properties and methods of Path
 /**
- * @inner
+ * @ignore
  * @type {js.task.Path}
  */
 const self = Path;
