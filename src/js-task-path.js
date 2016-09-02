@@ -42,8 +42,23 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
 
+/*
+ |----------------------------------------------------------------------------------------------------------------------
+ | 'self' for module's class (Path)
+ |
+ |     - use a shorthand, a fairly know convention named 'self'
+ |       to represent 'static' properties and methods of module's class (Path)
+ |     - after the module's class constructed, it will be assigned to self.
+ |----------------------------------------------------------------------------------------------------------------------
+ */
 const self = (() => {
     return extend(
+
+        /*
+         |--------------------------------------------------------------------------------------------------------------
+         | Constructor
+         |--------------------------------------------------------------------------------------------------------------
+         */
 
         /**
          * The helper class to manage **task-**, **build-** and **deployment-related** paths more easily throughout
@@ -94,9 +109,9 @@ const self = (() => {
             };
 
             /*
-             |------------------------------------------------------------------------------------------------------------------
+             |----------------------------------------------------------------------------------------------------------
              | Extension and Instantiations
-             |------------------------------------------------------------------------------------------------------------------
+             |----------------------------------------------------------------------------------------------------------
              */
 
             // extend the placeholder function with Path's prototype
@@ -127,6 +142,12 @@ const self = (() => {
             // and with initial, instantiated values
             return instancePlaceholder;
         },
+
+        /*
+         |--------------------------------------------------------------------------------------------------------------
+         | Constants
+         |--------------------------------------------------------------------------------------------------------------
+         */
         (() => {
             const constant = {};
 
@@ -212,8 +233,19 @@ const self = (() => {
 
             return constant;
         })(),
+
+        /*
+         |--------------------------------------------------------------------------------------------------------------
+         | Instance Functions
+         |--------------------------------------------------------------------------------------------------------------
+         */
         {
             prototype : {
+                /*
+                 |------------------------------------------------------------------------------------------------------
+                 | Public Functions
+                 |------------------------------------------------------------------------------------------------------
+                 */
 
                 /**
                  * Gets the glob path by the given name.
@@ -224,8 +256,9 @@ const self = (() => {
                  * @memberOf js.task.Path
                  *
                  * @param {string} name - The name of the glob path.
-                 *                        If the name contains an existing path name (e.g.: path.get('<root>/package.json')),
-                 *                        then it will be automatically resolved.
+                 *                        If the name contains an existing
+                 *                        path name (e.g.: path.get('<root>/package.json')), then it will be
+                 *                        automatically resolved.
                  *
                  * @returns {string|string[]} The glob path.
                  *
@@ -393,7 +426,8 @@ const self = (() => {
                         }
 
                     } else {
-                        // only append to the given name, if the stored glob isn't equal to/doesn't contain the given glob
+                        // only append to the given name, if the stored glob
+                        // isn't equal to/doesn't contain the given glob
                         if ( ! this.contains(name, glob)) {
                             let storedGlob = this.get(name);
 
@@ -516,7 +550,8 @@ const self = (() => {
                  * @function getOptions
                  * @memberOf js.task.Path
                  *
-                 * @param {string} [specificOption] - If specified, the specific option with that name will be returned.
+                 * @param {string} [specificOption] - If specified, the specific option
+                 *                                    with that name will be returned.
                  *
                  * @returns {{}|*} The storage object, that holds the values of the options.
                  *                 If a specific option was specified, return that specific option.
@@ -580,17 +615,20 @@ const self = (() => {
                                     suffix = token;
                                 }
 
-                                // construct a new RegExp pattern from the actual prefix and suffix,
-                                // then prepare them for the next token iteration by resetting them (prefix = suffix = null)
+                                // construct a new RegExp pattern from the actual prefix and suffix, then prepare them
+                                // for the next token iteration by resetting them (prefix = suffix = null)
                                 if (prefix && suffix) {
-                                    this._tokens.unshift(new RegExp(`\\s*${prefix}([\\s\\-\\\\\\/.*\\w]+)${suffix}\\s*`, 'i'));
+                                    this._tokens.unshift(
+                                        new RegExp(`\\s*${prefix}([\\s\\-\\\\\\/.*\\w]+)${suffix}\\s*`, 'i')
+                                    );
                                     prefix = suffix = null;
                                 }
                             }
                         );
                     }
 
-                    // sort RegExp patterns to check longer tokens first and shortest last to ensure proper token resolution
+                    // sort RegExp patterns to check longer tokens first and shortest last
+                    // to ensure proper token resolution
                     this._tokens = this._tokens.sort().reverse();
                 },
 
@@ -598,7 +636,8 @@ const self = (() => {
                  * Returns the root glob path.
                  *
                  * The root glob path is determined at the instantiation of the Path class.
-                 * Be cautious regarding the value of this root glob path, after the original root glob path is changed.
+                 * Be cautious regarding the value of this root glob path,
+                 * after the original root glob path is changed.
                  *
                  * @public
                  * @instance
@@ -629,6 +668,12 @@ const self = (() => {
                 setRoot(glob) {
                     this._setGlobPath(this, `_${this._options.rootName}`, glob);
                 },
+
+                /*
+                 |------------------------------------------------------------------------------------------------------
+                 | Private Functions
+                 |------------------------------------------------------------------------------------------------------
+                 */
 
                 /**
                  * Check whether the name is valid.
@@ -762,7 +807,8 @@ const self = (() => {
                  *
                  * @param {string} glob - The glob path. A name-token could be e.g.: <root>
                  *                        If the resolved name-token is an array containing multiple paths,
-                 *                        only the 1st of those paths will be used -- for more information check the source.
+                 *                        only the 1st of those paths will be used -- for more information
+                 *                        check the source.
                  *
                  * @returns {string} The resolved glob path.
                  */
@@ -774,7 +820,8 @@ const self = (() => {
 
                         let path = this.get(name);
 
-                        // if the path consists of multiple globs in an array, only the 1st glob in the array will be used
+                        // if the path consists of multiple globs in an array,
+                        // only the 1st glob in the array will be used
                         if (isArray(path)) {
                             path = path[0];
                         }
@@ -855,7 +902,7 @@ const self = (() => {
 
                     return processedGlob;
                 },
-            }
+            },
         }
     );
 })();
