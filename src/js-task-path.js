@@ -42,7 +42,11 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
       PathNotFoundException    = require('./exception/PathNotFoundException'),
       TypeException            = require('./exception/TypeException');
 
-function Path() {
+/**
+ * @class Path
+ * @memberOf js.task
+ */
+const Path = function Path() {
     // create a placeholder function as a base function for further extension
 
     /**
@@ -111,7 +115,7 @@ function Path() {
     // return the placeholder function with all the necessary functionality from Path's prototype
     // and with initial, instantiated values
     return instancePlaceholder;
-}
+};
 
 Path.prototype = {
     constructor : Path,
@@ -282,7 +286,8 @@ Path.prototype = {
 
                 case self.THROW_IF_PATH_NOT_EXISTS:
                     throw new PathNotFoundException(name, glob);
-                    break;
+
+                // skip default case, it's not needed
             }
 
         } else {
@@ -408,7 +413,7 @@ Path.prototype = {
      *
      */
     getOptions(specificOption) {
-        let clonedOptions = extend(true, {}, this._options);
+        const clonedOptions = extend(true, {}, this._options);
 
         if (isString(specificOption) && ! isEmptyString(specificOption)) {
             return clonedOptions[specificOption];
@@ -466,7 +471,7 @@ Path.prototype = {
                     // construct a new RegExp pattern from the actual prefix and suffix,
                     // then prepare them for the next token iteration by resetting them (prefix = suffix = null)
                     if (prefix && suffix) {
-                        this._tokens.unshift(new RegExp(`\\s*(${prefix})([\\s\\-\\\\\\/.*\\w]+)(${suffix})\\s*`, 'i'));
+                        this._tokens.unshift(new RegExp(`\\s*${prefix}([\\s\\-\\\\\\/.*\\w]+)${suffix}\\s*`, 'i'));
                         prefix = suffix = null;
                     }
                 }
@@ -596,12 +601,13 @@ Path.prototype = {
             foreach(
                 this._tokens,
                 /**
-                 * @param {number} index
-                 * @param {RegExp} token
+                 * @param {number} index - The index of the token.
+                 * @param {RegExp} token - The token compiled to RegExp.
                  */
                 (index, token) => {
                     if (token.test(string)) {
                         tokenIndex = index;
+
                         return false;
                     }
                 }
@@ -638,9 +644,9 @@ Path.prototype = {
      * @returns {string} The resolved glob path.
      */
     _resolveNameTokens(glob) {
-        let index = this._getTokenIndexFor(glob);
+        const index = this._getTokenIndexFor(glob);
 
-        return glob.replace(this._tokens[index], (match, prefix, name, suffix) => {
+        return glob.replace(this._tokens[index], (match, name) => {
             this._checkPathExists(name, glob);
 
             let path = this.get(name);
@@ -671,6 +677,7 @@ Path.prototype = {
         this._checkOptions(options);
 
         let filteredGlob = this._resolveNameTokens(glob);
+
         filteredGlob = nodePath.normalize(filteredGlob);
 
         return filteredGlob;
@@ -720,6 +727,10 @@ Path.prototype = {
 
 // use a shorthand, a fairly know convention named 'self'
 // to represent 'static' properties and methods of Path
+/**
+ * @inner
+ * @type {js.task.Path}
+ */
 const self = Path;
 
 /**

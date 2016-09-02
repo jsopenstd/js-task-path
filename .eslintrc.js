@@ -53,6 +53,11 @@ module.exports = {
         'indent': 'off',
         'arrow-body-style' : 'off',
         'wrap-regex' : 'off',
+        'sort-keys': 'off',
+        'consistent-return' : 'off',
+        'no-param-reassign' : 'off',
+        'no-use-before-define' : 'off',
+        'valid-jsdoc' : 'off',
         'no-console': [
             'error', {
                 allow: [
@@ -133,6 +138,6 @@ module.exports = {
                 'anonymous' : 'never',
                 'named' : 'never'
             }
-        ]
+        ],
     }
 };
