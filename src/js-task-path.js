@@ -44,10 +44,10 @@ const InvalidGlobException     = require('./exception/InvalidGlobException'),
 
 /*
  |----------------------------------------------------------------------------------------------------------------------
- | 'self' for module's class (Path)
+ | 'self' for the module's class (Path)
  |
- | use a shorthand, a fairly know convention named 'self'
- | to represent 'static' properties and methods of module's class (Path) in a short form
+ | use a shorthand, a fairly known convention named 'self'
+ | to represent 'static' properties and methods of the module's class (Path) in a short form
  |----------------------------------------------------------------------------------------------------------------------
  */
 const self = (() => {
