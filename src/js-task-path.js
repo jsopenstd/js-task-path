@@ -57,6 +57,10 @@ const Path = function Path() {
     /**
      * A getter/setter shorthand for path.
      *
+     * @public
+     * @instance
+     * @function ()
+     *
      * @param {string|{}}       name   - The name of the glob.
      *                                   If it is an object, multiple path globs can be set at once.
      * @param {string|string[]} [glob] - The glob of path.
@@ -785,6 +789,7 @@ self = Path;
  * The default name for root path.
  *
  * @public
+ * @static
  * @const {string} DEFAULT_ROOT_NAME
  * @default root
  *
