@@ -24,6 +24,7 @@ const ID = 1003;
 module.exports = class PathNotFoundException extends Exception {
 
     /**
+     * @ignore
      * @return {number} Exception ID
      */
     static get ID() {

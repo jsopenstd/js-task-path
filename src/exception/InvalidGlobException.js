@@ -23,6 +23,7 @@ const ID = 1001;
 module.exports = class InvalidGlobException extends Exception {
 
     /**
+     * @ignore
      * @returns {number} Exception ID.
      */
     static get ID() {
