@@ -131,6 +131,14 @@ const self = (() => {
              */
             instance._paths = {};
 
+            /**
+             * The storage object for options
+             *
+             * @private {{}}
+             * @default {}
+             */
+            instance._options = {};
+
             // set the default values of options
             instance.setOptions(self.DEFAULTS);
 
@@ -590,14 +598,6 @@ const self = (() => {
                  */
                 setOptions(options) {
                     this._checkOptions(options);
-
-                    /**
-                     * The storage object for options
-                     *
-                     * @private {{}}
-                     * @default {}
-                     */
-                    this._options = this._options || {};
 
                     extend(this._options, options);
 
