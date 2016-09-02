@@ -57,7 +57,7 @@ const Path = function Path() {
     /**
      * A getter/setter shorthand for path.
      *
-     * @param {string|Object}   name   - The name of the glob.
+     * @param {string|{}}       name   - The name of the glob.
      *                                   If it is an object, multiple path globs can be set at once.
      * @param {string|string[]} [glob] - The glob of path.
      *
@@ -106,7 +106,7 @@ const Path = function Path() {
     /**
      * The storage object for the named glob paths.
      *
-     * @private {Object}
+     * @private {{}}
      * @default {}
      */
     instancePlaceholder._paths = {};
@@ -438,7 +438,7 @@ Path.prototype = {
         /**
          * The storage object for options
          *
-         * @private {Object}
+         * @private {{}}
          * @default {}
          */
         this._options = this._options || {};
