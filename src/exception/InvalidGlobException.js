@@ -23,10 +23,6 @@ const ID = 1001;
 module.exports = class InvalidGlobException extends Exception {
 
     /**
-     * The ID of the exception.
-     *
-     * @memberOf js.task.path.exception.InvalidGlobException
-     *
      * @returns {number} Exception ID.
      */
     static get ID() {
