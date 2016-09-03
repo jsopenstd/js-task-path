@@ -80,7 +80,7 @@ path.get('test-cases'); // will be e.g.: '/vagrant/tests/cases'
 
 Check the source 
 [here](https://github.com/jsopenstd/js-task-path/blob/master/src/js-task-path.js)
-since it's well structured and documented. Also you can find the rendered jsDoc documentation on 
+since it's well structured and documented. Also you can find the rendered JSDoc documentation on 
 [Doclets.io](https://doclets.io/jsopenstd/js-task-path/master). 
 
 Also, check the [unit tests](https://github.com/jsopenstd/js-task-path/blob/master/tests/cases) 
