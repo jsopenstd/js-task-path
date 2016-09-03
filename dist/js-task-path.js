@@ -10,7 +10,7 @@
  * More information on [JavaScript Open Standards]{@link https://github.com/jsopenstd/jsopenstd}.
  *
  * @namespace js.task.path
- * @version 2.0.1
+ * @version 2.0.2
  *
  * @author Richard King <richrdkng@gmail.com> [GitHub]{@link https://github.com/richrdkng}
  * @license [MIT]{@link https://github.com/jsopenstd/js-partial-foreach/blob/master/license.md}
