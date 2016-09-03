@@ -10,8 +10,8 @@
 # scripts directory (for development)
 /scripts/
 
-# license template for minimized version (for development)
-/src/license-header-template.json
+# source directory (for development)
+/src/
 
 # tests directory (for development)
 /tests/
