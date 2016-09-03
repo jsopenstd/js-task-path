@@ -1,21 +1,26 @@
-# editorconfig.org
+# IntelliJ project directory
+/.idea/
+
+# Vagrant VM directory
+/.vagrant/
+
+# code coverage directory (for development)
+/cov/
+
+# scripts directory (for development)
+/scripts/
+
+# license template for minimized version (for development)
+/src/license-header-template.json
+
+# tests directory (for development)
+/tests/
+
+.doclets.yml
 .editorconfig
-
-# Git attributes
+.eslintrc.js
 .gitattributes
-
-# Code coverage reports
-coverage
-
-# Vagrant files and folders
-    # Vagrant provision folder
-    vagrant
-
-    # Vagrant VM file
-    vagrantfile
-
-# Gulp tasks folder
-gulp
-
-# Tests folder
-tests
+.npmignore
+.publish.json
+.travis.yml
+vagrantfile

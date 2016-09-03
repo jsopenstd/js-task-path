@@ -1,0 +1,3 @@
+{
+  "template" : "/*! <%= name %> v<%= version %> | MIT License | (c) <%= author %> - <%= email %> */\n"
+}

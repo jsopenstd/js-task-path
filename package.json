@@ -1,8 +1,8 @@
 {
-  "name": "js-task-paths",
-  "version": "1.0.3",
-  "description": "A utility singleton to help manage task-related paths more easily throughout the whole project.",
-  "author": "Richard King <richrdkng@gmail.com> (https://github.com/richrdkng)",
+  "name": "js-task-path",
+  "version": "1.1.0",
+  "description": "A helper class to manage task-, build- and deployment-related paths more easily throughout the whole project.",
+  "main": "dist/js-task-path.js",
   "license": "MIT",
   "homepage": "https://github.com/jsopenstd/js-task-path#readme",
   "repository": {
@@ -18,43 +18,54 @@
     "url": "https://github.com/richrdkng"
   },
   "scripts": {
-    "g": "gulp --gulpfile scripts/gulp/main.js",
+    "g": "node --harmony `which gulp` --gulpfile scripts/gulp/main.js",
     "gulp": "npm run g",
     "build": "npm run g -- tasks/build",
     "test": "npm run g -- tasks/test",
-    "ci": "npm run g -- tasks/ci",
-    "coveralls": "coveralls < cov/lcov.info"
+    "ci": "npm run g -- tasks/ci"
   },
   "dependencies": {
-    "app-root-path": "^1.2.1"
+    "app-root-path": "^1.2.1",
+    "escape-string-regexp": "^1.0.5",
+    "extend": "^3.0.0",
+    "js-lang-exception": "^1.0.2",
+    "js-partial-array-merge": "0.0.2",
+    "js-partial-default-of": "0.0.2",
+    "js-partial-foreach": "^1.0.5",
+    "js-partial-is-array": "0.0.2",
+    "js-partial-is-empty-string": "0.0.1",
+    "js-partial-is-object": "0.0.2",
+    "js-partial-is-present": "0.0.1",
+    "js-partial-is-string": "0.0.3"
   },
   "devDependencies": {
     "assert": "^1.3.0",
     "coveralls": "^2.11.9",
     "del": "^2.2.0",
-    "dmd-plugin-example": "^0.1.0",
-    "extend": "^3.0.0",
-    "graceful-fs": "^4.1.3",
     "gulp": "^3.9.1",
+    "gulp-coveralls": "^0.1.4",
     "gulp-debug": "^2.1.2",
-    "gulp-istanbul": "^0.10.4",
-    "gulp-jsdoc-to-markdown": "^1.2.2",
-    "gulp-mocha": "^2.2.0",
-    "gulp-rename": "^1.2.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-istanbul": "^1.0.0",
+    "gulp-mocha": "^3.0.0",
     "gulp-sequence": "^0.4.5",
-    "json-query": "^2.0.2",
-    "jsonfile": "^2.3.0",
-    "mkdirp": "^0.5.1",
-    "rekuire": "^0.1.9",
-    "semver": "^5.1.0",
-    "yamljs": "^0.2.7"
+    "merge2": "^1.0.2",
+    "semver": "^5.3.0"
   },
   "keywords": [
-    "paths",
+    "js",
     "task",
-    "util",
-    "utility",
-    "jsstd",
-    "std"
+    "path",
+    "paths",
+    "js.task.path",
+    "js-task-path",
+    "js-task-paths",
+    "javascript",
+    "open",
+    "standards",
+    "jsopenstd",
+    "josh",
+    "node",
+    "node-only"
   ]
 }

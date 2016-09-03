@@ -1,7 +1,13 @@
-dir: src
-
 packageJson: package.json
 
-articles:
+dir: src
 
-  - Overview: readme.md 
+articles:
+  - Overview: readme.md
+
+branches:
+  - master
+  - develop
+  - feature/*
+  - release/*
+  - hotfix/*
