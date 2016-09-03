@@ -25,7 +25,7 @@ npm install js-task-path
 ## Usage
 
 For additional examples,
-check the **[tests folder](https://github.com/jsstd/js-task-path/tree/master/tests)**
+check the **[unit tests](https://github.com/jsstd/js-task-path/tree/master/tests/cases)**
 
 ```javascript
 const path = require('js-task-path');
