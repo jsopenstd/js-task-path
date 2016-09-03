@@ -32,34 +32,48 @@ const path = require('js-task-path');
 
 // after require, you can use path right away without instantiation, since it's a singleton
 
-// add general/custom paths
-path.add('dist',  '<root>/dist');
-path.add('src',   '<root>/src');
-path.add('doc',   '<root>/doc');
-path.add('tasks', '<root>/tasks');
-path.add('tests', '<root>/tests');
+// set custom paths
+// '<root>' is present by default and its value is automatically determined and set to the package's root
+path.set('dist', '<root>/dist');
+path.set('src',  '<root>/src');
+path.set('doc',  '<root>/doc');
 
-// use previously given, custom paths via token
-path.add('build-tasks', '<tasks>/build/*.js');
-
-// add individual files
-path.add('source-file', '<src>/src.js');
-path.add('dist-file',   '<dist>/dist.js');
-
-// get paths by name
-path.get('source-file');
-path.get('dist-file');
-```
-
-```javascript
-// example, when using gulp
-gulp.task('build-source', function() {
-    return gulp
-        .src(path.get('src'))
-        .pipe(
-            gulp.dest(path.get('dist')
-        ));
+// or use chaining
+path.set('lib',      '<root>/lib')
+    .set('scripts',  '<root>/scripts')
+    .set('examples', '<root>/examples');
+  
+// or use the shorthand versions
+path('tasks', '<root>/tasks');
+path({
+    tests : '<root>/tests',
+    vars  : '<root>/vars'
 });
+    
+// when setting paths, use previous paths with tokens
+// also works with every form of path settings
+path.set('test-cases', '<tests>/cases');
+
+/*
+default tokens (with 'root'):
+
+'<root>'
+'<<root>>'
+'@root@'
+'{@root@}'
+'{%root%}'
+'{{root}}'
+*/
+
+// use paths
+path.get('dist'); // will be '<root>/dist', where <root> will be auto-resolved to package root (e.g.: '/vagrant/dist')
+
+// or the shorthand version
+path('dist');
+
+// if the path constructed via different layers (e.g.: '<tests>/cases', where <tests> too is '<root>/tests'),
+// the full path will be resolved.
+path.get('test-cases'); // will be e.g.: '/vagrant/tests/cases'
 ```
 
 ## Documentation
