@@ -204,7 +204,7 @@ def git_publish():
     exec_command(["git add --all"], shell=True)
 
     # commit
-    exec_command(["git commit -m \"v{}\"".format(version)], shell=True)
+    exec_command(["git commit -m \"{}\"".format(version)], shell=True)
 
     # tag
     exec_command(["git tag {}".format(version)], shell=True)
