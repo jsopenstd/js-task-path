@@ -7,17 +7,15 @@ const assert = require('assert'),
 module.exports = {
     'js-task-paths' : {
         'beforeEach' : () => {
-            // reset options
-            path.setOptions(path.DEFAULTS);
-
-            // reset paths by removing all
-            path.removeAll();
+            path.reset();
         },
 
         '.removeAll()' : {
             'return empty {} by default' : () => {
                 // the root should not be in between the paths by default
-                assert.deepStrictEqual(path.removeAll(), {});
+                path.removeAll();
+
+                assert.deepStrictEqual(path.getAll(), {});
             },
 
             'remove previously set paths' : () => {
@@ -26,7 +24,7 @@ module.exports = {
                 path.set('c', '3');
 
                 assert.deepStrictEqual(
-                    path.removeAll(),
+                    path.getAll(),
                     {
                         a : '1',
                         b : '2',
@@ -34,7 +32,9 @@ module.exports = {
                     }
                 );
 
-                assert.deepStrictEqual(path.removeAll(), {});
+                path.removeAll();
+
+                assert.deepStrictEqual(path.getAll(), {});
             },
         },
     }

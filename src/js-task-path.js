@@ -123,27 +123,8 @@ const self = (() => {
                 self
             );
 
-            /**
-             * The storage object for the named glob paths.
-             *
-             * @private {{}}
-             * @default {}
-             */
-            instance._paths = {};
-
-            /**
-             * The storage object for options
-             *
-             * @private {{}}
-             * @default {}
-             */
-            instance._options = {};
-
-            // set the default values of options
-            instance.setOptions(self.DEFAULTS);
-
-            // set the default value for root
-            instance.setRoot(appRootPath.toString());
+            // resets the path to default values.
+            instance.reset();
 
             // return the placeholder function with all the necessary functionality from Path's prototype
             // and with initial, instantiated values
@@ -548,15 +529,43 @@ const self = (() => {
                  * @function removeAll
                  * @memberOf js.task.path.Path
                  *
-                 * @returns {{}} Returns the removed named glob paths.
-                 *               For example: { `src` : `/root/src` }
+                 * @returns {void}
                  */
                 removeAll() {
-                    const removedGlobs = this.getAll();
+                    this._paths = {};
+                },
 
+                /**
+                 * Resets the path with default options.
+                 * Also deletes every previously set path globs and sets the root back to the original path.
+                 *
+                 * @public
+                 * @instance
+                 * @function reset
+                 * @memberOf js.task.path.Path
+                 *
+                 * @returns {void}
+                 */
+                reset() {
+                    /**
+                     * The storage object for the named glob paths.
+                     *
+                     * @private {{}}
+                     * @default {}
+                     */
                     this._paths = {};
 
-                    return removedGlobs;
+                    /**
+                     * The storage object for options
+                     *
+                     * @private {{}}
+                     * @default {}
+                     */
+                    this._options = {};
+
+                    this.removeAll();
+                    this.setOptions(self.DEFAULTS);
+                    this.setRoot(appRootPath.toString());
                 },
 
                 /**
